@@ -51,54 +51,54 @@
 
 <script>
 
-import Dots from '../app-header/Dots';
-import UserBox from '../app-header/UserBox';
+import Dots from '../app-header/Dots'
+import UserBox from '../app-header/UserBox'
 
 import { library } from '@fortawesome/fontawesome-svg-core'
 import {
-  faSearch,
+  faSearch
 } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 
 library.add(
-  faSearch,
+  faSearch
 )
 export default {
-  name: "Header",
+  name: 'Header',
   components: {
     Dots,
     UserBox,
-    'font-awesome-icon': FontAwesomeIcon,
+    'font-awesome-icon': FontAwesomeIcon
   },
 
-  data() {
+  data () {
     return {
     }
   },
   computed: {
     sidebarCollapsed: {
-      get() {
-          return this.$store.state.sidebarCollapsed;
+      get () {
+        return this.$store.state.sidebarCollapsed
       },
-      set(value) {
-          this.$store.commit('SET_SIDEBAR_COLLAPSED', value);
+      set (value) {
+        this.$store.commit('SET_SIDEBAR_COLLAPSED', value)
       }
     },
     sidebarCollapsedMobile: {
-      get() {
-          return this.$store.state.sidebarCollapsedMobile;
+      get () {
+        return this.$store.state.sidebarCollapsedMobile
       },
-      set(value) {
-          this.$store.commit('SET_SIDEBAR_COLLAPSED_MOBILE', value);
+      set (value) {
+        this.$store.commit('SET_SIDEBAR_COLLAPSED_MOBILE', value)
       }
     }
   },
   methods: {
-    toggleSidebar() {
-        this.sidebarCollapsed = !this.sidebarCollapsed;
+    toggleSidebar () {
+      this.sidebarCollapsed = !this.sidebarCollapsed
     },
-    toggleSidebarMobile() {
-        this.sidebarCollapsedMobile = !this.sidebarCollapsedMobile;
+    toggleSidebarMobile () {
+      this.sidebarCollapsedMobile = !this.sidebarCollapsedMobile
     }
   }
 }

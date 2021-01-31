@@ -13,28 +13,26 @@
 
 <script>
 export default {
-  name: "error-boundary",
+  name: 'error-boundary',
   props: {
     stopPropagation: Boolean
   },
-  data() {
+  data () {
     return {
       err: false,
       vm: null,
       info: null
-    };
+    }
   },
-  errorCaptured(err, vm, info) {
-    this.err = err;
-    this.vm = vm;
-    this.info = info;
+  errorCaptured (err, vm, info) {
+    this.err = err
+    this.vm = vm
+    this.info = info
 
-    return !this.stopPropagation;
+    return !this.stopPropagation
   }
-};
+}
 </script>
 
 <style lang="scss" scoped>
 </style>
-
-

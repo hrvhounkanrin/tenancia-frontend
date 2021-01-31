@@ -77,36 +77,36 @@
 
 import Vue from 'vue'
 
-Vue.component('truck-icon', TruckIcon);
-Vue.component('battery-charging-icon', BatteryChargingIcon);
-Vue.component('cpu-icon', CpuIcon);
-Vue.component('user-check-icon', UserCheckIcon);
-Vue.component('database-icon', DatabaseIcon);
-Vue.component('map-pin-icon', MapPinIcon);
-Vue.component('pie-chart-icon', PieChartIcon);
-
 import VuePerfectScrollbar from 'vue-perfect-scrollbar'
 import { TruckIcon, BatteryChargingIcon, CpuIcon, UserCheckIcon, DatabaseIcon, MapPinIcon, PieChartIcon } from 'vue-feather-icons'
 
-import {library} from '@fortawesome/fontawesome-svg-core'
+import { library } from '@fortawesome/fontawesome-svg-core'
 import {
   faArrowLeft
 } from '@fortawesome/free-solid-svg-icons'
-import {FontAwesomeIcon} from '@fortawesome/vue-fontawesome'
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
+
+Vue.component('truck-icon', TruckIcon)
+Vue.component('battery-charging-icon', BatteryChargingIcon)
+Vue.component('cpu-icon', CpuIcon)
+Vue.component('user-check-icon', UserCheckIcon)
+Vue.component('database-icon', DatabaseIcon)
+Vue.component('map-pin-icon', MapPinIcon)
+Vue.component('pie-chart-icon', PieChartIcon)
 
 library.add(
   faArrowLeft
-);
+)
 
 export default {
   components: {
     VuePerfectScrollbar,
-    'font-awesome-icon': FontAwesomeIcon,
+    'font-awesome-icon': FontAwesomeIcon
   },
   methods: {
-    showTooltip() {
-        this.$refs.tooltipWarning._toolpop.getTipElement().classList.add('tooltip-warning');
-    },
+    showTooltip () {
+      this.$refs.tooltipWarning._toolpop.getTipElement().classList.add('tooltip-warning')
+    }
   }
 }
 </script>

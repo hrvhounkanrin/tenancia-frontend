@@ -93,7 +93,7 @@
 import { library } from '@fortawesome/fontawesome-svg-core'
 import {
   faPlusCircle,
-  faChartBar,
+  faChartBar
 } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import {
@@ -107,14 +107,14 @@ library.add(
 
 export default {
   components: {
-    'font-awesome-icon': FontAwesomeIcon,
+    'font-awesome-icon': FontAwesomeIcon
   },
   methods: {
     showTooltip () {
-      this.$refs.tooltipSuccess._toolpop.getTipElement().classList.add('tooltip-success');
+      this.$refs.tooltipSuccess._toolpop.getTipElement().classList.add('tooltip-success')
     },
     showPopoverIntegrations () {
-      this.$refs.userBoxPopover._toolpop.getTipElement().classList.add('popover-custom-wrapper','popover-custom-lg','popover-secondary');
+      this.$refs.userBoxPopover._toolpop.getTipElement().classList.add('popover-custom-wrapper', 'popover-custom-lg', 'popover-secondary')
     }
   }
 }

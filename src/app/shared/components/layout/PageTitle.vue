@@ -139,26 +139,26 @@
 <script>
 import VuePerfectScrollbar from 'vue-perfect-scrollbar'
 
-import {library} from '@fortawesome/fontawesome-svg-core'
+import { library } from '@fortawesome/fontawesome-svg-core'
 import {
   faStar,
   faFileCode,
   faExpandArrowsAlt,
   faBuilding
 } from '@fortawesome/free-solid-svg-icons'
-import {FontAwesomeIcon} from '@fortawesome/vue-fontawesome'
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 
 library.add(
   faStar,
   faFileCode,
   faExpandArrowsAlt,
   faBuilding
-);
+)
 
 export default {
   components: {
     'font-awesome-icon': FontAwesomeIcon,
-    VuePerfectScrollbar,
+    VuePerfectScrollbar
   },
   props: {
     icon: String,

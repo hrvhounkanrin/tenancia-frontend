@@ -1,0 +1,5 @@
+export const VERIFIED = 'VERIFIED'
+export const USER = 'USER'
+export const UPDATE_USER = 'UPDATE_USER'
+export const AUTH_TOKEN = 'AUTH_TOKEN'
+export const AUTHENTICATED = 'AUTHENTICATED'

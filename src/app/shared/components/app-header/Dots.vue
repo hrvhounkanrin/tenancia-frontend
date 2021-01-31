@@ -402,7 +402,7 @@
 </template>
 
 <script>
-import {library} from '@fortawesome/fontawesome-svg-core'
+import { library } from '@fortawesome/fontawesome-svg-core'
 import {
   faBell,
   faCommentDots,
@@ -423,7 +423,7 @@ import {
 import {
   faComment
 } from '@fortawesome/free-regular-svg-icons'
-import {FontAwesomeIcon} from '@fortawesome/vue-fontawesome'
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import {
   faFacebookSquare,
   faGooglePlus,
@@ -457,17 +457,16 @@ library.add(
 
 export default {
   components: {
-    'font-awesome-icon': FontAwesomeIcon,
+    'font-awesome-icon': FontAwesomeIcon
   },
   methods: {
-    showTooltip() {
-        this.$refs.tooltipSuccess._toolpop.getTipElement().classList.add('tooltip-success');
+    showTooltip () {
+      this.$refs.tooltipSuccess._toolpop.getTipElement().classList.add('tooltip-success')
     },
-    showPopoverIntegrations() {
-        this.$refs.popoverIntegrations4._toolpop.getTipElement().classList.add('popover-custom-wrapper','popover-custom-lg','popover-secondary');
-        this.$refs.popoverIntegrations3._toolpop.getTipElement().classList.add('popover-custom-wrapper','popover-custom-lg','popover-second');
+    showPopoverIntegrations () {
+      this.$refs.popoverIntegrations4._toolpop.getTipElement().classList.add('popover-custom-wrapper', 'popover-custom-lg', 'popover-secondary')
+      this.$refs.popoverIntegrations3._toolpop.getTipElement().classList.add('popover-custom-wrapper', 'popover-custom-lg', 'popover-second')
     }
   }
 }
 </script>
-

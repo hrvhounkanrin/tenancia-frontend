@@ -6,8 +6,8 @@
 
 <script>
 export default {
-  name: "app-header"
-};
+  name: 'app-header'
+}
 </script>
 
 <style lang="scss" scoped>
@@ -24,5 +24,3 @@ export default {
   font-weight: 500;
 }
 </style>
-
-

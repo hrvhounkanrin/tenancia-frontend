@@ -13,33 +13,33 @@
 </template>
 
 <script>
-import Header from "../layout/Header";
-import SidebarMini from "../layout/SidebarMini";
+import Header from '../layout/Header'
+import SidebarMini from '../layout/SidebarMini'
 
 export default {
   name: 'app',
   components: {
     Header,
-    SidebarMini,
+    SidebarMini
   },
   computed: {
     sidebarCollapsed: {
-      get() {
-          return this.$store.state.sidebarCollapsed;
-      },
+      get () {
+        return this.$store.state.sidebarCollapsed
+      }
     },
     sidebarCollapsedMobile: {
-      get() {
-          return this.$store.state.sidebarCollapsedMobile;
+      get () {
+        return this.$store.state.sidebarCollapsedMobile
       },
-      set(value) {
-          this.$store.commit('SET_SIDEBAR_COLLAPSED_MOBILE', value);
+      set (value) {
+        this.$store.commit('SET_SIDEBAR_COLLAPSED_MOBILE', value)
       }
     }
   },
   methods: {
-    toggleSidebarMobile() {
-        this.sidebarCollapsedMobile = !this.sidebarCollapsedMobile;
+    toggleSidebarMobile () {
+      this.sidebarCollapsedMobile = !this.sidebarCollapsedMobile
     }
   }
 }

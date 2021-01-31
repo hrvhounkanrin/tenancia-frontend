@@ -1,12 +1,12 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-// import Home from './views/Home.vue'
-import Home from '@/app/shared/components/Wrappers/baseLayout.vue'
+import Home from './views/Home.vue'
+// import Home from '@/app/shared/components/Wrappers/baseLayout.vue'
 import { Register } from '@/app/users'
 
 Vue.use(Router)
 
-export const router =  new Router({
+export const router = new Router({
   routes: [
     {
       path: '/',

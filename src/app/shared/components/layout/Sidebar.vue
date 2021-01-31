@@ -22,19 +22,6 @@
 
 import Vue from 'vue'
 
-Vue.component('truck-icon', TruckIcon);
-Vue.component('battery-charging-icon', BatteryChargingIcon);
-Vue.component('cpu-icon', CpuIcon);
-Vue.component('user-check-icon', UserCheckIcon);
-Vue.component('check-circle-icon', CheckCircleIcon);
-Vue.component('layout-icon', LayoutIcon);
-Vue.component('paper-clip-icon', PaperclipIcon);
-Vue.component('layers-icon', LayersIcon);
-Vue.component('database-icon', DatabaseIcon);
-Vue.component('briefcase-icon', BriefcaseIcon);
-Vue.component('map-pin-icon', MapPinIcon);
-Vue.component('pie-chart-icon', PieChartIcon);
-
 import { SidebarMenu } from 'vue-sidebar-menu'
 import VuePerfectScrollbar from 'vue-perfect-scrollbar'
 import { TruckIcon, BatteryChargingIcon, CpuIcon, UserCheckIcon, CheckCircleIcon, LayoutIcon, PaperclipIcon, LayersIcon, DatabaseIcon, BriefcaseIcon, MapPinIcon, PieChartIcon } from 'vue-feather-icons'
@@ -46,6 +33,19 @@ import {
 
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 
+Vue.component('truck-icon', TruckIcon)
+Vue.component('battery-charging-icon', BatteryChargingIcon)
+Vue.component('cpu-icon', CpuIcon)
+Vue.component('user-check-icon', UserCheckIcon)
+Vue.component('check-circle-icon', CheckCircleIcon)
+Vue.component('layout-icon', LayoutIcon)
+Vue.component('paper-clip-icon', PaperclipIcon)
+Vue.component('layers-icon', LayersIcon)
+Vue.component('database-icon', DatabaseIcon)
+Vue.component('briefcase-icon', BriefcaseIcon)
+Vue.component('map-pin-icon', MapPinIcon)
+Vue.component('pie-chart-icon', PieChartIcon)
+
 library.add(
   faArrowsAltH
 )
@@ -54,56 +54,56 @@ export default {
   components: {
     SidebarMenu,
     VuePerfectScrollbar,
-    'font-awesome-icon': FontAwesomeIcon,
+    'font-awesome-icon': FontAwesomeIcon
   },
   props: {
     sidebarbg: String
   },
-  data() {
+  data () {
     return {
       menu: [
         {
           header: true,
-          title: 'TENANCIA',
+          title: 'TENANCIA'
         },
         {
           title: 'Mes biens',
           icon: {
-              element: 'truck-icon',
+            element: 'truck-icon'
           },
           child: [
             {
               href: '/',
-              title: 'Immeubles & Maisons',
+              title: 'Immeubles & Maisons'
             },
             {
               href: '/dashboards/monitoring',
               title: 'Appartements',
               class: 'pr-2',
               badge: {
-                  text: 'New',
-                  class: 'badge badge-first ml-auto order-2'
+                text: 'New',
+                class: 'badge badge-first ml-auto order-2'
               }
-            },
+            }
           ]
         }
       ],
-      collapsed: true,
+      collapsed: true
     }
   },
   computed: {
     sidebarCollapsed: {
-      get() {
-          return this.$store.state.sidebarCollapsed
+      get () {
+        return this.$store.state.sidebarCollapsed
       },
-      set(value) {
-          this.$store.commit('SET_SIDEBAR_COLLAPSED', value)
+      set (value) {
+        this.$store.commit('SET_SIDEBAR_COLLAPSED', value)
       }
     }
   },
   methods: {
-    toggleSidebar() {
-        this.sidebarCollapsed = !this.sidebarCollapsed;
+    toggleSidebar () {
+      this.sidebarCollapsed = !this.sidebarCollapsed
     }
   }
 }

@@ -1,4 +1,4 @@
-import { get, post, put } from '@/app/shared/services'
+import { post } from '@/app/shared/services'
 
 export const userService = {
   login,
@@ -13,16 +13,16 @@ export const userService = {
 function login (email, password) {
   const data = JSON.stringify({ email, password })
   return post(`${config.apiUrl}/users`, data)
-  .then(handleResponse)
-  .then(user => {
+    .then(handleResponse)
+    .then(user => {
     // login successful if there's a jwt token in the response
-    if (user.token) {
-        // store user details and jwt token in local storage 
+      if (user.token) {
+        // store user details and jwt token in local storage
         // to keep user logged in between page refreshes
         localStorage.setItem('user', JSON.stringify(user))
-    }
-    return user;
-  });
+      }
+      return user
+    })
 }
 
 function logout () {
@@ -30,13 +30,13 @@ function logout () {
 }
 
 function register (user) {
-  return post('/users',JSON.stringify(user));
-    /*.then(function (response) {
+  return post('/users', JSON.stringify(user))
+  /* .then(function (response) {
       console.log(response);
     })
     .catch(function (error) {
       console.log(error);
-    });*/
+    }); */
 }
 
 function getAll () {
@@ -44,7 +44,7 @@ function getAll () {
     method: 'GET',
     headers: authHeader()
   }
-  return fetch ('${config.apiUrl}/users', requestOptions).then(handleResponse)
+  return fetch('${config.apiUrl}/users', requestOptions).then(handleResponse)
 }
 
 function getById (id) {
@@ -61,7 +61,7 @@ function update (user) {
     headers: { ...authHeader(), 'Content-Type': 'application/json' },
     body: JSON.stringify(user)
   }
-  return fetch ('${config.apiUrl}/users/${user.id}', requestOptions).then(handleResponse)
+  return fetch('${config.apiUrl}/users/${user.id}', requestOptions).then(handleResponse)
 }
 
 // prefixed function name with underscore because delete is a reserved word in javascript
@@ -70,9 +70,9 @@ function _delete (id) {
     method: 'DELETE',
     headers: authHeader()
   }
-  return fetch ('${config.apiUrl}/users/${id}', requestOptions).then(handleResponse)
+  return fetch('${config.apiUrl}/users/${id}', requestOptions).then(handleResponse)
 }
 
 function handleResponse (response) {
-    return response
+  return response
 }

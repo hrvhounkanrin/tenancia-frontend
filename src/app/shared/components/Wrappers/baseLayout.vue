@@ -20,35 +20,35 @@
 </template>
 
 <script>
-import Header from "../layout/Header";
-import Sidebar from "../layout/Sidebar";
-import Footer from "../layout/Footer";
+import Header from '../layout/Header'
+import Sidebar from '../layout/Sidebar'
+import Footer from '../layout/Footer'
 
 export default {
   name: 'app',
   components: {
     Header,
     Sidebar,
-    Footer,
+    Footer
   },
   computed: {
     sidebarCollapsed: {
-      get() {
-        return this.$store.state.sidebarCollapsed;
-      },
+      get () {
+        return this.$store.state.sidebarCollapsed
+      }
     },
     sidebarCollapsedMobile: {
-      get() {
-        return this.$store.state.sidebarCollapsedMobile;
+      get () {
+        return this.$store.state.sidebarCollapsedMobile
       },
-      set(value) {
-        this.$store.commit('SET_SIDEBAR_COLLAPSED_MOBILE', value);
+      set (value) {
+        this.$store.commit('SET_SIDEBAR_COLLAPSED_MOBILE', value)
       }
     }
   },
   methods: {
-    toggleSidebarMobile() {
-      this.sidebarCollapsedMobile = !this.sidebarCollapsedMobile;
+    toggleSidebarMobile () {
+      this.sidebarCollapsedMobile = !this.sidebarCollapsedMobile
     }
   }
 }

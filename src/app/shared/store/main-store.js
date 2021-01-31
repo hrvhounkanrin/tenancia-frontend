@@ -5,7 +5,7 @@ const state = {
 
 const actions = {}
 
-const mutations = {  
+const mutations = {
   SET_SIDEBAR_COLLAPSED (state, value) {
     state.sidebarCollapsed = value
   },
@@ -15,8 +15,8 @@ const mutations = {
 }
 
 export const main = {
-    namespaced: true,
-    state,
-    actions,
-    mutations
+  namespaced: true,
+  state,
+  actions,
+  mutations
 }

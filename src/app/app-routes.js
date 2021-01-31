@@ -18,7 +18,7 @@ const appRoutes = [
   }
 ]
 
-const routes = [...appRoutes, ...usersRoutes];
+const routes = [...appRoutes, ...usersRoutes]
 
 export default new Router({
   mode: 'history',
