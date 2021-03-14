@@ -3,18 +3,20 @@ import {
   UPDATE_USER,
   USER,
   AUTH_TOKEN,
-  AUTHENTICATED
+  AUTHENTICATED,
+  GOOGLE_LOGIN_SUCCESS, GOOGLE_LOGIN_FAILURE
 } from './mutation-types'
 
 import { USER_KEY, AUTH_TOKEN_KEY } from '@/constants'
 
-import api from '@/api'
-import config from '@/config/backend'
-import axios from 'axios'
+import User from '@/api/user'
+// import config from '@/config/backend'
+// import axios from 'axios'
 
-const $api = api(axios, config)
+// const $api = api(axios, config)
 
 export default {
+
 
   async loginAccount ({ commit }, userData) {
     let usersType = [
@@ -22,42 +24,53 @@ export default {
       'manager'
     ]
 
-    return await $api.login(userData).then((res) => {
-      if (res.code == 200) {
+    let user = new User()
+
+
+    return await user.login(userData).then((res) => {
+      console.log('user data', res) 
+      if (res.status == 200) {
         let token = res.data.token
-        let user = res.data
-        delete user['token']
+        let user = res.data.user
         if (token && user) {
-          console.log('user data', user)
+          console.log('user data', user) 
 
           if (usersType.indexOf(user.profil) >= 0) {
             commit(USER, user.data)
             commit(AUTH_TOKEN, token)
             commit(AUTHENTICATED, true)
             sessionStorage.setItem(USER_KEY, JSON.stringify(user))
+            return {
+              msg: '',
+              status: 200
+            }
           } else {
             return 'typeError'
           }
         }
       } else {
+        console.log(res, 'is err')
         return res
       }
-    })
+    }).catch(
+      errors => {
+        errors.data.forEach(err => {
+          
+        });
+         console.log(err.response, 'is err')
+      }
+    )
   },
 
   async register ({ commit }, userData) {
-    return await $api.register(userData)
+    let user = new User()
+     return await user.register(userData)
   },
 
   async forgetPwd ({ commit }, userData) {
-    return await $api.forgetPassword(userData)
+    let user = new User()
+    return await user.forgetPassword(userData)
   },
-
-  // async updateAdmin ({ commit }, data) {
-  //   const user = await $api.putAdmin(data)
-  //   commit(UPDATE_USER, user.data)
-  // },
-
   verified ({ commit }) {
     commit(VERIFIED)
   },
@@ -70,5 +83,18 @@ export default {
     sessionStorage.removeItem(USER_KEY)
     // delete axios.defaults.headers.common["Access-Token"];
     delete axios.defaults.headers.common['Authorization']
+  },
+  // from old code
+  async googleExchangeToken({ dispatch, commit }, googleToken) {
+    try {
+      let backendResponse = await userApi.exchangeToken(googleToken)
+      console.log('backendResponse', backendResponse)
+      commit(GOOGLE_LOGIN_SUCCESS, backendResponse)
+      return backendResponse
+    } catch (errors) {
+      commit(GOOGLE_LOGIN_FAILURE, errors)
+      dispatch('alert/error', errors, { root: true })
+      return errors
+    }
   }
 }

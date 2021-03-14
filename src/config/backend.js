@@ -1,3 +1,4 @@
 export default {
-  serverURL: 'http://tenancia.com'
+  serverURL: 'http://tenancia.com',
+  apiVersion: 'api/v1'
 }

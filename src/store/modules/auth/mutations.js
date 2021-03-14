@@ -1,4 +1,4 @@
-import { VERIFIED, UPDATE_USER, USER, AUTH_TOKEN, AUTHENTICATED } from './mutation-types'
+import { VERIFIED, UPDATE_USER, USER, AUTH_TOKEN, AUTHENTICATED, GOOGLE_LOGIN_SUCCESS, GOOGLE_LOGIN_FAILURE } from './mutation-types'
 
 import axios from 'axios'
 import { USER_KEY, AUTH_TOKEN_KEY } from '@/constants'
@@ -31,5 +31,19 @@ export default {
 
   [AUTHENTICATED] (state, authenticated) {
     state.authenticated = authenticated
+  },
+
+  [GOOGLE_LOGIN_SUCCESS] (state, res) {
+    state.status = { loggingIn: true }
+      state.errors = null
+      state.connectedUser = user
+      state.token = null
+  },
+
+  [GOOGLE_LOGIN_FAILURE] (state, res) {
+    state.status = { 'errorOccured': true }
+      state.errors = res
+      state.connectedUser = null
   }
+  
 }

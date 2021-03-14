@@ -6,8 +6,8 @@ import store from '../store'
  */
 export default (to, from, next) => {
   if (!store.getters['auth/authenticated'] && to.matched.some(route => route.meta.auth)) { // If it's wrong auth and route asks auth
-    return next({ name: 'Session', query: { redirect: to.fullPath } }) // not access current route et redirect to Session route
-  } else if ((store.getters['auth/authenticated'] && to.matched.some(route => route.name === 'Session'))) {
+    return next({ name: 'Register', query: { redirect: to.fullPath } }) // not access current route et redirect to Register route
+  } else if ((store.getters['auth/authenticated'] && to.matched.some(route => route.name === 'Register'))) {
     return next({ name: 'Home' })
   }
   // is auth and authorize current route

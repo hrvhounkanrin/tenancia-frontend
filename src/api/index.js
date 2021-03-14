@@ -12,7 +12,6 @@ export default ($http, $config) => {
     config => {
       const authToken = sessionStorage.getItem(AUTH_TOKEN_KEY)
       if (authToken) {
-        // config.headers["Access-Token"] = sessionStorage.getItem(AUTH_TOKEN_KEY);
         config.headers['Authorization'] = `Bearer ${authToken}`
       }
       return config
@@ -21,69 +20,32 @@ export default ($http, $config) => {
       return Promise.reject(error)
     }
   )
-
-  const login = (data) => {
-    return $api.post('/api/v1/accounts/login/', data).then((res) => res.data)
+  
+  const postRequest = (data) => {
+    alert(12)
+    console.log(data, "la data")
+    return $api.post($config.apiVersion + data.link, data.body)
   }
 
-  const register = (data) => {
-    return $api.post('/api/v1/accounts/users/', data).then((res) => res.data)
+  const putRequest = (data) => {
+    return $api.put($config.apiVersion + data.link, data.body)
   }
 
-  /**
-     * Get All Users
-     * @param {*} params
-     */
-  const getUsers = (params) => {
+  const deleteRequest = (data) => {
+    return $api.delete($config.apiVersion + data.link, data.body)
+  }
+
+  const getRequest = (params) => {
     return $api
-      .get(config.baseURL + '/api/v1/auth/provider/users', {
-        params
-      })
-      .then((res) => res.data)
+      .get($config.apiVersion + params.link, params.body)
+      
   }
-
-  /**
-     * Get User
-     * @param {*} params
-     */
-  const getUserByID = (params) => {
-    return $api
-      .get(config.baseURL + '/api/v1/auth/provider/users', {
-        params
-      })
-      .then((res) => res.data)
-  }
-
-  /**
-     * UPdate User
-     * @param {*} data
-     */
-  const updateUser = (data) => {
-    return $api
-      .put(config.baseURL + '/api/v1/auth/provider/users', {
-        data
-      })
-      .then((res) => res.data)
-  }
-
-  /**
-     * Delete User
-     * @param {*} data
-     */
-  const removeUser = (data) => {
-    return $api
-      .delete(config.baseURL + '/api/v1/auth/provider/users', {
-        data
-      })
-      .then((res) => res.data)
-  }
+  
 
   return {
-    login,
-    register,
-    getUsers,
-    getUserByID,
-    updateUser,
-    removeUser
+    postRequest,
+    putRequest,
+    getRequest, 
+    deleteRequest
   }
 }

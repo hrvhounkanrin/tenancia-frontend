@@ -32,14 +32,6 @@
                           <div
                             class="divider border-2 my-4 border-light opacity-2 rounded w-25"
                           ></div>
-                          <!--<div>
-                                                        <a href="javascript:history.back()" class="btn btn-lg btn-warning">
-                                                            <span class="btn-wrapper--icon">
-                                                                <font-awesome-icon icon="arrow-left" />
-                                                            </span>
-                                                            <span class="btn-wrapper--label">Back to previous page</span>
-                                                        </a>
-                                                    </div>-->
                         </div>
                       </div>
                     </div>
@@ -107,6 +99,7 @@
                             <button
                               class="btn btn-google-plus mr-2"
                               type="button"
+                              @click="googleSignIn"
                             >
                               <span class="btn-wrapper--icon">
                                 <font-awesome-icon :icon="['fab', 'google']" />
@@ -118,7 +111,7 @@
                           </div>
                         </div>
                         <!-- <form @submit.prevent="handleSubmit"> -->
-                        <form @submit.prevent="onRegisterWithCredentials">
+                        <form @submit.prevent="handleSubmit">
                           <div class="px-4 py-2">
                             <div class="form-group">
                               <ValidationProvider
@@ -209,7 +202,10 @@
                                 </span>
                               </label>
                             </div>
-                            <button type="submit" class="btn btn-primary btn-lg btn-block">
+                            <button
+                              type="submit"
+                              class="btn btn-primary btn-lg btn-block"
+                            >
                               S'inscrire
                             </button>
                           </div>
@@ -229,6 +225,7 @@
                               <button
                                 class="btn btn-google-plus mr-2"
                                 type="button"
+                                @click="googleSignIn"
                               >
                                 <span class="btn-wrapper--icon">
                                   <font-awesome-icon
@@ -258,7 +255,7 @@
                                     </span>
                                   </div>
                                   <input
-                                    v-model="signInForm.email"
+                                    v-model="credential.login"
                                     class="form-control"
                                     placeholder="Email"
                                     type="email"
@@ -276,7 +273,7 @@
                                     </span>
                                   </div>
                                   <input
-                                    v-model="signInForm.password"
+                                    v-model="credential.password"
                                     class="form-control"
                                     placeholder="Password"
                                     type="password"
@@ -303,13 +300,7 @@
                               </div>
                               <div></div>
                               <div class="text-center">
-                                <button
-                                  @click="onLoginWithCredentials"
-                                  type="button"
-                                  class="btn btn-primary btn-lg btn-block"
-                                >
-                                  Se connecter
-                                </button>
+                                <button type="submit" class="btn btn-primary btn-lg btn-block">Se connecter</button>
                               </div>
                             </form>
                           </div>
@@ -328,31 +319,27 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex'
+import GoogleLogin from 'vue-google-login';
+import { mapState, mapActions, mapMutations } from 'vuex'
 import { library } from '@fortawesome/fontawesome-svg-core'
 import {
   faQuestionCircle,
   faArrowLeft,
   faAmbulance,
   faEnvelope,
-  faUnlockAlt
+  faUnlockAlt,
+  faHeadset
+
 } from '@fortawesome/free-solid-svg-icons'
-import {
-  faTwitter,
-  faGooglePlus,
-  faFacebook,
-  faInstagram,
-  faGoogle
-} from '@fortawesome/free-brands-svg-icons'
+import { faTwitter, faGooglePlus, faFacebook, faInstagram, faGoogle } from '@fortawesome/free-brands-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import { ErrorBoundary } from '@/app/shared/components'
-import {
-  ValidationObserver,
-  ValidationProvider,
-  setInteractionMode
-} from 'vee-validate'
+import { ValidationObserver, ValidationProvider } from "vee-validate"
+import { setInteractionMode } from 'vee-validate'
 
-import './register-validation'
+import "./register-validation";
+
+
 
 library.add(
   faQuestionCircle,
@@ -364,86 +351,104 @@ library.add(
   faFacebook,
   faEnvelope,
   faUnlockAlt,
-  faGoogle
+  faGoogle,
+  faHeadset
 )
 setInteractionMode('lazy')
 export default {
-  name: 'Register',
+  name: "Register",
   components: {
-    'font-awesome-icon': FontAwesomeIcon,
+    "font-awesome-icon": FontAwesomeIcon,
     ErrorBoundary,
     ValidationObserver,
-    ValidationProvider
+    ValidationProvider,
+    GoogleLogin
   },
-  created () {},
-
-  errorCaptured (err, vm, info) {
-    // err: error trace
-    // vm: component in which error occured
-    // info: Vue specific error information such as lifecycle hooks, events etc.
-    // TODO: Perform any custom logic or log to server
-    // return false to stop the propagation of errors further to parent or global error handler
-  },
-  data () {
+  data() {
     return {
-      signInForm: { email: '', password: '' },
-      user: {
+    params: {
+        client_id: "185957473371-5fp3ntcah051m746ssq71c7raqsif2fl.apps.googleusercontent.com"
+    },
+    user: {
         first_name: '',
         last_name: '',
         email: '',
         password: '',
-        confirm: '',
-        profile: {
-          title: 'M.',
-          dob: '1999-06-25',
-          address: 'UNKOWN',
-          country: 'BJ',
-          zip: '093',
-          city: 'COTONOU'
-        }
+        password_confirm: '',
+        profile:{
+            title: 'M.',
+            dob: '1999-06-25',
+            address: 'UNKOWN',
+            country: 'BJ',
+            zip: '093',
+            city: 'COTONOU'
+        },
+        
       },
-      submitted: false
+      credential: {
+        login: '',
+        password: '',
+      },
+      submitted: false,
+      activeTab: 'register'
     }
   },
   computed: {
-    ...mapState('account', ['status'])
+    ...mapState({
+        error: state => state.alert.message
+      }
+    )
+  },
+  created: function() {
+        // const parameters = this.$route.params
+        const c_type = this.$route.query.c_type
+        this.activeTab = c_type
+
+  },
+  mounted: function(){
+    let that = this
+    // let checkGauthLoad = setInterval(function(){
+    //     that.isLoaded = that.$gAuth.isInit
+    //     if(that.isLoaded) clearInterval(checkGauthLoad)
+    // }, 1000)
   },
   methods: {
-    // ...mapActions("account", ["register"]),
-    ...mapActions('auth', ['logout', 'loginAccount', 'register', 'verified']),
-    handleSubmit (e) {
-      console.log('handleSubmit')
+    ...mapActions('auth', ['register', 'login', 'googleExchangeToken', 'getBackendResponse', 'googleLoginFailure']),
+    handleSubmit(e) {
       this.submitted = true
       this.register(this.user)
     },
-
-    async onLoginWithCredentials () {
+    handleLogin(e) {
+      this.submitted = true
+      this.login(this.credential)
+    },
+    googleConnect() {
+      this.getBackendResponse(this)
+    },
+    onSuccess() {
+        console.log("Authentification réussie")
+    },
+    onFailure() {
+        console.log("Authentification échouée")
+    },
+    async googleSignIn() {
       try {
-        let res = await this.loginAccount(this.signInForm)
-        console.log(res)
-        if (!res) {
-          this.verified()
-          setTimeout(() => {
-            this.$router.push(this.$route.query.redirect || { name: 'home' })
-          }, 500)
-        } else if (res === 'typeError') {
-        } else if (res.code === 400) {
-        }
-      } catch (err) {
-        console.log(err)
+        //const googleUser = 
+        await this.$gAuth.signIn()
+        const authResponse = this.$gAuth.GoogleAuth.currentUser.get().getAuthResponse()
+        console.log('authResponse', authResponse)
+        this.isSignIn = this.$gAuth.isAuthorized
+        let googleToken = { access_token: authResponse.access_token,  redirectUri: "", }
+        await this.googleExchangeToken(googleToken).then( res => {
+          console.log('res googleExchange', res)
+        })
+      } catch (error) {
+        // this.googleLoginFailure('Une erreur est survenue, merci de reessayer dans un moment.')
+        console.log('googleSignIn error:', error)
       }
     },
-
-    async onRegisterWithCredentials () {
-      try {
-        let res = await this.register(this.user)
-        console.log(res)
-      } catch (err) {
-        console.log(err)
-      }
-    }
   }
-}
+};
 </script>
 <style lang="scss">
 @import "@/assets/bamburgh.scss";

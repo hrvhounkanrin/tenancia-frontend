@@ -1,4 +1,10 @@
 export default {
   user: null,
-  authenticated: false
+  authenticated: false,
+  status: {
+    loggingIn: true
+  },
+  errors: null,
+  connectedUser: null,
+  token: null
 }

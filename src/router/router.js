@@ -2,7 +2,7 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import authGuard from './auth-guard'
 import Home from '../views/Home.vue'
-import Session from '@/views/sessions'
+import Register from '@/views/register'
 Vue.use(Router)
 
 const router = new Router({
@@ -16,13 +16,13 @@ const router = new Router({
       name: 'Home',
       component: Home,
       meta: { auth: true },
-      redirect: '/session'
+
     },
 
     {
-      path: '/session',
-      name: 'Session',
-      component: Session
+      path: '/register',
+      name: 'Register',
+      component: Register
     },
     {
       path: '/about',
@@ -32,7 +32,7 @@ const router = new Router({
       // which is lazy-loaded when the route is visited.
       component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
     },
-    { path: '*', redirect: '/session' }
+    { path: '*', redirect: '/register' }
   ]
 })
 

@@ -5,8 +5,7 @@ import Vue from 'vue'
 import auth from './modules/auth'
 
 import { main } from '@/app/shared/store/main-store'
-import { alert } from '@/app/shared/store/alert-module'
-// import { account } from '@/app/users'
+
 
 Vue.use(Vuex)
 
@@ -15,8 +14,6 @@ export default new Vuex.Store({
   modules: {
     // user,
     auth,
-    main,
-    // account,
-    alert
+    main
   }
 })

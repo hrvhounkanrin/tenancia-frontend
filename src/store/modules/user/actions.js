@@ -39,5 +39,8 @@ export default {
   async removeAdmin ({ commit }, data) {
     await $api.removeAdmin(data)
     commit(REMOVE_ADMIN, data)
-  }
+  },
+
+  // to be transformed in async func
+  
 }
