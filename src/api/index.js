@@ -22,7 +22,6 @@ export default ($http, $config) => {
   )
   
   const postRequest = (data) => {
-    console.log(data, "la data")
     return $api.post($config.apiVersion + data.link, data.body)
   }
 

@@ -503,20 +503,15 @@ export default {
     },
     async googleSignIn() {
       try {
-        //const googleUser =
-        await this.$gAuth.signIn();
-        const authResponse = this.$gAuth.GoogleAuth.currentUser
-          .get()
-          .getAuthResponse();
-        console.log("authResponse", authResponse);
-        this.isSignIn = this.$gAuth.isAuthorized;
-        let googleToken = {
-          access_token: authResponse.access_token,
-          redirectUri: ""
-        };
-        await this.googleExchangeToken(googleToken).then(res => {
-          console.log("res googleExchange", res);
-        });
+        //const googleUser = 
+        await this.$gAuth.signIn()
+        const authResponse = this.$gAuth.GoogleAuth.currentUser.get().getAuthResponse()
+        console.log('authResponse', authResponse)
+        this.isSignIn = this.$gAuth.isAuthorized
+        let googleToken = { access_token: authResponse.access_token,  redirectUri: "http://localhost:8080/register", }
+        await this.googleExchangeToken(googleToken).then( res => {
+          console.log('res googleExchange', res)
+        })
       } catch (error) {
         // this.googleLoginFailure('Une erreur est survenue, merci de reessayer dans un moment.')
         console.log("googleSignIn error:", error);
