@@ -1,6 +1,5 @@
 /* eslint-disable no-console */
 /* eslint-disable no-unused-vars */
-import { AUTH_TOKEN_KEY } from '@/constants'
 
 import api from '@/api/index'
 import config from '@/config/backend'
@@ -9,9 +8,7 @@ import axios from 'axios'
 export default class User {
   $serveur = api(axios, config)
 
-  test() {
-    alert(23)
-  }
+
 
   async login(bodyParams) {
     return await this.$serveur.postRequest(
@@ -27,6 +24,15 @@ export default class User {
       {
         body: bodyParams,
         link: 'accounts/users/'
+      }
+    )
+  }
+  
+  async activeAccount(bodyParams) {
+    return await this.$serveur.getRequest(
+      {
+        body: {...bodyParams},
+        link: 'accounts/activate'
       }
     )
   }

@@ -12,7 +12,9 @@ import store from './store'
 import App from './app/app.vue'
 // import router from './app/app-routes'
 // import router from './router'
+import VueSweetalert2 from 'vue-sweetalert2';
 
+import VueToast from 'vue-toast-notification';
 import '@/globalComponents'
 
 const gauthOption = {
@@ -22,6 +24,7 @@ const gauthOption = {
   prompt: 'select_account'
 }
 
+Vue.use(VueToast);
 Vue.use(GAuth, gauthOption)
 Vue.use(BootstrapVue)
 Vue.prototype.$config = config
@@ -29,6 +32,8 @@ Vue.prototype.$api = api(axios, config)
 
 store.dispatch('auth/verified')
 Vue.config.productionTip = false
+
+Vue.use(VueSweetalert2);
 
 Vue.component('ValidationProvider', ValidationProvider)
 // new Vue({

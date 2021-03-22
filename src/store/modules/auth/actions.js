@@ -67,6 +67,12 @@ export default {
      return await user.register(userData)
   },
 
+
+  async activedUserAccount ({ commit }, userData) {
+    let user = new User()
+     return await user.activeAccount(userData)
+  },
+
   async forgetPwd ({ commit }, userData) {
     let user = new User()
     return await user.forgetPassword(userData)

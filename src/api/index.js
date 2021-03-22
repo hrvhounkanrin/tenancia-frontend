@@ -22,7 +22,6 @@ export default ($http, $config) => {
   )
   
   const postRequest = (data) => {
-    alert(12)
     console.log(data, "la data")
     return $api.post($config.apiVersion + data.link, data.body)
   }
@@ -36,8 +35,15 @@ export default ($http, $config) => {
   }
 
   const getRequest = (params) => {
+    console.log('the params', params.body)
     return $api
-      .get($config.apiVersion + params.link, params.body)
+    .get($config.apiVersion + params.link, {
+      params: {
+        ...params.body
+      }
+  });
+
+      // .get($config.apiVersion + params.link, params.body)
       
   }
   
