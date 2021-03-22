@@ -438,7 +438,7 @@ export default {
         const authResponse = this.$gAuth.GoogleAuth.currentUser.get().getAuthResponse()
         console.log('authResponse', authResponse)
         this.isSignIn = this.$gAuth.isAuthorized
-        let googleToken = { access_token: authResponse.access_token,  redirectUri: "", }
+        let googleToken = { access_token: authResponse.access_token,  redirectUri: "http://localhost:8080/register", }
         await this.googleExchangeToken(googleToken).then( res => {
           console.log('res googleExchange', res)
         })

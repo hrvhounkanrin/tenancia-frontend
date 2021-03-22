@@ -87,7 +87,9 @@ export default {
   // from old code
   async googleExchangeToken({ dispatch, commit }, googleToken) {
     try {
-      let backendResponse = await userApi.exchangeToken(googleToken)
+      console.log('googleExchangeToken action:', googleToken)
+      let user = new User()
+      let backendResponse = await user.exchangeToken(googleToken)
       console.log('backendResponse', backendResponse)
       commit(GOOGLE_LOGIN_SUCCESS, backendResponse)
       return backendResponse
