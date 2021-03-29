@@ -5,12 +5,13 @@ import { USER_KEY, AUTH_TOKEN_KEY } from '@/constants'
 
 export default {
   [VERIFIED] (state) {
+    //sessionStorage.removeItem(AUTH_TOKEN_KEY);
     const authToken = sessionStorage.getItem(AUTH_TOKEN_KEY)
 
     state.authenticated = !!authToken
-
     if (state.authenticated) {
       state.user = JSON.parse(sessionStorage.getItem(USER_KEY))
+      console.log('state.user: ', state.user)
       // axios.defaults.headers.common["Access-Token"] = authToken;
       axios.defaults.headers.common['Authorization'] = `Bearer ${authToken}`
     }
@@ -33,11 +34,10 @@ export default {
     state.authenticated = authenticated
   },
 
-  [GOOGLE_LOGIN_SUCCESS] (state, res) {
+  [GOOGLE_LOGIN_SUCCESS] (state, user) {
     state.status = { loggingIn: true }
       state.errors = null
-      state.connectedUser = user
-      state.token = null
+      state.user = user
   },
 
   [GOOGLE_LOGIN_FAILURE] (state, res) {

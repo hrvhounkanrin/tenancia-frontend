@@ -415,15 +415,7 @@ export default {
     this.activeTab = c_type;
   },
   mounted: function() {
-    // let that = this
-    console.log(this.$route.query.uid);
-    console.log(this.$route.query.token);
     this.checkAccountVerification();
-
-    // let checkGauthLoad = setInterval(function(){
-    //     that.isLoaded = that.$gAuth.isInit
-    //     if(that.isLoaded) clearInterval(checkGauthLoad)
-    // }, 1000)
   },
   methods: {
     ...mapActions("auth", [
@@ -503,14 +495,13 @@ export default {
     },
     async googleSignIn() {
       try {
-        //const googleUser = 
         await this.$gAuth.signIn()
         const authResponse = this.$gAuth.GoogleAuth.currentUser.get().getAuthResponse()
         console.log('authResponse', authResponse)
         this.isSignIn = this.$gAuth.isAuthorized
         let googleToken = { access_token: authResponse.access_token,  redirectUri: "http://localhost:8080/register", }
         await this.googleExchangeToken(googleToken).then( res => {
-          console.log('res googleExchange', res)
+          this.$router.push({ name: 'home' });
         })
       } catch (error) {
         // this.googleLoginFailure('Une erreur est survenue, merci de reessayer dans un moment.')
