@@ -462,14 +462,15 @@ export default {
         });
     },
     checkAccountVerification() {
-      if (this.$route.query.uid && this.$route.query.token) {
+      if (this.$route.query.uidb64 && this.$route.query.token) {
         this.activedUserAccount({
-          uidb64: this.$route.query.uid,
+          uidb64: this.$route.query.uidb64,
           token: this.$route.query.token
         })
           .then(res => {
-            console.log(res, "res");
-
+            setTimeout(() => {
+              this.$router.push(this.$route.query.redirect || { name: "Home" });
+            }, 500);
             this.makeToast("Compte vérifié", "success");
           })
           .catch(err => {
@@ -488,7 +489,7 @@ export default {
           }, 500);
         })
         .catch(err => {
-          console.log("err", err.response);
+          console.log("err", err);
           this.makeToast("Une erreur est survenue", "danger");
         });
     },
@@ -503,15 +504,20 @@ export default {
     },
     async googleSignIn() {
       try {
-        //const googleUser = 
-        await this.$gAuth.signIn()
-        const authResponse = this.$gAuth.GoogleAuth.currentUser.get().getAuthResponse()
-        console.log('authResponse', authResponse)
-        this.isSignIn = this.$gAuth.isAuthorized
-        let googleToken = { access_token: authResponse.access_token,  redirectUri: "http://localhost:8080/register", }
-        await this.googleExchangeToken(googleToken).then( res => {
-          console.log('res googleExchange', res)
-        })
+        //const googleUser =
+        await this.$gAuth.signIn();
+        const authResponse = this.$gAuth.GoogleAuth.currentUser
+          .get()
+          .getAuthResponse();
+        console.log("authResponse", authResponse);
+        this.isSignIn = this.$gAuth.isAuthorized;
+        let googleToken = {
+          access_token: authResponse.access_token,
+          redirectUri: "http://localhost:8080/register"
+        };
+        await this.googleExchangeToken(googleToken).then(res => {
+          console.log("res googleExchange", res);
+        });
       } catch (error) {
         // this.googleLoginFailure('Une erreur est survenue, merci de reessayer dans un moment.')
         console.log("googleSignIn error:", error);
