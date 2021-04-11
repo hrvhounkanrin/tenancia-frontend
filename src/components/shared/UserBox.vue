@@ -19,7 +19,7 @@
                 <font-awesome-icon icon="angle-down" class="opacity-5" />
             </span>
         </a>
-        <b-popover triggers="click blur" placement="bottom" @show="showPopoverIntegrations" ref="userBoxPopover" target="userBoxPopover">
+        <b-popover triggers="click blur" placement="bottom"  ref="userBoxPopover" target="userBoxPopover">
             <ul class="list-group list-group-flush text-left bg-transparent">
                 <li class="list-group-item rounded-top">
                     <ul class="nav nav-pills nav-pills-hover flex-column">
@@ -35,22 +35,22 @@
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="javascript:void(0);">
-                                My Account
+                                Mon compte de base
                             </a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="javascript:void(0);">
-                                Profile settings
+                                Préférences
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="javascript:void(0);">
-                                Active tasks
+                            <a class="nav-link" @click="deconnect">
+                                Déconnexion
                             </a>
                         </li>
                     </ul>
                 </li>
-                <li class="list-group-item bg-transparent p-0">
+                <!--<li class="list-group-item bg-transparent p-0">
                     <div class="grid-menu grid-menu-2col">
                         <div class="py-3">
                             <div class="d-flex justify-content-center">
@@ -66,7 +66,7 @@
                             </div>
                         </div>
                     </div>
-                </li>
+                </li>-->
                 <li class="list-group-item rounded-bottom p-3 text-center">
                     <a href="javascript:void(0);" class="btn btn-facebook" >
                         <span class="btn-wrapper--icon">
@@ -91,6 +91,7 @@
 
 <script>
 import { library } from '@fortawesome/fontawesome-svg-core'
+import { mapState, mapActions, mapMutations } from "vuex"
 import {
   faPlusCircle,
   faChartBar
@@ -110,11 +111,18 @@ export default {
     'font-awesome-icon': FontAwesomeIcon
   },
   methods: {
+    ...mapActions("auth", [
+      "logout",
+    ]),
     showTooltip () {
       this.$refs.tooltipSuccess._toolpop.getTipElement().classList.add('tooltip-success')
     },
     showPopoverIntegrations () {
       this.$refs.userBoxPopover._toolpop.getTipElement().classList.add('popover-custom-wrapper', 'popover-custom-lg', 'popover-secondary')
+    },
+    deconnect(){
+        this.logout()
+        this.$router.push({ name: 'Register' })
     }
   },
   computed:{

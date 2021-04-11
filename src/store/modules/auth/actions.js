@@ -4,106 +4,119 @@ import {
   USER,
   AUTH_TOKEN,
   AUTHENTICATED,
-  GOOGLE_LOGIN_SUCCESS, GOOGLE_LOGIN_FAILURE
-} from './mutation-types'
+  GOOGLE_LOGIN_SUCCESS,
+  GOOGLE_LOGIN_FAILURE,
+  LOCAL_LOGIN_FAILURE,
+  LOCAL_LOGIN_SUCCESS
+} from "./mutation-types"
 
-import { USER_KEY, AUTH_TOKEN_KEY } from '@/constants'
-
-import User from '@/api/user'
-// import config from '@/config/backend'
-// import axios from 'axios'
-
-// const $api = api(axios, config)
-
-export default {
+import { USER_KEY, AUTH_TOKEN_KEY } from "@/constants"
+import User from "@/api/user"
 
 
-  async loginAccount ({ commit }, userData) {
-    let usersType = [
-      'administrator',
-      'manager'
-    ]
-
+  /**
+   * @todo Changer la gestion des erreurs axios, revoir et harmoniser les retours d'erreurs du backend aussi
+  */
+  const loginAccount = async ({ commit }, userData) => {
     let user = new User()
-
-
-    return await user.login(userData).then((res) => {
-      console.log('user data', res) 
-      if (res.status == 200) {
-        let token = res.data.token
-        let user = res.data.user
-        if (token && user) {
-          console.log('user data', user) 
-
-          if (usersType.indexOf(user.profil) >= 0) {
-            commit(USER, user.data)
-            commit(AUTH_TOKEN, token)
-            commit(AUTHENTICATED, true)
-            sessionStorage.setItem(USER_KEY, JSON.stringify(user))
-            return {
-              msg: '',
-              status: 200
-            }
-          } else {
-            return 'typeError'
-          }
-        }
-      } else {
-        console.log(res, 'is err')
+    return await user
+      .login(userData)
+      .then(res => {
+        console.log("user data", res)
+        if (res.status == 200) {
+          let userData = res.data
+          commit(USER, userData.user)
+          commit(AUTH_TOKEN, userData.token)
+          commit(AUTHENTICATED, true)
+          commit(AUTHENTICATED, true)
+          commit(LOCAL_LOGIN_SUCCESS)
+          sessionStorage.setItem(USER_KEY, JSON.stringify(userData.user))
+         
+        } 
         return res
-      }
-    }).catch(
-      errors => {
-        errors.data.forEach(err => {
-          
-        });
-         console.log(err.response, 'is err')
-      }
-    )
-  },
-
-  async register ({ commit }, userData) {
+      })
+      .catch(errors => {
+        commit(LOCAL_LOGIN_FAILURE, 'Une erreur est survenue lors de la connexion. Vérifiez vos identifiants de connexion.')
+        return errors
+      })
+  }
+  /**
+   * @todo Changer la gestion des erreurs axios, revoir et harmoniser les retours d'erreurs du backend aussi
+  */
+  const register = async ({ commit }, userData) =>{
     let user = new User()
-     return await user.register(userData)
-  },
+    let registeredUser = await user.register(userData)
+    return registeredUser
+  }
 
-
-  async activedUserAccount ({ commit }, userData) {
+  const activedUserAccount = async ({ commit }, userData) =>{
     let user = new User()
-     return await user.activeAccount(userData)
-  },
+    return await user
+      .activeAccount(userData)
+      .then(res => {
+        console.log("user data", res)
+        if (res.status == 200) {
+          connectUser(res.data)
+          return res.data
+        } else {
+          console.log(res, "is err")
+          return res
+        }
+      })
+      .catch(errors => {
+        //errors.data.forEach(err => {})
+        console.log(errors, "is err")
+      })
+  }
 
-  async forgetPwd ({ commit }, userData) {
+  const forgetPwd = async ({ commit }, userData) =>{
     let user = new User()
     return await user.forgetPassword(userData)
-  },
-  verified ({ commit }) {
+  }
+  const verified = ({ commit }) => {
     commit(VERIFIED)
-  },
+  }
 
-  logout ({ commit }) {
+  const logout = ({ commit }) =>{
     commit(USER, null)
     commit(AUTH_TOKEN, null)
     commit(AUTHENTICATED, false)
     sessionStorage.removeItem(AUTH_TOKEN_KEY)
     sessionStorage.removeItem(USER_KEY)
-    // delete axios.defaults.headers.common["Access-Token"];
-    delete axios.defaults.headers.common['Authorization']
-  },
-  // from old code
-  async googleExchangeToken({ dispatch, commit }, googleToken) {
+    return true
+  }
+  const googleExchangeToken  = async ({ dispatch, commit }, googleToken) =>{
     try {
       let user = new User()
       let backendResponse = await user.exchangeToken(googleToken)
       console.log('backendResponse', backendResponse.data)
-      //commit(GOOGLE_LOGIN_SUCCESS, backendResponse.data.payload.user)
-      commit(AUTH_TOKEN, backendResponse.data.payload.token)
-      commit(UPDATE_USER, backendResponse.data.payload.user)
-      return backendResponse.data
+      let userData = backendResponse.data.payload
+      commit(USER, userData.user)
+      commit(AUTH_TOKEN, userData.token)
+      commit(AUTHENTICATED, true)
+      sessionStorage.setItem(USER_KEY, JSON.stringify(userData.user))
+      return backendResponse.data.payload
     } catch (errors) {
       commit(GOOGLE_LOGIN_FAILURE, errors)
-      dispatch('alert/error', errors, { root: true })
+      console.log('googleExchangeToken occured', errors)
       return errors
     }
   }
-}
+  const  connectUser = ({ commit },userData) =>{
+    console.log('connectUser:', userData)
+    let token = userData.token
+    let user = userData.user
+    if (token && user) {
+      console.log("user data", user)
+      commit(USER, user.data)
+      commit(AUTH_TOKEN, token)
+      commit(AUTHENTICATED, true)
+      sessionStorage.setItem(USER_KEY, JSON.stringify(user))
+      return {
+        msg: "",
+        status: 200
+      }
+    }
+  }
+
+export default {loginAccount, register, activedUserAccount, forgetPwd, verified, logout, googleExchangeToken }
