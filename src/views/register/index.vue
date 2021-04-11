@@ -41,7 +41,7 @@
                           <a
                             class="nav-link font-size-lg text-white-50"
                             v-b-tooltip.hover
-                            href="javascript:void(0);"
+                            href="javascript:void(0)"
                             title="Facebook"
                           >
                             <font-awesome-icon
@@ -53,7 +53,7 @@
                           <a
                             class="nav-link font-size-lg text-white-50"
                             v-b-tooltip.hover
-                            href="javascript:void(0);"
+                            href="javascript:void(0)"
                             title="Twitter"
                           >
                             <font-awesome-icon :icon="['fab', 'twitter']" />
@@ -63,7 +63,7 @@
                           <a
                             class="nav-link font-size-lg text-white-50"
                             v-b-tooltip.hover
-                            href="javascript:void(0);"
+                            href="javascript:void(0)"
                             title="Google+"
                           >
                             <font-awesome-icon :icon="['fab', 'google-plus']" />
@@ -73,7 +73,7 @@
                           <a
                             class="nav-link font-size-lg text-white-50"
                             v-b-tooltip.hover
-                            href="javascript:void(0);"
+                            href="javascript:void(0)"
                             title="Instagram"
                           >
                             <font-awesome-icon :icon="['fab', 'instagram']" />
@@ -91,6 +91,7 @@
                           Créer un compte
                           <div class="divider"></div>
                         </div>
+                        <alert v-if="errorOccured" variant="danger" v-bind:msg="errorMsg" icon="bell"></alert>
                         <div class="card-header p-3 pt-0 rounded bg-light">
                           <div class="text-black-50 text-center mb-3">
                             <small>S'inscrire avec</small>
@@ -110,9 +111,47 @@
                             </button>
                           </div>
                         </div>
-                        <!-- <form @submit.prevent="handleSubmit"> -->
-                        <form @submit.prevent="handleSubmit">
+                        <form @submit.prevent="localSignup">
+                            
                           <div class="px-4 py-2">
+                            <div class="form-group">
+                              <ValidationProvider
+                                rules="required"
+                                name="last_name"
+                                v-slot="{ errors }"
+                              >
+                                <input
+                                  type="text"
+                                  class="form-control"
+                                  placeholder="Nom"
+                                  id="last_name"
+                                  v-model="user.last_name"
+                                  name="last_name"
+                                  :class="{
+                                    'is-invalid': submitted && errors.length > 0
+                                  }"
+                                />
+                              </ValidationProvider>
+                            </div>
+                             <div class="form-group">
+                              <ValidationProvider
+                                rules="required"
+                                name="first_name"
+                                v-slot="{ errors }"
+                              >
+                                <input
+                                  type="text"
+                                  class="form-control"
+                                  placeholder="Prénoms"
+                                  id="first_name"
+                                  v-model="user.first_name"
+                                  name="first_name"
+                                  :class="{
+                                    'is-invalid': submitted && errors.length > 0
+                                  }"
+                                />
+                              </ValidationProvider>
+                            </div>
                             <div class="form-group">
                               <ValidationProvider
                                 rules="required|email"
@@ -216,6 +255,7 @@
                           Se connecter
                           <div class="divider"></div>
                         </div>
+                        <alert v-if="errorOccured" variant="danger" v-bind:msg="errorMsg" icon="bell"></alert>
                         <div class="card m-0 shadow-none border-0">
                           <div class="card-header p-3 pt-0 rounded bg-light">
                             <div class="text-black-50 text-center mb-3">
@@ -237,6 +277,7 @@
                                 </span>
                               </button>
                             </div>
+                            
                           </div>
                           <div class="card-body">
                             <div class="text-center text-black-50 mb-3">
@@ -327,9 +368,9 @@
 </template>
 
 <script>
-import GoogleLogin from "vue-google-login";
-import { mapState, mapActions, mapMutations } from "vuex";
-import { library } from "@fortawesome/fontawesome-svg-core";
+import GoogleLogin from "vue-google-login"
+import { mapState, mapActions, mapMutations } from "vuex"
+import { library } from "@fortawesome/fontawesome-svg-core"
 import {
   faQuestionCircle,
   faArrowLeft,
@@ -337,20 +378,20 @@ import {
   faEnvelope,
   faUnlockAlt,
   faHeadset
-} from "@fortawesome/free-solid-svg-icons";
+} from "@fortawesome/free-solid-svg-icons"
 import {
   faTwitter,
   faGooglePlus,
   faFacebook,
   faInstagram,
   faGoogle
-} from "@fortawesome/free-brands-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
-import { ErrorBoundary } from "@/app/shared/components";
-import { ValidationObserver, ValidationProvider } from "vee-validate";
-import { setInteractionMode } from "vee-validate";
-
-import "./register-validation";
+} from "@fortawesome/free-brands-svg-icons"
+import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome"
+import { ErrorBoundary } from "@/app/shared/components"
+import { ValidationObserver, ValidationProvider } from "vee-validate"
+import { setInteractionMode } from "vee-validate"
+import { alert } from "@/components/shared/"
+import "./register-validation"
 
 library.add(
   faQuestionCircle,
@@ -364,8 +405,8 @@ library.add(
   faUnlockAlt,
   faGoogle,
   faHeadset
-);
-setInteractionMode("lazy");
+)
+setInteractionMode("lazy")
 export default {
   name: "Register",
   components: {
@@ -373,7 +414,8 @@ export default {
     ErrorBoundary,
     ValidationObserver,
     ValidationProvider,
-    GoogleLogin
+    GoogleLogin,
+    alert
   },
   data() {
     return {
@@ -385,16 +427,7 @@ export default {
         first_name: "",
         last_name: "",
         email: "",
-        password: "",
-        password_confirm: "",
-        profile: {
-          title: "M.",
-          dob: "1999-06-25",
-          address: "UNKOWN",
-          country: "BJ",
-          zip: "093",
-          city: "COTONOU"
-        }
+        password: ""
       },
       credential: {
         email: "",
@@ -402,20 +435,18 @@ export default {
       },
       submitted: false,
       activeTab: "register"
-    };
+    }
   },
   computed: {
     ...mapState({
-      error: state => state.alert.message
+      error: state => state.alert.message,
+      errorOccured: state => state.auth.status.errorOccured,
+      errorMsg: state => state.auth.errors
     })
   },
   created: function() {
-    // const parameters = this.$route.params
-    const c_type = this.$route.query.c_type;
-    this.activeTab = c_type;
-  },
-  mounted: function() {
-    this.checkAccountVerification();
+    const c_type = this.$route.query.c_type
+    this.activeTab = c_type
   },
   methods: {
     ...mapActions("auth", [
@@ -426,7 +457,9 @@ export default {
       "getBackendResponse",
       "googleLoginFailure"
     ]),
-
+    ...mapMutations("auth", {
+      signupError: 'LOCAL_SIGNUP_FAILURE' 
+    }),
     makeToast(msg, variant) {
       this.$toast.open({
         message: msg,
@@ -435,82 +468,63 @@ export default {
         dismissible: true,
         queue: false,
         position: "top-right"
-      });
+      })
     },
-    async handleSubmit(e) {
-      this.submitted = true;
+
+    async localSignup(e) {
+      this.submitted = true
       await this.register(this.user)
         .then(res => {
-          console.log(res, "res");
-
-          this.makeToast(
-            "Compte utilisateur créer avec succès merci de bien vouloir vérifier votre boîte mail pour activer votre compte",
-            "success"
-          );
+          console.log("res", this.$router)
+          //commit(USER, res.data)
+          this.$router.push({ name:'activation-mail-sent'})
         })
         .catch(err => {
-          console.log("err", err.response);
-          this.makeToast("Une erreur est survenue", "danger");
-        });
-    },
-    checkAccountVerification() {
-      if (this.$route.query.uid && this.$route.query.token) {
-        this.activedUserAccount({
-          uidb64: this.$route.query.uid,
-          token: this.$route.query.token
+          this.signupError('Une erreur est survenue lors de la création de votre compte')
+          //this.$store.commit('AUTH/LOCAL_SIGNUP_FAILURE', 'Une erreur est survenue lors de la création de votre compte')
+          console.log("err", err.response)
         })
-          .then(res => {
-            console.log(res, "res");
-
-            this.makeToast("Compte vérifié", "success");
-          })
-          .catch(err => {
-            console.log("err", err.response);
-            this.makeToast("Une erreur est survenue", "danger");
-          });
-      }
     },
+   
     async handleLogin(e) {
-      this.submitted = true;
+      this.submitted = true
       await this.loginAccount(this.credential)
         .then(res => {
-          this.makeToast("Salut", "success");
           setTimeout(() => {
-            this.$router.push(this.$route.query.redirect || { name: "Home" });
-          }, 500);
+            this.$router.push({ name: 'Home' })
+          }, 500)
         })
-        .catch(err => {
-          console.log("err", err.response);
-          this.makeToast("Une erreur est survenue", "danger");
-        });
+        .catch(error => {
+          console.log("handleLogin", error)
+          this.makeToast("Une erreur est survenue", "danger")
+        })
     },
     googleConnect() {
-      this.getBackendResponse(this);
+      this.getBackendResponse(this)
     },
     onSuccess() {
-      console.log("Authentification réussie");
+      console.log("Authentification réussie")
     },
     onFailure() {
-      console.log("Authentification échouée");
+      console.log("Authentification échouée")
     },
     async googleSignIn() {
       try {
         await this.$gAuth.signIn()
         const authResponse = this.$gAuth.GoogleAuth.currentUser.get().getAuthResponse()
-        console.log('authResponse', authResponse)
         this.isSignIn = this.$gAuth.isAuthorized
         let googleToken = { access_token: authResponse.access_token,  redirectUri: "http://localhost:8080/register", }
         await this.googleExchangeToken(googleToken).then( res => {
-          this.$router.push({ name: 'home' });
+          console.log('googleSignIn: ', res)
+          this.$router.push({ name: 'Home' })
         })
       } catch (error) {
-        // this.googleLoginFailure('Une erreur est survenue, merci de reessayer dans un moment.')
-        console.log("googleSignIn error:", error);
+        console.log("googleSignIn error:", error)
       }
     }
   }
-};
+}
 </script>
 <style lang="scss">
-@import "@/assets/bamburgh.scss";
+@import "@/assets/bamburgh.scss"
 </style>

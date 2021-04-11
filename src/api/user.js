@@ -49,7 +49,7 @@ export default class User {
     return await this.$serveur.postRequest(
       {
         body: bodyParams,
-        link: '/account_action/googleauth'
+        link: 'account_action/googleauth' 
       }
     )  
   }

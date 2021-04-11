@@ -25,6 +25,16 @@ const router = new Router({
       component: Register
     },
     {
+      path: '/activation-mail-sent',
+      name: 'activation-mail-sent',
+      component: () => import( '@/views/register/activation-mail-sent.vue')
+    },
+    {
+      path: '/verify-email',
+      name: 'activation-mail',
+      component: () => import( '@/views/register/activation-mail.vue')
+    },
+    {
       path: '/about',
       name: 'about',
       // route level code-splitting
