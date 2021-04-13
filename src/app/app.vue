@@ -22,4 +22,7 @@
     }
   }
 }
+.slogan {
+  font-family: Warnes, Helvetica, sans-serif;
+}
 </style>

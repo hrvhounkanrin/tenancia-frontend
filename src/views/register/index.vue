@@ -14,7 +14,7 @@
                         :style="{
                           backgroundImage:
                             'url(' +
-                            require('@/assets/img/hero-bg/tenancia-2.jpg') +
+                            require('@/assets/img/hero-bg/cotonou.jpg') +
                             ')'
                         }"
                       ></div>
@@ -26,8 +26,8 @@
                           <h1 class="display-4 my-3 font-weight-bold">
                             Tenancia
                           </h1>
-                          <p class="font-size-md mb-0 text-white-50">
-                            L'immobilier autrement!
+                          <p class="font-size-xxl mb-0 text-white-50 h2">
+                            Votre outil de gestion locative
                           </p>
                           <div
                             class="divider border-2 my-4 border-light opacity-2 rounded w-25"
@@ -86,7 +86,112 @@
                 <div class="col-lg-7 d-flex align-items-center">
                   <div class="col-lg-6 mx-auto px-0">
                     <b-tabs pills nav-class="nav-line mx-3 my-5">
-                      <b-tab title="Overview" active>
+                       <b-tab title="Sign in" :active="selected_tab_name === 'login'">
+                        <div slot="title">
+                          Se connecter
+                          <div class="divider"></div>
+                        </div>
+                        <alert v-if="errorOccured" variant="danger" v-bind:msg="errorMsg" icon="bell"></alert>
+                        <div class="card m-0 shadow-none border-0">
+                          <div class="card-header p-3 pt-0 rounded bg-light">
+                            <div class="text-black-50 text-center mb-3">
+                              <small>Se connecter avec</small>
+                            </div>
+                            <div class="text-center">
+                              <button
+                                class="btn btn-google-plus mr-2"
+                                type="button"
+                                @click="googleSignIn"
+                              >
+                                <span class="btn-wrapper--icon">
+                                  <font-awesome-icon
+                                    :icon="['fab', 'google']"
+                                  />
+                                </span>
+                                <span class="btn-wrapper--label">
+                                  Mon compte Google
+                                </span>
+                              </button>
+                            </div>
+                            
+                          </div>
+                          <div class="card-body">
+                            <div class="text-center text-black-50 mb-3">
+                              <small
+                                >Ou connectez-vous avec vos identifiants</small
+                              >
+                            </div>
+                            <form
+                              role="formConnection"
+                              @submit.prevent="handleLogin"
+                            >
+                              <div class="form-group mb-3">
+                                <div
+                                  class="input-group input-group-alternative"
+                                >
+                                  <div class="input-group-prepend">
+                                    <span class="input-group-text">
+                                      <font-awesome-icon icon="envelope" />
+                                    </span>
+                                  </div>
+                                  <input
+                                    v-model="credential.email"
+                                    class="form-control"
+                                    placeholder="Email"
+                                    type="email"
+                                    id="connecting_email"
+                                  />
+                                </div>
+                              </div>
+                              <div class="form-group">
+                                <div
+                                  class="input-group input-group-alternative"
+                                >
+                                  <div class="input-group-prepend">
+                                    <span class="input-group-text">
+                                      <font-awesome-icon icon="unlock-alt" />
+                                    </span>
+                                  </div>
+                                  <input
+                                    v-model="credential.password"
+                                    class="form-control"
+                                    placeholder="Password"
+                                    type="password"
+                                    id="connection_pass"
+                                  />
+                                </div>
+                              </div>
+                              <div
+                                class="form-group custom-control custom-control-alternative custom-checkbox text-left"
+                              >
+                                <input
+                                  class="custom-control-input"
+                                  id="stayConnected"
+                                  type="checkbox"
+                                />
+                                <label
+                                  class="custom-control-label"
+                                  for="stayConnected"
+                                >
+                                  <span
+                                    ><strong>Rester connecté.</strong>
+                                  </span>
+                                </label>
+                              </div>
+                              <div></div>
+                              <div class="text-center">
+                                <button
+                                  type="submit"
+                                  class="btn btn-primary btn-lg btn-block"
+                                >
+                                  Se connecter
+                                </button>
+                              </div>
+                            </form>
+                          </div>
+                        </div>
+                      </b-tab>
+                      <b-tab title="Overview" :active="selected_tab_name === 'register'">
                         <div slot="title">
                           Créer un compte
                           <div class="divider"></div>
@@ -250,111 +355,7 @@
                           </div>
                         </form>
                       </b-tab>
-                      <b-tab title="Sign in">
-                        <div slot="title">
-                          Se connecter
-                          <div class="divider"></div>
-                        </div>
-                        <alert v-if="errorOccured" variant="danger" v-bind:msg="errorMsg" icon="bell"></alert>
-                        <div class="card m-0 shadow-none border-0">
-                          <div class="card-header p-3 pt-0 rounded bg-light">
-                            <div class="text-black-50 text-center mb-3">
-                              <small>Se connecter avec</small>
-                            </div>
-                            <div class="text-center">
-                              <button
-                                class="btn btn-google-plus mr-2"
-                                type="button"
-                                @click="googleSignIn"
-                              >
-                                <span class="btn-wrapper--icon">
-                                  <font-awesome-icon
-                                    :icon="['fab', 'google']"
-                                  />
-                                </span>
-                                <span class="btn-wrapper--label">
-                                  Mon compte Google
-                                </span>
-                              </button>
-                            </div>
-                            
-                          </div>
-                          <div class="card-body">
-                            <div class="text-center text-black-50 mb-3">
-                              <small
-                                >Ou connectez-vous avec vos identifiants</small
-                              >
-                            </div>
-                            <form
-                              role="formConnection"
-                              @submit.prevent="handleLogin"
-                            >
-                              <div class="form-group mb-3">
-                                <div
-                                  class="input-group input-group-alternative"
-                                >
-                                  <div class="input-group-prepend">
-                                    <span class="input-group-text">
-                                      <font-awesome-icon icon="envelope" />
-                                    </span>
-                                  </div>
-                                  <input
-                                    v-model="credential.email"
-                                    class="form-control"
-                                    placeholder="Email"
-                                    type="email"
-                                    id="connecting_email"
-                                  />
-                                </div>
-                              </div>
-                              <div class="form-group">
-                                <div
-                                  class="input-group input-group-alternative"
-                                >
-                                  <div class="input-group-prepend">
-                                    <span class="input-group-text">
-                                      <font-awesome-icon icon="unlock-alt" />
-                                    </span>
-                                  </div>
-                                  <input
-                                    v-model="credential.password"
-                                    class="form-control"
-                                    placeholder="Password"
-                                    type="password"
-                                    id="connection_pass"
-                                  />
-                                </div>
-                              </div>
-                              <div
-                                class="form-group custom-control custom-control-alternative custom-checkbox text-left"
-                              >
-                                <input
-                                  class="custom-control-input"
-                                  id="stayConnected"
-                                  type="checkbox"
-                                />
-                                <label
-                                  class="custom-control-label"
-                                  for="stayConnected"
-                                >
-                                  <span
-                                    ><strong>Rester connecté.</strong>
-                                  </span>
-                                </label>
-                              </div>
-                              <div></div>
-                              <div class="text-center">
-                                <button
-                                  type="submit"
-                                  class="btn btn-primary btn-lg btn-block"
-                                >
-                                  Se connecter
-                                </button>
-                              </div>
-                            </form>
-                          </div>
-                        </div>
-                      </b-tab>
+                     
                     </b-tabs>
                   </div>
                 </div>
@@ -434,7 +435,7 @@ export default {
         password: ""
       },
       submitted: false,
-      activeTab: "register"
+      selected_tab_name: "register"
     }
   },
   computed: {
@@ -445,8 +446,9 @@ export default {
     })
   },
   created: function() {
-    const c_type = this.$route.query.c_type
-    this.activeTab = c_type
+    const c_type = this.$route.params.c_type
+    console.log('c_type',this.$route.params)
+    this.selected_tab_name = c_type
   },
   methods: {
     ...mapActions("auth", [
@@ -528,4 +530,4 @@ export default {
 </script>
 <style lang="scss">
 @import "@/assets/bamburgh.scss"
-</style>
+ </style>
