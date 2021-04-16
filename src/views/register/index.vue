@@ -22,7 +22,7 @@
                         class="bg-composed-wrapper--bg bg-premium-dark opacity-5"
                       ></div>
                       <div class="bg-composed-wrapper--content p-0">
-                        <div class="text-white mt-3">
+                        <div class="text-white mt-3" style="text-align: center">
                           <h1 class="display-4 my-3 font-weight-bold">
                             Tenancia
                           </h1>
@@ -113,7 +113,7 @@
                                 </span>
                               </button>
                             </div>
-                            
+
                           </div>
                           <div class="card-body">
                             <div class="text-center text-black-50 mb-3">
@@ -217,7 +217,7 @@
                           </div>
                         </div>
                         <form @submit.prevent="localSignup">
-                            
+
                           <div class="px-4 py-2">
                             <div class="form-group">
                               <ValidationProvider
@@ -328,17 +328,17 @@
                             <div
                               class="custom-control custom-control-alternative custom-checkbox"
                             >
-                              <input
-                                class="custom-control-input"
-                                id="customCheckLogin"
-                                type="checkbox"
-                              />
-                              <label
-                                class="custom-control-label"
-                                for=" customCheckLogin"
-                              >
+                               <input
+                                  class="custom-control-input"
+                                  id="cgu"
+                                  type="checkbox"
+                                />
+                                <label
+                                  class="custom-control-label"
+                                  for="cgu"
+                                >
                                 <span
-                                  >En <strong>cochant</strong> j'accepte les
+                                  >En <strong>cochant,</strong> j'accepte les
                                   <a href="#">
                                     Conditions Générales d'Utilisation</a
                                   >
@@ -355,7 +355,7 @@
                           </div>
                         </form>
                       </b-tab>
-                     
+
                     </b-tabs>
                   </div>
                 </div>
@@ -369,9 +369,9 @@
 </template>
 
 <script>
-import GoogleLogin from "vue-google-login"
-import { mapState, mapActions, mapMutations } from "vuex"
-import { library } from "@fortawesome/fontawesome-svg-core"
+import GoogleLogin from 'vue-google-login'
+import { mapState, mapActions, mapMutations } from 'vuex'
+import { library } from '@fortawesome/fontawesome-svg-core'
 import {
   faQuestionCircle,
   faArrowLeft,
@@ -379,20 +379,20 @@ import {
   faEnvelope,
   faUnlockAlt,
   faHeadset
-} from "@fortawesome/free-solid-svg-icons"
+} from '@fortawesome/free-solid-svg-icons'
 import {
   faTwitter,
   faGooglePlus,
   faFacebook,
   faInstagram,
   faGoogle
-} from "@fortawesome/free-brands-svg-icons"
-import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome"
-import { ErrorBoundary } from "@/app/shared/components"
-import { ValidationObserver, ValidationProvider } from "vee-validate"
-import { setInteractionMode } from "vee-validate"
-import { alert } from "@/components/shared/"
-import "./register-validation"
+} from '@fortawesome/free-brands-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
+import { ErrorBoundary } from '@/app/shared/components'
+import { ValidationObserver, ValidationProvider, setInteractionMode } from 'vee-validate'
+
+import { alert } from '@/components/shared/'
+import './register-validation'
 
 library.add(
   faQuestionCircle,
@@ -407,35 +407,35 @@ library.add(
   faGoogle,
   faHeadset
 )
-setInteractionMode("lazy")
+setInteractionMode('lazy')
 export default {
-  name: "Register",
+  name: 'Register',
   components: {
-    "font-awesome-icon": FontAwesomeIcon,
+    'font-awesome-icon': FontAwesomeIcon,
     ErrorBoundary,
     ValidationObserver,
     ValidationProvider,
     GoogleLogin,
     alert
   },
-  data() {
+  data () {
     return {
       params: {
         client_id:
-          "185957473371-5fp3ntcah051m746ssq71c7raqsif2fl.apps.googleusercontent.com"
+          '185957473371-5fp3ntcah051m746ssq71c7raqsif2fl.apps.googleusercontent.com'
       },
       user: {
-        first_name: "",
-        last_name: "",
-        email: "",
-        password: ""
+        first_name: '',
+        last_name: '',
+        email: '',
+        password: ''
       },
       credential: {
-        email: "",
-        password: ""
+        email: '',
+        password: ''
       },
       submitted: false,
-      selected_tab_name: "register"
+      selected_tab_name: 'register'
     }
   },
   computed: {
@@ -445,51 +445,51 @@ export default {
       errorMsg: state => state.auth.errors
     })
   },
-  created: function() {
+  created: function () {
     const c_type = this.$route.params.c_type
-    console.log('c_type',this.$route.params)
+    console.log('c_type', this.$route.params)
     this.selected_tab_name = c_type
   },
   methods: {
-    ...mapActions("auth", [
-      "register",
-      "loginAccount",
-      "activedUserAccount",
-      "googleExchangeToken",
-      "getBackendResponse",
-      "googleLoginFailure"
+    ...mapActions('auth', [
+      'register',
+      'loginAccount',
+      'activedUserAccount',
+      'googleExchangeToken',
+      'getBackendResponse',
+      'googleLoginFailure'
     ]),
-    ...mapMutations("auth", {
+    ...mapMutations('auth', {
       signupError: 'LOCAL_SIGNUP_FAILURE',
       setUser: 'USER'
     }),
-    makeToast(msg, variant) {
+    makeToast (msg, variant) {
       this.$toast.open({
         message: msg,
         type: variant,
         duration: 3000,
         dismissible: true,
         queue: false,
-        position: "top-right"
+        position: 'top-right'
       })
     },
 
-    async localSignup(e) {
+    async localSignup (e) {
       this.submitted = true
       await this.register(this.user)
         .then(res => {
-          console.log("res", res.data)
+          console.log('res', res.data)
           this.setUser(res.data)
-          this.$router.push({ name:'activation-mail-sent'})
+          this.$router.push({ name: 'activation-mail-sent' })
         })
         .catch(err => {
           this.signupError('Une erreur est survenue lors de la création de votre compte')
-          //this.$store.commit('AUTH/LOCAL_SIGNUP_FAILURE', 'Une erreur est survenue lors de la création de votre compte')
-          console.log("err", err.response)
+          // this.$store.commit('AUTH/LOCAL_SIGNUP_FAILURE', 'Une erreur est survenue lors de la création de votre compte')
+          console.log('err', err.response)
         })
     },
-   
-    async handleLogin(e) {
+
+    async handleLogin (e) {
       this.submitted = true
       await this.loginAccount(this.credential)
         .then(res => {
@@ -498,31 +498,31 @@ export default {
           }, 500)
         })
         .catch(error => {
-          console.log("handleLogin", error)
-          this.makeToast("Une erreur est survenue", "danger")
+          console.log('handleLogin', error)
+          this.makeToast('Une erreur est survenue', 'danger')
         })
     },
-    googleConnect() {
+    googleConnect () {
       this.getBackendResponse(this)
     },
-    onSuccess() {
-      console.log("Authentification réussie")
+    onSuccess () {
+      console.log('Authentification réussie')
     },
-    onFailure() {
-      console.log("Authentification échouée")
+    onFailure () {
+      console.log('Authentification échouée')
     },
-    async googleSignIn() {
+    async googleSignIn () {
       try {
         await this.$gAuth.signIn()
         const authResponse = this.$gAuth.GoogleAuth.currentUser.get().getAuthResponse()
         this.isSignIn = this.$gAuth.isAuthorized
-        let googleToken = { access_token: authResponse.access_token,  redirectUri: "http://localhost:8080/register", }
-        await this.googleExchangeToken(googleToken).then( res => {
+        let googleToken = { access_token: authResponse.access_token, redirectUri: 'http://localhost:8080/register' }
+        await this.googleExchangeToken(googleToken).then(res => {
           console.log('googleSignIn: ', res)
-          this.$router.push({ name: 'Home' })
+          this.$router.push({ name: 'MyProfiles' })
         })
       } catch (error) {
-        console.log("googleSignIn error:", error)
+        console.log('googleSignIn error:', error)
       }
     }
   }

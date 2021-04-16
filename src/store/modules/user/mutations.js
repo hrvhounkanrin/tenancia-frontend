@@ -2,7 +2,8 @@ import {
   ADMIN_LIST,
   UPDATE_ADMIN,
   REMOVE_ADMIN,
-  ADD_ADMIN
+  ADD_ADMIN,
+  PROFILES,
 } from './mutation-types'
 
 import Vue from 'vue'
@@ -24,5 +25,8 @@ export default {
 
   [ADMIN_LIST] (state, admins) {
     state.admin_list = admins
+  },
+  [PROFILES] (state, data) {
+    state.profiles = data
   }
 }

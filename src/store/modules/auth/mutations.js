@@ -1,13 +1,13 @@
 import { VERIFIED, UPDATE_USER, USER, AUTH_TOKEN, AUTHENTICATED, GOOGLE_LOGIN_SUCCESS,
-   GOOGLE_LOGIN_FAILURE, LOCAL_LOGIN_FAILURE, LOCAL_LOGIN_SUCCESS, LOCAL_SIGNUP_SUCCESS,
-   LOCAL_SIGNUP_FAILURE } from './mutation-types'
+  GOOGLE_LOGIN_FAILURE, LOCAL_LOGIN_FAILURE, LOCAL_LOGIN_SUCCESS, LOCAL_SIGNUP_SUCCESS,
+  LOCAL_SIGNUP_FAILURE } from './mutation-types'
 
 import axios from 'axios'
 import { USER_KEY, AUTH_TOKEN_KEY } from '@/constants'
 
 export default {
   [VERIFIED] (state) {
-    //sessionStorage.removeItem(AUTH_TOKEN_KEY);
+    // sessionStorage.removeItem(AUTH_TOKEN_KEY);
     const authToken = sessionStorage.getItem(AUTH_TOKEN_KEY)
 
     state.authenticated = !!authToken
@@ -38,13 +38,13 @@ export default {
 
   [GOOGLE_LOGIN_SUCCESS] (state, user) {
     state.status = { loggingIn: true }
-      state.errors = null
-      state.user = user
+    state.errors = null
+    state.user = user
   },
 
   [GOOGLE_LOGIN_FAILURE] (state, res) {
     state.status = { 'errorOccured': true }
-      state.errors = res
+    state.errors = res
   },
   [LOCAL_LOGIN_FAILURE] (state, res) {
     state.status = { 'errorOccured': true }

@@ -2,26 +2,48 @@ import Vue from 'vue'
 import BootstrapVue from 'bootstrap-vue'
 import { ValidationProvider } from 'vee-validate'
 import GAuth from 'vue-google-oauth2'
+import VueToast from 'vue-toast-notification'
+import axios from 'axios'
+import VueSweetalert2 from 'vue-sweetalert2'
+import 'sweetalert2/dist/sweetalert2.min.css'
+import VuePhoneNumberInput from 'vue-phone-number-input';
+import 'vue-phone-number-input/dist/vue-phone-number-input.css';
+import VueSimpleSuggest from 'vue-simple-suggest'
+import 'vue-simple-suggest/dist/styles.css' // Optional CSS
+ 
+
 import api from '@/api'
 import config from '@/config/backend'
-import axios from 'axios'
 import router from './router/router'
 import store from './store'
-import App from './app/app.vue'
-import VueToast from 'vue-toast-notification';
+import App from '@/views/App.vue'
 import '@/globalComponents'
 
-import VueSweetalert2 from 'vue-sweetalert2';
-import 'sweetalert2/dist/sweetalert2.min.css';
-//GOOGLE_CLIENT_ID='515214403352-dd3itjg2aequg8387650rr1b8aefpovf'
+
+import Default from '@/components/shared/baseLayout.vue';
+import Pages from '@/components/shared/pagesLayout.vue';
+import Apps from '@/components/shared/appLayout.vue';
+import Layouts from '@/components/shared/layoutsExamples.vue';
+import PageTitle from '@/components/shared/PageTitle'
+
+
+Vue.component('vue-phone-number-input', VuePhoneNumberInput);
+Vue.component('autocomplete-input', VueSimpleSuggest);
+
+
+Vue.component('PageTitle', PageTitle);
+Vue.component('default-layout', Default);
+Vue.component('pages-layout', Pages);
+Vue.component('apps-layout', Apps);
+Vue.component('examples-layout', Layouts)
 const gauthOption = {
   clientId: `${process.env.VUE_APP_GOOGLE_CLIENT_ID}.apps.googleusercontent.com`,
   scope: 'profile email',
   prompt: 'select_account'
 }
 
-Vue.use(VueToast);
-Vue.use(VueSweetalert2);
+Vue.use(VueToast)
+Vue.use(VueSweetalert2)
 Vue.use(GAuth, gauthOption)
 Vue.use(BootstrapVue)
 Vue.prototype.$config = config
@@ -29,7 +51,6 @@ Vue.prototype.$api = api(axios, config)
 
 store.dispatch('auth/verified')
 Vue.config.productionTip = false
-
 
 Vue.component('ValidationProvider', ValidationProvider)
 

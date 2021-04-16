@@ -91,7 +91,7 @@
 
 <script>
 import { library } from '@fortawesome/fontawesome-svg-core'
-import { mapState, mapActions, mapMutations } from "vuex"
+import { mapState, mapActions, mapMutations } from 'vuex'
 import {
   faPlusCircle,
   faChartBar
@@ -111,8 +111,8 @@ export default {
     'font-awesome-icon': FontAwesomeIcon
   },
   methods: {
-    ...mapActions("auth", [
-      "logout",
+    ...mapActions('auth', [
+      'logout'
     ]),
     showTooltip () {
       this.$refs.tooltipSuccess._toolpop.getTipElement().classList.add('tooltip-success')
@@ -120,15 +120,15 @@ export default {
     showPopoverIntegrations () {
       this.$refs.userBoxPopover._toolpop.getTipElement().classList.add('popover-custom-wrapper', 'popover-custom-lg', 'popover-secondary')
     },
-    deconnect(){
-        this.logout()
-        this.$router.push({ name: 'Register' })
+    deconnect () {
+      this.logout()
+      this.$router.push({ name: 'Register' })
     }
   },
-  computed:{
+  computed: {
     connectedUser: {
       get () {
-        let user  = this.$store.state.auth.user!=null ? this.$store.state.auth.user: {first_name: '', last_name:''}
+        let user = this.$store.state.auth.user != null ? this.$store.state.auth.user : { first_name: '', last_name: '' }
         return `${user.first_name} ${user.last_name}`
       }
     }

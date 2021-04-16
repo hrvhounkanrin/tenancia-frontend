@@ -6,12 +6,11 @@ export const mixin = {
 
   methods: {
 
-    message(composant, type) {
-
-      let msg = {};
-      msg = {...messageComponent[composant][type] }
-      return msg;
-  },
+    message (composant, type) {
+      let msg = {}
+      msg = { ...messageComponent[composant][type] }
+      return msg
+    },
 
     makeid (length) {
       var result = ''
@@ -22,8 +21,6 @@ export const mixin = {
       }
       return result
     },
-
-    
 
     formatDate (dataString) {
       if (dataString != undefined) {

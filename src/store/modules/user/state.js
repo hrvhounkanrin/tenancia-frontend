@@ -1,3 +1,4 @@
 export default {
-  admin_list: []
+  admin_list: [],
+  profiles:{}
 }

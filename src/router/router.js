@@ -3,6 +3,7 @@ import Router from 'vue-router'
 import authGuard from './auth-guard'
 import Home from '../views/Home.vue'
 import Register from '@/views/register'
+import Profile from '@/views/profiles/my-profiles.vue'
 Vue.use(Router)
 
 const router = new Router({
@@ -15,24 +16,30 @@ const router = new Router({
       path: '/',
       name: 'Home',
       component: Home,
-      meta: { auth: true },
+      meta: { auth: true }
 
     },
 
     {
       path: '/register',
       name: 'Register',
+      meta: {layout: 'examples'},
       component: Register
     },
     {
       path: '/activation-mail-sent',
       name: 'activation-mail-sent',
-      component: () => import( '@/views/register/activation-mail-sent.vue')
+      component: () => import('@/views/register/activation-mail-sent.vue')
     },
     {
       path: '/verify-email',
       name: 'activation-mail',
-      component: () => import( '@/views/register/activation-mail.vue')
+      component: () => import('@/views/register/activation-mail.vue')
+    },
+    {
+      path: '/my-profiles',
+      name: 'MyProfiles',
+      component: Profile
     },
     {
       path: '/about',

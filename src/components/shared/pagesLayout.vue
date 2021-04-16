@@ -20,9 +20,9 @@
 </template>
 
 <script>
-import Header from './Header'
-import Sidebar from './Sidebar'
-import Footer from './Footer'
+import Header from '@/components/shared/Header'
+import Sidebar from '@/components/shared/Sidebar'
+import Footer from '@/components/shared/Footer'
 
 export default {
   name: 'app',

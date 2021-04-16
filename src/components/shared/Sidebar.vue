@@ -3,7 +3,7 @@
         <div class="app-sidebar--header">
             <div class="nav-logo w-100 text-center">
                 <router-link tag="a" class="d-block" active-class="active" to="/" exact v-b-tooltip.bottom title="Fully built and powered by Vue.js 🚀">
-                    <img src="@/assets/img/admin-logo.png" alt="">
+                    <img src="@/assets/img/logo_tenancia.png" alt=""  height="40" width="150">
                 </router-link>
             </div>
             <button class="toggle-sidebar rounded-circle btn btn-sm bg-white shadow-sm-dark text-primary" v-b-tooltip.right title="Expand Sidebar" v-bind:class="{'is-active': sidebarCollapsed}" type="button" v-on:click="toggleSidebar">
@@ -24,10 +24,10 @@ import Vue from 'vue'
 
 import { SidebarMenu } from 'vue-sidebar-menu'
 import VuePerfectScrollbar from 'vue-perfect-scrollbar'
-import {SettingsIcon, PlusIcon, FileTextIcon, FolderIcon,
-         HomeIcon, UserCheckIcon, CheckCircleIcon, LayoutIcon, 
-         PaperclipIcon, LayersIcon, DatabaseIcon, BriefcaseIcon,
-         MapPinIcon, PieChartIcon,ClipboardIcon } from 'vue-feather-icons'
+import { SettingsIcon, PlusIcon, FileTextIcon, FolderIcon,
+  HomeIcon, UserCheckIcon, CheckCircleIcon, LayoutIcon,
+  PaperclipIcon, LayersIcon, DatabaseIcon, BriefcaseIcon,
+  MapPinIcon, PieChartIcon, ClipboardIcon } from 'vue-feather-icons'
 
 import { library } from '@fortawesome/fontawesome-svg-core'
 import {
@@ -75,39 +75,38 @@ export default {
         {
           title: 'Mes biens',
           icon: {
-              element: 'home-icon',
-          },
+            element: 'home-icon'
+          }
         },
         {
           title: 'Mon portefeuille',
           icon: {
-              element: 'folder-icon',
-          },
+            element: 'folder-icon'
+          }
         },
         {
           title: 'Mes contrats',
           icon: {
-              element: 'file-text-icon',
-          },
-        }
-        ,
+            element: 'file-text-icon'
+          }
+        },
         {
           title: 'Mes quittances',
           icon: {
-              element: 'clipboard-icon',
-          },
+            element: 'clipboard-icon'
+          }
         },
         {
           title: 'Services plus',
           icon: {
-              element: 'plus-icon',
-          },
+            element: 'plus-icon'
+          }
         },
         {
           title: 'Paramètres',
           icon: {
-              element: 'settings-icon',
-          },
+            element: 'settings-icon'
+          }
         }
       ],
       collapsed: true
@@ -130,6 +129,3 @@ export default {
   }
 }
 </script>
-
-
-

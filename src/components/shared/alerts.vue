@@ -8,7 +8,6 @@
                 <strong class="d-block">{{title}}</strong> {{msg}}
             </span>
         </b-alert>
-       
 
         <!--<b-alert
                 :show="dismissCountDown"
@@ -30,30 +29,30 @@
 </template>
 
 <script>
-    import {library} from '@fortawesome/fontawesome-svg-core'
-    import {
-        faHeadset,
-        faQuestionCircle,
-        faMedkit,
-        faLifeRing,
-        faBell
-    } from '@fortawesome/free-solid-svg-icons'
+import { library } from '@fortawesome/fontawesome-svg-core'
+import {
+  faHeadset,
+  faQuestionCircle,
+  faMedkit,
+  faLifeRing,
+  faBell
+} from '@fortawesome/free-solid-svg-icons'
 
-    import {FontAwesomeIcon} from '@fortawesome/vue-fontawesome'
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 
-    library.add(
-        faHeadset,
-        faQuestionCircle,
-        faMedkit,
-        faLifeRing,
-        faBell
-    );
+library.add(
+  faHeadset,
+  faQuestionCircle,
+  faMedkit,
+  faLifeRing,
+  faBell
+)
 
-    export default {
-        components: {
-            'font-awesome-icon': FontAwesomeIcon,
-        },
-       props: ['title', 'variant', 'icon', 'msg', 'icon']
-      
-    }
+export default {
+  components: {
+    'font-awesome-icon': FontAwesomeIcon
+  },
+  props: ['title', 'variant', 'icon', 'msg', 'icon']
+
+}
 </script>

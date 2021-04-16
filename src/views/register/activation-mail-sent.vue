@@ -23,7 +23,7 @@
                                            Nous venons de vous envoyer un mail pour activation de votre compte. Veuillez consulter votre mail et activer votre compte pour débuter votre expérience Tenancia.
                                         </h3>
                                         <p>
-                                            
+
                                         </p>
                                         <a href="javascript:history.back()" class="btn px-5 btn-first mt-4 mb-3 btn-lg">
                                         <span class="btn-wrapper--label">
@@ -66,39 +66,38 @@
 </template>
 
 <script>
-    import {FontAwesomeIcon} from '@fortawesome/vue-fontawesome'
-    import { mapGetters} from "vuex"
-    export default {
-        components: {
-            'font-awesome-icon': FontAwesomeIcon,
-        },
-        data() {
-            return {
-                countDown : 10
-            }
-        },
-        computed: {
-            ...mapGetters('auth', ['user'])
-        },
-        methods: {
-            countDownTimer() {
-                if(this.countDown > 0) {
-                    setTimeout(() => {
-                        this.countDown -= 1
-                        this.countDownTimer()
-                    }, 1000)
-                }
-                else {
-                    this.$router.push({name: 'Register'})
-                }
-            }
-        },
-        created: function() {
-            if(!this.$store.getters['auth/user']){
-                this.$router.push({name: 'Register'})
-            }
-            this.countDownTimer()  
-        },
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
+import { mapGetters } from 'vuex'
+export default {
+  components: {
+    'font-awesome-icon': FontAwesomeIcon
+  },
+  data () {
+    return {
+      countDown: 10
     }
- 
+  },
+  computed: {
+    ...mapGetters('auth', ['user'])
+  },
+  methods: {
+    countDownTimer () {
+      if (this.countDown > 0) {
+        setTimeout(() => {
+          this.countDown -= 1
+          this.countDownTimer()
+        }, 1000)
+      } else {
+        this.$router.push({ name: 'Register' })
+      }
+    }
+  },
+  created: function () {
+    if (!this.$store.getters['auth/user']) {
+      this.$router.push({ name: 'Register' })
+    }
+    this.countDownTimer()
+  }
+}
+
 </script>
