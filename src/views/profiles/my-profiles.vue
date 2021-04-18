@@ -140,7 +140,7 @@
                                 <p class="card-text mb-4">
                                     Tenancia vous aide à mieux gérer vos bien immobiliers...
                                 </p>
-                                <a href="javascript:void(0);" class="btn-block btn btn-primary mt-1" @click="editLessor" title="Learn more"><span>Modifier mon profil</span></a>
+                                <a href="javascript:void(0);" class="btn-block btn btn-primary mt-1" @click="editLessor" title="Learn more"><span>{{(!haveLessorProfile) ? 'Créer mon profil' : 'Modifier mon profil' }}</span></a>
                             </div>
                         </div>
                         <div class="card card-box mb-5" v-if="haveLessorProfile" >
@@ -186,32 +186,41 @@
                                 <form>
                                     <div class="row">
                                         <div class="col-md-12 mb-12">
-                                            <b-form-group label="PAYS DE RESIDENCE"  label-for="pays_residence" >
-                                            <b-form-input id="pays_residence"  trim></b-form-input> </b-form-group>
+                                            <b-form-group label="PAYS DE RESIDENCE"   label-for="pays_residence" ></b-form-group>
+                                            <b-form-select  v-model="lessor.pays_residence"  id="pays_residence" text-field="label" value-field="id"  :options="countries"></b-form-select>
                                         </div>
                                         <div class="col-md-12 mb-12">
-                                            <b-form-group label="MODE DE PAIEMENT" label-for="mode_paiement" >
-                                            <b-form-input id="mode_paiement"  trim></b-form-input> </b-form-group>
+                                            <b-form-group label="TELEPHONE " label-for="ice_number" >
+                                            <span  class="invalid-feedback d-block" v-if="errors.ice_numberMsg" >{{errors.ice_numberMsg}}</span>
+                                            <vue-phone-number-input id="ice_number" default-country-code="BJ" 
+                                                    :translations="translations" 
+                                                     v-model="lessor.phone_number" 
+                                                    :only-countries="onlyCountries"  />
+                                            </b-form-group>
                                         </div>
-                                        <div class="col-md-12 mb-12">
-                                            <b-form-group label="NUMERO IFU" label-for="numero_ifu" >
-                                            <b-form-input id="numero_ifu"  trim></b-form-input> </b-form-group>
-                                        </div>
-                                        <div class="col-md-12 mb-12">
+                                        <!-- <div class="col-md-12 mb-12">
                                             <b-form-group label="RELATION ECU" label-for="ice_relation" >
                                             <b-form-input id="ice_relation"  trim></b-form-input> </b-form-group>
+                                        </div> -->
+                                        <!-- <div class="col-md-12 mb-12">
+                                            <b-form-group label="MODE DE PAIEMENT" label-for="mode_paiement" >
+                                            <b-form-input id="mode_paiement"  trim></b-form-input> </b-form-group>
+                                        </div> -->
+                                        <div class="col-md-12 mb-12">
+                                            <b-form-group label="MODE DE PAIEMENT" label-for="mode_paiement" ></b-form-group>
+                                            <b-form-select id="mode_paiement"  v-model="lessor.mode_paiement"  text-field="label" value-field="id"  :options="virementList"></b-form-select>
                                         </div>
 
                                         <div class="col-md-12 mb-12">
                                             <b-form-group label="BANQUE" label-for="banque" ></b-form-group>
-                                            <b-form-select id="banque"  :options="optionsSelect"></b-form-select>
+                                            <b-form-select id="banque"  v-model="lessor.banque"  text-field="libbanque" value-field="id"  :options="banquesList"></b-form-select>
                                         </div>
                                         <div class="col-md-12 mb-12">
                                             <b-form-group label="N° COMPTE" label-for="numero_compte" >
-                                            <b-form-input id="numero_compte"  trim></b-form-input> </b-form-group>
+                                            <b-form-input id="numero_compte" v-model="lessor.num_compte" trim></b-form-input> </b-form-group>
                                         </div>
                                     </div>
-                                    <a href="javascript:void(0);" class="btn-block btn btn-primary mt-1" target="_blank" title="Learn more"><span>Sauvegarder</span></a>
+                                    <a href="javascript:void(0);" class="btn-block btn btn-primary mt-1" target="_blank" title="Learn more" @click="saveLessor"><span>Sauvegarder</span></a>
                                 </form>
 
                             </div>
@@ -308,6 +317,8 @@
 <script>
 import { mapState, mapActions, mapMutations, mapGetters } from 'vuex'
 import { library } from '@fortawesome/fontawesome-svg-core'
+import { mixin } from "@/mixin/mixin";
+
 import {
   faArrowRight,
   faArrowUp,
@@ -346,7 +357,8 @@ export default {
         phoneNumberLabel: 'Numéro de téléphone',
         example: 'Exemple :'
       },
-      onlyCountries: ['TG','CI','NE','NG','CM','BF','ML', 'FR'],
+      onlyCountries: ['BJ','TG','CI','NE','NG','CM','BF','ML', 'FR'],
+      countries: [],
       //End  vue-phone-number-input config
       fields: ['first_name', 'last_name', 'age'],
       items: [
@@ -373,11 +385,21 @@ export default {
           ice_number: null,
           ice_relation: null,
           phone_number: null,
+      },
+      lessor:{
+          id: null,
+          pays_residence: null,
+          phone_number: null,
+          banque: null,
+          num_compte: null,
+          mode_paiement: null,
       }
 
     }
   },
   created: function () {
+    this.getBanques();
+    this.countries = mixin.methods.getAllCountry(this.onlyCountries);
     this.myProfiles().then(res => {
           console.log('res', res.data)
           let profiles = res.data.payload.profiles
@@ -391,13 +413,20 @@ export default {
     })
   },
   computed: {
-    ...mapGetters('user', ['haveTenantProfile', 'haveLessorProfile', 'haveRealEstateProfile', 'tenantProfile', 'lessorProfile', 'realEstateProfile'])
+    ...mapGetters('user', ['haveTenantProfile', 'haveLessorProfile', 'haveRealEstateProfile', 'tenantProfile', 'lessorProfile', 'realEstateProfile']),
+        ...mapGetters('banque', ['banquesList', 'virementList']),
+
   },
   methods: {
     ...mapActions('user', ['myProfiles', 'createTenant', 'updateTenant']),
+    ...mapActions('banque', ['getBanquesList']),
     ...mapMutations('user', {
       setProfiles: 'PROFILES'
     }),
+    async getBanques() {
+        await this.getBanquesList();
+        console.log(this.banquesList, "viral")
+    },
     iceRelation(){
         return [
             'Cousin(e)', 'Grand-père','Grande-mère','Père','Mère','Tante','Oncle','Grande tante',
@@ -435,6 +464,25 @@ export default {
           this.$forceUpdate()
           console.log('err', err.response)
     },
+
+      onLessorActionSucess(res){
+        console.log('res', res.data.payload.client)
+         
+          let lessor = res.data.payload.client
+          let profiles = {
+              lessor: lessor,
+              tenant: this.tenant,
+              realEstate: this.realEstateProfile
+          }
+          this.setProfiles(profiles)
+          this.editingLessor = false
+          this.$forceUpdate()
+    },
+    onLessorActionFailure(err){
+         this.errors.lessorMsg = err.response.data.message
+          this.$forceUpdate()
+          console.log('err', err.response)
+    },
     async saveTenant(){
         this.errors = {}
         this.errors.phone_numberMsg = (!this.tenant.phone_number) ? 'Veuillez renseigner votre n° téléphone' : null
@@ -460,7 +508,34 @@ export default {
         }
         
         
+    },
+        async saveLessor(){
+        this.errors = {}
+        this.errors.phone_numberMsg = (!this.lessor.phone_number) ? 'Veuillez renseigner votre n° téléphone' : null
+        this.errors.pays_residenceMsg = (!this.lessor.pays_residence) ? 'Veuillez choisir votre pays de résidence' : null
+        this.errors.banqueMsg = (!this.lessor.banque) ? 'Veuillez choisir une banque' : null
+        this.errors.mode_paiementMsg = (!this.lessor.mode_paiement) ? 'Veuillez choisir un mode de paiement' : null
+        this.errors.num_compteMsg = (!this.lessor.num_compte) ? 'Veuillez renseigner votre numéro de compte' : null
+        console.log(Object.values(this.errors).some(x => (x === null )))
+        
+        //return if any error property is not null
+        if(!Object.values(this.errors).some(x => (x === null ))){
+            console.log(this.errors)
+             vm.editingLessor = true
+             this.$forceUpdate()
+             return
+        }
+
+        if (this.lessor.id && this.lessor.id > 0){
+                await this.updateLessor(this.lessor).then(res => this.onLessorActionSucess(res)).catch(err => this.onLessorActionFailure(err))
+        }
+        else{
+            await this.createLessor(this.lessor).then(res => this.onLessorActionSucess(res)).catch(err => this.onLessorActionFailure(err))
+        }
+        
+        
     }
+    
   }
 }
 </script>
