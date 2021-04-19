@@ -1,9 +1,9 @@
 import { VERIFIED, UPDATE_USER, USER, AUTH_TOKEN, AUTHENTICATED, GOOGLE_LOGIN_SUCCESS,
   GOOGLE_LOGIN_FAILURE, LOCAL_LOGIN_FAILURE, LOCAL_LOGIN_SUCCESS, LOCAL_SIGNUP_SUCCESS,
-  LOCAL_SIGNUP_FAILURE } from './mutation-types'
+  LOCAL_SIGNUP_FAILURE,TOKEN_EXPIRE_AT } from './mutation-types' 
 
 import axios from 'axios'
-import { USER_KEY, AUTH_TOKEN_KEY } from '@/constants'
+import { USER_KEY, AUTH_TOKEN_KEY, TOKEN_EXPIRE_AT_KEY } from '@/constants'
 
 export default {
   [VERIFIED] (state) {
@@ -30,6 +30,9 @@ export default {
 
   [AUTH_TOKEN] (state, token) {
     sessionStorage.setItem(AUTH_TOKEN_KEY, token)
+  },
+  [TOKEN_EXPIRE_AT] (state, expire_date) {
+    sessionStorage.setItem(TOKEN_EXPIRE_AT_KEY, expire_date)
   },
 
   [AUTHENTICATED] (state, authenticated) {
