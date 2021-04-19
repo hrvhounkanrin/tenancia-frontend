@@ -140,7 +140,7 @@
                                 <p class="card-text mb-4">
                                     Tenancia vous aide à mieux gérer vos bien immobiliers...
                                 </p>
-                                <a href="javascript:void(0);" class="btn-block btn btn-primary mt-1" @click="editLessor" title="Learn more"><span>{{(!haveLessorProfile) ? 'Créer mon profil' : 'Modifier mon profil' }}</span></a>
+                                <a href="javascript:void(0);" class="btn-block btn btn-primary mt-1" @click="editLessor" title="Editer mon profil bailleur"><span>{{(!haveLessorProfile) ? 'Créer mon profil' : 'Modifier mon profil' }}</span></a>
                             </div>
                         </div>
                         <div class="card card-box mb-5" v-if="haveLessorProfile" >
@@ -213,14 +213,14 @@
 
                                         <div class="col-md-12 mb-12">
                                             <b-form-group label="BANQUE" label-for="banque" ></b-form-group>
-                                            <b-form-select id="banque"  v-model="lessor.banque"  text-field="libbanque" value-field="id"  :options="banquesList"></b-form-select>
+                                            <b-form-select id="banque"  v-model="lessor.banque_id"  text-field="libbanque" value-field="id"  :options="banquesList"></b-form-select>
                                         </div>
                                         <div class="col-md-12 mb-12">
                                             <b-form-group label="N° COMPTE" label-for="numero_compte" >
-                                            <b-form-input id="numero_compte" v-model="lessor.num_compte" trim></b-form-input> </b-form-group>
+                                            <b-form-input id="numero_compte" v-model="lessor.numcompte" trim></b-form-input> </b-form-group>
                                         </div>
                                     </div>
-                                    <a href="javascript:void(0);" class="btn-block btn btn-primary mt-1" target="_blank" title="Learn more" @click="saveLessor"><span>Sauvegarder</span></a>
+                                    <a href="javascript:void(0);" class="btn-block btn btn-primary mt-1" title="Save Lessor" @click="saveLessor"><span>Sauvegarder</span></a>
                                 </form>
 
                             </div>
@@ -390,8 +390,8 @@ export default {
           id: null,
           pays_residence: null,
           phone_number: null,
-          banque: null,
-          num_compte: null,
+          banque_id: null,
+          numcompte: null,
           mode_paiement: null,
       }
 
@@ -415,17 +415,17 @@ export default {
   computed: {
     ...mapGetters('user', ['haveTenantProfile', 'haveLessorProfile', 'haveRealEstateProfile', 'tenantProfile', 'lessorProfile', 'realEstateProfile']),
         ...mapGetters('banque', ['banquesList', 'virementList']),
+        ...mapGetters('auth', ['user']),
 
   },
   methods: {
-    ...mapActions('user', ['myProfiles', 'createTenant', 'updateTenant']),
+    ...mapActions('user', ['myProfiles', 'createTenant', 'updateTenant','createLessor', 'updateLessor']),
     ...mapActions('banque', ['getBanquesList']),
     ...mapMutations('user', {
       setProfiles: 'PROFILES'
     }),
     async getBanques() {
         await this.getBanquesList();
-        console.log(this.banquesList, "viral")
     },
     iceRelation(){
         return [
@@ -442,6 +442,11 @@ export default {
     },
     editLessor (e) {
       this.editingLessor = true
+      if(this.haveLessorProfile){
+          this.lessor = this.lessorProfile
+          this.lessor.banque_id = this.lessorProfile.banque
+          this.$forceUpdate()
+      }
     },
     editSociety (e) {
       this.editingRealEstate = true
@@ -513,9 +518,9 @@ export default {
         this.errors = {}
         this.errors.phone_numberMsg = (!this.lessor.phone_number) ? 'Veuillez renseigner votre n° téléphone' : null
         this.errors.pays_residenceMsg = (!this.lessor.pays_residence) ? 'Veuillez choisir votre pays de résidence' : null
-        this.errors.banqueMsg = (!this.lessor.banque) ? 'Veuillez choisir une banque' : null
+        this.errors.banque_idMsg = (!this.lessor.banque_id) ? 'Veuillez choisir une banque' : null
         this.errors.mode_paiementMsg = (!this.lessor.mode_paiement) ? 'Veuillez choisir un mode de paiement' : null
-        this.errors.num_compteMsg = (!this.lessor.num_compte) ? 'Veuillez renseigner votre numéro de compte' : null
+        this.errors.numcompteMsg = (!this.lessor.numcompte) ? 'Veuillez renseigner votre numéro de compte' : null
         console.log(Object.values(this.errors).some(x => (x === null )))
         
         //return if any error property is not null
@@ -527,10 +532,17 @@ export default {
         }
 
         if (this.lessor.id && this.lessor.id > 0){
-                await this.updateLessor(this.lessor).then(res => this.onLessorActionSucess(res)).catch(err => this.onLessorActionFailure(err))
+                await this.updateLessor({...this.lessor, user_id: this.user.id}).then(res => this.onLessorActionSucess(res)).catch(err => this.onLessorActionFailure(err))
         }
         else{
-            await this.createLessor(this.lessor).then(res => this.onLessorActionSucess(res)).catch(err => this.onLessorActionFailure(err))
+            await this.createLessor({
+                banque_id:this.lessor.banque_id, 
+                id:this.lessor.id, 
+                mode_paiement:this.lessor.mode_paiement, 
+                numcompte:this.lessor.numcompte, 
+                phone_number:this.lessor.phone_number, 
+                pays_residence:this.lessor.pays_residence, 
+            user_id: this.user.id}).then(res => this.onLessorActionSucess(res)).catch(err => this.onLessorActionFailure(err))
         }
         
         

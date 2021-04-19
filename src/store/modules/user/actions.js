@@ -68,5 +68,24 @@ export default {
       let user = new User()
       let tenantProfile = await user.updateTenant(data)
       return tenantProfile
+  },
+
+    /**
+   * Create tenant profil
+   * @returns {} Returns lessor profil.
+   */
+     async createLessor ({ commit }, data) {
+      let user = new User()
+      let lessorProfile = await user.createLessor(data)
+      return lessorProfile
+  },
+  /**
+   * Update existing lessor profile
+   * @returns {} Returns lessor profil.
+   */
+  async updateLessor ({ commit }, data) {
+      let user = new User()
+      let lessorProfile = await user.updateLessor(data)
+      return lessorProfile
   }
 }
