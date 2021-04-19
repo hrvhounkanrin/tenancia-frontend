@@ -29,11 +29,13 @@ const router = new Router({
     {
       path: '/activation-mail-sent',
       name: 'activation-mail-sent',
+      meta: {layout: 'examples'},
       component: () => import('@/views/register/activation-mail-sent.vue')
     },
     {
       path: '/verify-email',
       name: 'activation-mail',
+      meta: {layout: 'examples'},
       component: () => import('@/views/register/activation-mail.vue')
     },
     {
