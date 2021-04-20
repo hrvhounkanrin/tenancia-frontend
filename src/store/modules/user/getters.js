@@ -13,12 +13,11 @@ export default {
       && !Object.values(state.profiles.tenant).some(x => (x === null ))
   },
   lessorProfile: (state) => {
-    return state.lessor
+    return state.profiles.lessor
   },
   haveLessorProfile: (state) => {
     return state.profiles !== undefined 
-      && state.profiles.lessor !== undefined 
-      && !Object.values(state.profiles.lessor).some(x => (x === null ))
+      && state.profiles.lessor !== undefined
   },
   realEstateProfile: (state) => {
     return state.profiles.realEstate !== undefined

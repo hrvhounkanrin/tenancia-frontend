@@ -86,4 +86,21 @@ export default class User {
       }
     )
   }
+
+  async createLessor (bodyParams) {
+    return await this.$serveur.postRequest(
+      {
+        body: bodyParams,
+        link: 'proprietaire_action/create_proprio'
+      }
+    )
+  }
+  async updateLessor (bodyParams) {
+    return await this.$serveur.postRequest(
+      {
+        body: bodyParams,
+        link: 'proprietaire_action​/update_proprio'
+      }
+    )
+  }
 }
