@@ -99,7 +99,7 @@ export default class User {
     return await this.$serveur.postRequest(
       {
         body: bodyParams,
-        link: 'proprietaire_action​/update_proprio'
+        link: "proprietaire_action/update_proprio"
       }
     )
   }

@@ -149,7 +149,7 @@
                                      <b><span class="d-block" >PAYS DE RESIDENCE</span></b>
                                 </div>
                                 <div class="d-flex align-items-left justify-content-start">
-                                     <span class="text-black-50  d-block" id="locataire_profession" >{{lessorProfile.pays_residence}}</span>
+                                     <span class="text-black-50  d-block" id="locataire_profession" >{{ countries.find(pays => pays.id == lessorProfile.pays_residence).label }}</span>
                                 </div>
                                 <div class="d-flex align-items-left justify-content-start">
                                      <b><span class="d-block" >N° TELEPHONE</span></b>
@@ -206,10 +206,9 @@
                                             <b-form-group label="MODE DE PAIEMENT" label-for="mode_paiement" ></b-form-group>
                                             <b-form-select id="mode_paiement"  v-model="lessor.mode_paiement"  text-field="label" value-field="id"  :options="modePaiementList"></b-form-select>
                                         </div>
-
                                         <div class="col-md-12 mb-12">
                                             <b-form-group label="BANQUE OU EME" label-for="banque" ></b-form-group>
-                                            <b-form-select id="banque"  v-model="lessor.banque_id"  text-field="libbanque" value-field="id"  :options="banquesList"></b-form-select>
+                                            <b-form-select id="banque"  v-model="lessor.banque_id" text-field="libbanque" value-field="id" :options="banquesList"></b-form-select>
                                         </div>
                                         <div class="col-md-12 mb-12">
                                             <b-form-group label="N° COMPTE" label-for="numero_compte" >
@@ -342,6 +341,7 @@ export default {
   },
   data () {
     return {
+        testB: '',
       breadcrumb:[{
           libelle: 'Tenancia',
           link: '#'
@@ -438,8 +438,10 @@ export default {
     editLessor (e) {
       this.editingLessor = true
       if(this.haveLessorProfile){
+          console.log(this.lessorProfile, "less pro")
           this.lessor = this.lessorProfile
-          this.lessor.banque_id = this.lessorProfile.banque
+          this.lessor.banque_id = this.lessorProfile.banque.id;
+          console.log("res", this.banquesList.find(x => x.libbanque == this.lessor.banque.libbanque))
           this.$forceUpdate()
       }
     },
@@ -470,7 +472,7 @@ export default {
           let lessor = res.data.payload
           let profiles = {
               lessor: lessor,
-              tenant: this.tenant,
+              tenant: this.tenantProfile,
               realEstate: this.realEstateProfile
           }
           this.setProfiles(profiles)
@@ -543,8 +545,8 @@ export default {
     }
     ,
     watch: {
-        lessor(){
-            console.log(this.lessor)
+        testB(){
+            console.log(this.testB)
         }
     },
   }
