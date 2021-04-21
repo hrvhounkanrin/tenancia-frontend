@@ -15,7 +15,7 @@ export default {
 
   [UPDATE_ADMIN] (state, admin) {
     const idx = state.admin_list.findIndex(el => el.id === admin.id)
-    Vue.set(state.admin_list, idx, admin)
+    //Vue.set(state.admin_list, idx, admin)
   },
 
   [REMOVE_ADMIN] (state, admin) {
@@ -27,7 +27,6 @@ export default {
     state.admin_list = admins
   },
   [PROFILES] (state, data) {
-    console.log(data, "data")
     state.profiles = data
   }
 }

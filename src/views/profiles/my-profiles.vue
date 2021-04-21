@@ -395,12 +395,10 @@ export default {
   },
   created: function () {
     this.getBanques()
-    this.countries = mixin.methods.getAllCountry(this.onlyCountries);
+    this.countries = mixin.methods.getAllCountry(this.onlyCountries)
     this.myProfiles().then(res => {
-          console.log('res', res.data)
-          let profiles = res.data.payload.profiles
+          let profiles = res.data.payload
           this.setProfiles(profiles)
-          console.log('profiles: ', profiles)
     })
     .catch(err => {
         //this.signupError('Une erreur est survenue lors de la création de votre compte')
@@ -410,8 +408,9 @@ export default {
   },
   computed: {
     ...mapGetters('user', ['haveTenantProfile', 'haveLessorProfile', 'haveRealEstateProfile', 'tenantProfile', 'lessorProfile', 'realEstateProfile']),
-        ...mapGetters('banque', ['banquesList', 'modePaiementList']),
-        ...mapGetters('auth', ['user']),
+    ...mapGetters('banque', ['banquesList', 'modePaiementList']),
+    ...mapGetters('auth', ['user' ]),
+    ...mapGetters('user', ['getProfiles' ]),
 
   },
   methods: {
@@ -448,14 +447,15 @@ export default {
       this.editingRealEstate = true
     },
     onTenantActionSucess(res){
-        console.log('res', res.data.payload.client)
-         
-          let tenant = res.data.payload.client
+          console.log('res.data:',res.data.payload)
+          let tenant = res.data.payload
+          console.log('tenant:', tenant)
           let profiles = {
               tenant: tenant,
               lessor: this.lessorProfile,
               realEstate: this.realEstateProfile
           }
+
           this.setProfiles(profiles)
           this.editingTenant = false
           this.$forceUpdate()
@@ -467,8 +467,6 @@ export default {
     },
 
     onLessorActionSucess(res){
-        console.log('res', res.data.payload.client)
-         console.log('res.data.payload:', res.data.payload)
           let lessor = res.data.payload
           let profiles = {
               lessor: lessor,
@@ -481,6 +479,7 @@ export default {
     },
     onLessorActionFailure(err){
          this.errors.lessorMsg = err.response.data.message
+         this.editingLessor = true
           this.$forceUpdate()
           console.log('err', err.response)
     },
@@ -491,7 +490,6 @@ export default {
         this.errors.ice_contactMsg = (!this.tenant.ice_contact) ? 'Veuillez renseigner une personne à contacter ECU': null
         this.errors.ice_numberMsg = (!this.tenant.ice_number) ? 'Veuillez renseigner le numéro de la personne à contacter ECU': null
         this.errors.ice_relationMsg = (!this.tenant.ice_relation) ? 'Veuillez renseigner votre lien de parenté': null
-        console.log(Object.values(this.errors).some(x => (x === null )))
         
         //return if any error property is not null
         if(!Object.values(this.errors).some(x => (x === null ))){
@@ -517,11 +515,9 @@ export default {
         this.errors.banque_idMsg = (!this.lessor.banque_id) ? 'Veuillez choisir une banque' : null
         this.errors.mode_paiementMsg = (!this.lessor.mode_paiement) ? 'Veuillez choisir un mode de paiement' : null
         this.errors.numcompteMsg = (!this.lessor.numcompte) ? 'Veuillez renseigner votre numéro de compte' : null
-        console.log(Object.values(this.errors).some(x => (x === null )))
         
         //return if any error property is not null
         if(!Object.values(this.errors).some(x => (x === null ))){
-            console.log(this.errors)
              vm.editingLessor = true
              this.$forceUpdate()
              return

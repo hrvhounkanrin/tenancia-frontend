@@ -459,9 +459,15 @@ export default {
       'getBackendResponse',
       'googleLoginFailure'
     ]),
+     ...mapActions('user', [
+      'myProfiles'
+    ]),
     ...mapMutations('auth', {
       signupError: 'LOCAL_SIGNUP_FAILURE',
       setUser: 'USER'
+    }),
+      ...mapMutations('user', {
+      setProfiles: 'PROFILES',
     }),
     makeToast (msg, variant) {
       this.$toast.open({
@@ -493,9 +499,14 @@ export default {
       this.submitted = true
       await this.loginAccount(this.credential)
         .then(res => {
-          setTimeout(() => {
-            this.$router.push({ name: 'Home' })
-          }, 500)
+             this.myProfiles().then(res_profiles =>{
+               this.setProfiles(res_profiles.data.payload)
+               this.$router.push({ name: 'Home' })
+               console.log('Profile data:', res_profiles.data.payload)
+          }
+        ).catch(error=>{
+              console.log('Une erreur est survenue lors de la récupération de vos profiles')
+            })
         })
         .catch(error => {
           console.log('handleLogin', error)

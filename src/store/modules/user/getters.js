@@ -4,6 +4,9 @@ export default {
     idx < 0 ? false : state.admin_list.splice(idx, 1)
     return state.admin_list
   },
+  getProfiles: (state)=>{
+    return state.profiles
+  },
   tenantProfile: (state) => {
     return state.profiles.tenant
   },
@@ -26,5 +29,8 @@ export default {
     return state.profiles !== undefined 
       && state.profiles.realEstate !== undefined 
       && !Object.values(state.profiles.realEstate).some(x => (x === null ))
+  },
+  haveOneProfile: (state) => {
+    return state.profiles !== undefined && Object.keys(state.profiles).length >0
   }
 }
