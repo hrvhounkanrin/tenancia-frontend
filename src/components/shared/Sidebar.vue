@@ -3,7 +3,7 @@
         <div class="app-sidebar--header">
             <div class="nav-logo w-100 text-center">
                 <router-link tag="a" class="d-block" active-class="active" to="/" exact v-b-tooltip.bottom title="Fully built and powered by Vue.js 🚀">
-                    <img src="@/assets/img/logo_tenancia.png" alt=""  height="40" width="150">
+                    <img src="@/assets/img/Lg_Tenancia_test_CC.png" alt=""  height="60" width="200">
                 </router-link>
             </div>
             <button class="toggle-sidebar rounded-circle btn btn-sm bg-white shadow-sm-dark text-primary" v-b-tooltip.right title="Expand Sidebar" v-bind:class="{'is-active': sidebarCollapsed}" type="button" v-on:click="toggleSidebar">

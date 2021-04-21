@@ -7,10 +7,11 @@ import {
   GOOGLE_LOGIN_SUCCESS,
   GOOGLE_LOGIN_FAILURE,
   LOCAL_LOGIN_FAILURE,
-  LOCAL_LOGIN_SUCCESS
+  LOCAL_LOGIN_SUCCESS,
+  TOKEN_EXPIRE_AT
 } from './mutation-types'
 
-import { USER_KEY, AUTH_TOKEN_KEY } from '@/constants'
+import { USER_KEY, AUTH_TOKEN_KEY, TOKEN_EXPIRE_AT_KEY } from '@/constants'
 import User from '@/api/user'
 
 /**
@@ -21,12 +22,12 @@ const loginAccount = async ({ commit }, userData) => {
   return await user
     .login(userData)
     .then(res => {
-      console.log('user data', res)
+      
       if (res.status == 200) {
         let userData = res.data
         commit(USER, userData.user)
         commit(AUTH_TOKEN, userData.token)
-        commit(AUTHENTICATED, true)
+        commit(TOKEN_EXPIRE_AT, userData.expire_in)
         commit(AUTHENTICATED, true)
         commit(LOCAL_LOGIN_SUCCESS)
         sessionStorage.setItem(USER_KEY, JSON.stringify(userData.user))
@@ -81,6 +82,7 @@ const logout = ({ commit }) => {
   commit(AUTHENTICATED, false)
   sessionStorage.removeItem(AUTH_TOKEN_KEY)
   sessionStorage.removeItem(USER_KEY)
+  sessionStorage.removeItem(TOKEN_EXPIRE_AT_KEY)
   return true
 }
 const googleExchangeToken = async ({ dispatch, commit }, googleToken) => {
