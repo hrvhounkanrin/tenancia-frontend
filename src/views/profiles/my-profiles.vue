@@ -547,7 +547,12 @@ export default {
         
         
     }
-    
+    ,
+    watch: {
+        lessor(){
+            console.log(this.lessor)
+        }
+    },
   }
 }
 </script>
