@@ -232,41 +232,47 @@
                                 <p class="card-text mb-4">
                                     La gestion de votre portefeuille mandat n'a jamais été aussi facile qu'avec Tenancia...
                                 </p>
-                                <a href="javascript:void(0);" class="btn-block btn btn-primary mt-1" @click="editSociety"  title="Learn more"><span>Créer mon profil</span></a>
+                                <a href="javascript:void(0);" class="btn-block btn btn-primary mt-1" @click="editRealEstate"  title="Learn more"><span>{{(!haveRealEstateProfile) ? 'Créer mon profil' : 'Modifier mon profil' }}</span></a>
                             </div>
                         </div>
-                        <div class="card card-box mb-5" v-if="haveRealEstateProfile">
+                        <div class="card card-box mb-5" v-if="haveRealEstateProfile && !editingRealEstate">
                             <div class="card-indicator bg-warning"></div>
                             <div class="card-body px-4 py-3">
+                                <div class="d-flex align-items-left justify-content-start">
+                                     <b><span class="d-block" >NOM AGENCE</span></b>
+                                </div>
+                                <div class="d-flex align-items-left justify-content-start">
+                                     <span class="text-black-50  d-block" id="locataire_profession" >{{ realEstateProfile.raison_social }}</span>
+                                </div>
                                  <div class="d-flex align-items-left justify-content-start">
-                                     <span class="text-black-50 d-block" >Raison sociale</span>
+                                     <b><span class="d-block" >N° TELEPHONE</span></b>
                                 </div>
                                 <div class="d-flex align-items-left justify-content-start">
-                                     <b><span class="d-block" id="agence_raison_sociale" >RESIDENCES GK</span></b>
+                                     <span class="text-black-50  d-block" id="locataire_profession" >{{ realEstateProfile.num_telephone }}</span>
                                 </div>
                                 <div class="d-flex align-items-left justify-content-start">
-                                     <span class="text-black-50 d-block" >N° TELEPHONE</span>
+                                     <b><span class="d-block" >ADRESSE</span></b>
                                 </div>
                                 <div class="d-flex align-items-left justify-content-start">
-                                     <b><span class="d-block" id="agence_numero_tel">090230954094</span></b>
+                                     <span class="text-black-50  d-block" id="locataire_profession" >{{ realEstateProfile.adresse }}</span>
+                                </div>
+                               <div class="d-flex align-items-left justify-content-start">
+                                     <b><span class="d-block" >N° CARTE PROFESSIONNEL</span></b>
                                 </div>
                                 <div class="d-flex align-items-left justify-content-start">
-                                     <span class="text-black-50 d-block" >ADRESSE</span>
+                                     <span class="text-black-50  d-block" id="locataire_profession" >{{ realEstateProfile.num_carte_professionnel }}</span>
                                 </div>
                                 <div class="d-flex align-items-left justify-content-start">
-                                     <b><span class="d-block" id="agence_adresse" >SIKE NORD</span></b>
+                                     <b><span class="d-block" >DATE DELIVRANCE</span></b>
                                 </div>
                                 <div class="d-flex align-items-left justify-content-start">
-                                     <span class="text-black-50 d-block" >N° IFU</span>
+                                     <span class="text-black-50  d-block" id="locataire_profession" >{{ realEstateProfile.date_delivrance }}</span>
+                                </div>
+                                 <div class="d-flex align-items-left justify-content-start">
+                                     <b><span class="d-block" >N° IFU</span></b>
                                 </div>
                                 <div class="d-flex align-items-left justify-content-start">
-                                     <b><span class="d-block" agence_numeroifu >09093403940343</span></b>
-                                </div>
-                                <div class="d-flex align-items-left justify-content-start">
-                                     <span class="text-black-50 d-block" >N° CARTE PROFESSIONNEL</span>
-                                </div>
-                                <div class="d-flex align-items-left justify-content-start">
-                                     <b><span class="d-block" id="agence_numcarte">9080676</span></b>
+                                     <span class="text-black-50  d-block" id="locataire_profession" >{{ realEstateProfile.numero_ifu }}</span>
                                 </div>
                             </div>
                         </div>
@@ -276,28 +282,34 @@
                                 <form>
                                     <div class="row">
                                         <div class="col-md-12 mb-12">
-                                            <b-form-group label="RAISON SOCIALE"  label-for="raison_sociale" >
-                                            <b-form-input id="raison_sociale"  trim></b-form-input> </b-form-group>
+                                            <b-form-group label="NOM AGENCE"  label-for="raison_sociale" >
+                                            <b-form-input id="raison_sociale" v-model="realEstate.raison_social"  trim></b-form-input> </b-form-group>
                                         </div>
                                         <div class="col-md-12 mb-12">
-                                            <b-form-group label="NUMERO TELEPHONE" label-for="numero_telephone" >
-                                            <b-form-input id="numero_telephone"  trim></b-form-input> </b-form-group>
-                                        </div>
-                                        <div class="col-md-12 mb-12">
-                                            <b-form-group label="ADRESSE" label-for="adresse" >
-                                            <b-form-input id="ice_relation"  trim></b-form-input> </b-form-group>
+                                            <b-form-group label="N° TELEPHONE"  label-for="tenant_phone_number" >
+                                            <span  class="invalid-feedback d-block" v-if="errors.phone_numberMsg" >{{errors.phone_numberMsg}}</span >
+                                            <vue-phone-number-input id="phone_number" default-country-code="BJ" 
+                                                    :translations="translations" 
+                                                    :only-countries="onlyCountries" 
+                                                    v-model="realEstate.num_telephone" />
+                                            </b-form-group>
+                                            
                                         </div>
 
                                         <div class="col-md-12 mb-12">
-                                            <b-form-group label="NUMERO IFU" label-for="numero_ifu" ></b-form-group>
-                                            <b-form-input id="numero_ifu"  trim></b-form-input> </b-form-group>
+                                            <b-form-group label="ADRESSE" label-for="adresse" >
+                                            <b-form-input id="adresse"  v-model="realEstate.adresse" trim></b-form-input> </b-form-group>
                                         </div>
                                         <div class="col-md-12 mb-12">
                                             <b-form-group label="N° CARTE PROFESSIONNEL" label-for="numero_carte" >
-                                            <b-form-input id="numero_carte"  trim></b-form-input> </b-form-group>
+                                            <b-form-input id="numero_carte" v-model="realEstate.num_carte_professionnel" trim></b-form-input> </b-form-group>
+                                        </div>
+                                         <div class="col-md-12 mb-12">
+                                            <b-form-group label="DATE DELIVRANCE" label-for="numero_ifu" >
+                                            <b-form-input id="numero_ifu" v-model="realEstate.date_delivrance" trim></b-form-input> </b-form-group>
                                         </div>
                                     </div>
-                                    <a href="javascript:void(0);" class="btn-block btn btn-primary mt-1" target="_blank" title="Learn more"><span>Sauvegarder</span></a>
+                                    <a href="javascript:void(0);" class="btn-block btn btn-primary mt-1" @click="saveRealEstate" ><span>Sauvegarder</span></a>
                                 </form>
 
                             </div>
@@ -389,6 +401,13 @@ export default {
           banque_id: null,
           numcompte: null,
           mode_paiement: null,
+      },
+      realEstate:{
+          id: null,
+          raison_social: null,
+          num_telephone: null,
+          adresse: null,
+          num_carte_professionnel: null
       }
 
     }
@@ -414,7 +433,7 @@ export default {
 
   },
   methods: {
-    ...mapActions('user', ['myProfiles', 'createTenant', 'updateTenant','createLessor', 'updateLessor']),
+    ...mapActions('user', ['myProfiles', 'createTenant', 'updateTenant','createLessor', 'updateLessor', 'createRealEstate', 'updateRealEstate']),
     ...mapActions('banque', ['getBanquesList']),
     ...mapMutations('user', {
       setProfiles: 'PROFILES'
@@ -438,24 +457,25 @@ export default {
     editLessor (e) {
       this.editingLessor = true
       if(this.haveLessorProfile){
-          console.log(this.lessorProfile, "less pro")
           this.lessor = this.lessorProfile
           this.lessor.banque_id = this.lessorProfile.banque.id;
           console.log("res", this.banquesList.find(x => x.libbanque == this.lessor.banque.libbanque))
           this.$forceUpdate()
       }
     },
-    editSociety (e) {
+    editRealEstate (e) {
       this.editingRealEstate = true
+      if(this.haveRealEstateProfile){
+          this.realEstate = this.realEstateProfile
+          this.$forceUpdate()
+      }
     },
     onTenantActionSucess(res){
-          console.log('res.data:',res.data.payload)
           let tenant = res.data.payload
-          console.log('tenant:', tenant)
           let profiles = {
               tenant: tenant,
               lessor: this.lessorProfile,
-              realEstate: this.realEstateProfile
+              real_estate: this.realEstateProfile
           }
 
           this.setProfiles(profiles)
@@ -465,7 +485,6 @@ export default {
     onTenantActionFailure(err){
          this.errors.tenantMsg = err.response.data.message
           this.$forceUpdate()
-          console.log('err', err.response)
     },
 
     onLessorActionSucess(res){
@@ -473,7 +492,7 @@ export default {
           let profiles = {
               lessor: lessor,
               tenant: this.tenantProfile,
-              realEstate: this.realEstateProfile
+              real_estate: this.realEstateProfile
           }
           this.setProfiles(profiles)
           this.editingLessor = false
@@ -482,6 +501,24 @@ export default {
     onLessorActionFailure(err){
          this.errors.lessorMsg = err.response.data.message
          this.editingLessor = true
+          this.$forceUpdate()
+    },
+    onRealEstateActionSucess(res){
+          console.log('res.data:',res.data.payload)
+          let realEstate = res.data.payload
+          console.log('realEstate:', realEstate)
+          let profiles = {
+              tenant: this.tenantProfile,
+              lessor: this.lessorProfile,
+              real_estate: realEstate
+          }
+
+          this.setProfiles(profiles)
+          this.editingRealEstate = false
+          this.$forceUpdate()
+    },
+    onRealEstateActionFailure(err){
+         this.errors.tenantMsg = err.response.data.message
           this.$forceUpdate()
           console.log('err', err.response)
     },
@@ -542,13 +579,29 @@ export default {
         }
         
         
-    }
-    ,
-    watch: {
-        testB(){
-            console.log(this.testB)
-        }
     },
+    async saveRealEstate(){
+        this.errors = {}
+        this.errors.raisonSocialMsg = (!this.realEstate.raison_sociale) ? "Veuillez renseigner le nom de l'agence" : null
+        this.errors.phone_numberMsg = (!this.realEstate.num_telephone) ? 'Veuillez renseigner le numéro de téléphone' : null
+        this.errors.adresse = (!this.tenant.adresseMsg) ? "Veuillez renseigner l'adresse de l'agence": null
+
+        //return if any error property is not null
+        if(!Object.values(this.errors).some(x => (x === null ))){
+             vm.editingRealEstate = true
+             this.$forceUpdate()
+             return
+        }
+        console.log('this.realEstate: ',this.realEstate)
+        if (this.realEstate.id && this.realEstate.id > 0){
+                await this.updateRealEstate(this.realEstate).then(res => this.onRealEstateActionSucess(res)).catch(err => this.onRealEstateActionFailure(err))
+        }
+        else{
+            await this.createRealEstate(this.realEstate).then(res => this.onRealEstateActionSucess(res)).catch(err => this.onRealEstateActionFailure(err))
+        }
+        
+        
+    }
   }
 }
 </script>

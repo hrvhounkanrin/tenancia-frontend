@@ -70,7 +70,7 @@ export default {
       return tenantProfile
   },
 
-    /**
+   /**
    * Create tenant profil
    * @returns {} Returns lessor profil.
    */
@@ -87,5 +87,23 @@ export default {
       let user = new User()
       let lessorProfile = await user.updateLessor(data)
       return lessorProfile
-  }
+  },
+  /**
+   * Create realEstate profil
+   * @returns {} Returns real estate profil.
+   */
+   async createRealEstate ({ commit }, data) {
+    let user = new User()
+    let lessorProfile = await user.createRealEstate(data)
+    return lessorProfile
+},
+/**
+ * Update existing lessor profile
+ * @returns {} Returns real estate profil.
+ */
+async updateRealEstate ({ commit }, data) {
+    let user = new User()
+    let lessorProfile = await user.updateRealEstate(data)
+    return lessorProfile
+}
 }

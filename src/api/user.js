@@ -103,4 +103,21 @@ export default class User {
       }
     )
   }
+
+  async createRealEstate (bodyParams) {
+    return await this.$serveur.postRequest(
+      {
+        body: bodyParams,
+        link: 'realestate_action/create_mandataire'
+      }
+    )
+  }
+  async updateRealEstate (bodyParams) {
+    return await this.$serveur.postRequest(
+      {
+        body: bodyParams,
+        link: "realestate_action/update_mandataire"
+      }
+    )
+  }
 }

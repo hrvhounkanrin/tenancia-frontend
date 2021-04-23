@@ -23,12 +23,11 @@ export default {
       && state.profiles.lessor !== undefined
   },
   realEstateProfile: (state) => {
-    return state.profiles.realEstate !== undefined
+    return state.profiles.real_estate
   },
   haveRealEstateProfile: (state) => {
     return state.profiles !== undefined 
-      && state.profiles.realEstate !== undefined 
-      && !Object.values(state.profiles.realEstate).some(x => (x === null ))
+      && state.profiles.real_estate !== undefined
   },
   haveOneProfile: (state) => {
     return state.profiles !== undefined && Object.keys(state.profiles).length >0

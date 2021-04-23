@@ -39,12 +39,10 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="javascript:void(0);">
-                                Préférences
-                            </a>
+                            <router-link :to="{ name: 'MyProfiles'}" class="nav-link">Mes profils</router-link>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" @click="deconnect">
+                            <a class="nav-link" href="javascript:void(0);" @click="deconnect">
                                 Déconnexion
                             </a>
                         </li>

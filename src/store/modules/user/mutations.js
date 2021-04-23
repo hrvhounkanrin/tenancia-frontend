@@ -27,6 +27,7 @@ export default {
     state.admin_list = admins
   },
   [PROFILES] (state, data) {
+    console.log('PROFILES MUTATION:',data)
     state.profiles = data
   }
 }
