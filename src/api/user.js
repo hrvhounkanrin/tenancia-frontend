@@ -8,8 +8,7 @@ import axios from 'axios'
 export default class User {
   $serveur = api(axios, config)
 
-
-  async login(bodyParams) {
+  async login (bodyParams) {
     return await this.$serveur.postRequest(
       {
         body: bodyParams,
@@ -18,7 +17,7 @@ export default class User {
     )
   }
 
-  async register(bodyParams) {
+  async register (bodyParams) {
     return await this.$serveur.postRequest(
       {
         body: bodyParams,
@@ -26,42 +25,82 @@ export default class User {
       }
     )
   }
-  
-  async activeAccount(bodyParams) {
+
+  async activeAccount (bodyParams) {
     return await this.$serveur.getRequest(
       {
-        body: {...bodyParams},
+        body: { ...bodyParams },
         link: 'accounts/activate'
       }
     )
   }
 
-  async getUsers(bodyParams) {
+  async getUsers (bodyParams) {
     return await this.$serveur.getRequest(
       {
         body: bodyParams,
         link: 'auth/provider/users'
       }
-    )  
+    )
   }
 
-  async exchangeToken(bodyParams) {
+  async exchangeToken (bodyParams) {
     return await this.$serveur.postRequest(
       {
         body: bodyParams,
-        link: '/account_action/googleauth'
+        link: 'account_action/googleauth'
       }
-    )  
+    )
   }
 
-  async verifyMail(bodyParams) {
-    
+  async verifyMail (bodyParams) {
     return await this.$serveur.postRequest(
       {
         body: bodyParams,
         link: 'accounts/activate'
       }
-    )  
+    )
   }
 
+  async getProfiles (bodyParams) {
+    return await this.$serveur.getRequest(
+      {
+        body: bodyParams,
+        link: 'profile_action/get_profile'
+      }
+    )
+  }
+  async createTenant (bodyParams) {
+    return await this.$serveur.postRequest(
+      {
+        body: bodyParams,
+        link: 'client_action/create_client'
+      }
+    )
+  }
+  async updateTenant (bodyParams) {
+    return await this.$serveur.postRequest(
+      {
+        body: bodyParams,
+        link: 'client_action/update_client'
+      }
+    )
+  }
+
+  async createLessor (bodyParams) {
+    return await this.$serveur.postRequest(
+      {
+        body: bodyParams,
+        link: 'proprietaire_action/create_proprio'
+      }
+    )
+  }
+  async updateLessor (bodyParams) {
+    return await this.$serveur.postRequest(
+      {
+        body: bodyParams,
+        link: "proprietaire_action/update_proprio"
+      }
+    )
+  }
 }

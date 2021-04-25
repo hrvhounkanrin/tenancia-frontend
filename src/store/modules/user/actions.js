@@ -6,6 +6,7 @@ import {
 } from './mutation-types'
 
 import api from '@/api'
+import User from '@/api/user'
 import config from '@/config/backend'
 import axios from 'axios'
 
@@ -41,6 +42,50 @@ export default {
     commit(REMOVE_ADMIN, data)
   },
 
-  // to be transformed in async func
+  /**
+ * Return connected user profiles. Should be between(tenant, lessor, estate agent)
+ * @returns {} Returns global object containing Tenant, Lessor and RealEstate project if exist.
+ */
+  async myProfiles ({ commit }) {
+    let user = new User()
+    return await user.getProfiles()
+  },
   
+  /**
+   * Create tenant profil
+   * @returns {} Returns tenant profil.
+   */
+  async createTenant ({ commit }, data) {
+      let user = new User()
+      let tenantProfile = await user.createTenant(data)
+      return tenantProfile
+  },
+  /**
+   * Update existing tenant profile
+   * @returns {} Returns tenant profil.
+   */
+  async updateTenant ({ commit }, data) {
+      let user = new User()
+      let tenantProfile = await user.updateTenant(data)
+      return tenantProfile
+  },
+
+    /**
+   * Create tenant profil
+   * @returns {} Returns lessor profil.
+   */
+     async createLessor ({ commit }, data) {
+      let user = new User()
+      let lessorProfile = await user.createLessor(data)
+      return lessorProfile
+  },
+  /**
+   * Update existing lessor profile
+   * @returns {} Returns lessor profil.
+   */
+  async updateLessor ({ commit }, data) {
+      let user = new User()
+      let lessorProfile = await user.updateLessor(data)
+      return lessorProfile
+  }
 }

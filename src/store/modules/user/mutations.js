@@ -2,7 +2,8 @@ import {
   ADMIN_LIST,
   UPDATE_ADMIN,
   REMOVE_ADMIN,
-  ADD_ADMIN
+  ADD_ADMIN,
+  PROFILES,
 } from './mutation-types'
 
 import Vue from 'vue'
@@ -14,7 +15,7 @@ export default {
 
   [UPDATE_ADMIN] (state, admin) {
     const idx = state.admin_list.findIndex(el => el.id === admin.id)
-    Vue.set(state.admin_list, idx, admin)
+    //Vue.set(state.admin_list, idx, admin)
   },
 
   [REMOVE_ADMIN] (state, admin) {
@@ -24,5 +25,8 @@ export default {
 
   [ADMIN_LIST] (state, admins) {
     state.admin_list = admins
+  },
+  [PROFILES] (state, data) {
+    state.profiles = data
   }
 }
