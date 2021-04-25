@@ -48,7 +48,23 @@ export default {
  */
   async myProfiles ({ commit }) {
     let user = new User()
-    return await user.getProfiles()
+ let res = await user.getProfiles()
+
+ if (res.data.payload.lessor) {
+  localStorage.setItem('lessor', JSON.stringify(res.data.payload.lessor))
+}
+  
+ if (res.data.payload.tenant) {
+  localStorage.setItem('tenant', JSON.stringify(res.data.payload.tenant))
+
+}
+
+if (res.data.payload.realEstate) {
+  localStorage.setItem('realEstate', JSON.stringify(res.data.payload.realEstate))
+
+}
+
+    return res
   },
   
   /**
@@ -66,7 +82,7 @@ export default {
    */
   async updateTenant ({ commit }, data) {
       let user = new User()
-      let tenantProfile = await user.updateTenant(data)
+      let tenantProfile = await user.updateTenant(data)      
       return tenantProfile
   },
 
