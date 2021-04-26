@@ -1,0 +1,73 @@
+<template>
+   <div class="w-100 mb-4">
+        <div class="d-flex flex-wrap justify-content-between mb-2">
+            <small class="line-height-xs text-uppercase text-muted"><h5 class="pt-1 pb-1"><a href="javascript:void(0);">#{{index+1}} - {{intitule}}</a></h5></small>
+            <small class="line-height-xs text-uppercase"><a href="javascript:void(0);" class="badge badge-pill badge-danger pl-3 pr-3">{{statut}}</a></small>
+        </div>
+        <div class="row">
+            <div class="col-md-2"><img height="50" width="70" src="@/assets/img/logo_tenancia.jpeg"/></div>
+            <div class="col-md-8">
+                <ul class="list-unstyled card-columns">
+                    <!--<li v-for="(dep, index) in dependencies"  :key="index" >{{dep.typedependence}}</li>-->
+                    <li v-for="(typedependence, index) in dependances" :key="index"><font-awesome-icon icon="check-square" class="mr-2"/>{{ typedependence }}</li>
+                </ul>
+            </div>
+            
+        </div>
+        <div class="row">
+            <div class="col-md-8 offset-md-2">
+                <p><font-awesome-icon icon="comments"/><span class="ml-2">{{autre_description}}...</span></p>
+            </div>
+        </div>
+        <div class="row d-flex flex-row-reverse">
+                <b-button variant="primary" class="mr-2">
+                <span class="btn-wrapper--icon">
+                    <font-awesome-icon icon="edit"/>
+                </span>
+                <span class="btn-wrapper--label">Modifier</span>
+            </b-button>
+                <b-button variant="primary" class="mr-2">
+                    <span class="btn-wrapper--icon">
+                        <font-awesome-icon icon="file-word"/>
+                    </span>
+                    Ajouter un contrat
+                </b-button>
+                <b-button variant="primary" class="mr-2">
+                    <span class="btn-wrapper--icon">
+                        <font-awesome-icon icon="unlock"/>
+                    </span>
+                    Libérer
+                </b-button>
+        </div>
+        <div class="divider mt-3 blue-divider"></div>
+    </div>
+</template>
+
+<script>
+
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
+
+
+export default {
+  name: 'Appartment',
+  components: {
+    'font-awesome-icon': FontAwesomeIcon
+  },
+  computed: {
+      structures:()=>{
+          return []
+      }
+  },
+  mounted() {
+      //console.log(this.dependances)
+  },
+  props: {
+    index: Number,
+    intitule: String,
+    statut: String,
+    autre_description: String,
+    dependances: Array
+  },
+   
+}
+</script>

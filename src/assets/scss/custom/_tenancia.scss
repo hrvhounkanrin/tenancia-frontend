@@ -1,0 +1,23 @@
+
+// Slick slider
+
+.slack-bg {
+  background: rgba($slack, .50);
+}
+.building{
+  pointer-events: auto;
+}
+.building:hover {
+  background: rgba($slack, .25);
+}
+.blue-divider {
+  background-color: blue;
+}
+.card-columns {
+  @include media-breakpoint-only(lg) {
+    column-count: 2;
+  }
+  @include media-breakpoint-only(xl) {
+    column-count: 2;
+  }
+}

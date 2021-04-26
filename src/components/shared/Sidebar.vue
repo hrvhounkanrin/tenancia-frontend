@@ -74,6 +74,7 @@ export default {
         },
         {
           title: 'Mes biens',
+          href: '/my-properties',
           icon: {
             element: 'home-icon'
           }
