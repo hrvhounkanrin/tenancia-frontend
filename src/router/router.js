@@ -4,6 +4,7 @@ import authGuard from './auth-guard'
 import Home from '../views/Home.vue'
 import Register from '@/views/register'
 import Profile from '@/views/profiles/my-profiles.vue'
+import Properties from '@/views/properties/Properties.vue'
 Vue.use(Router)
 
 const router = new Router({
@@ -42,6 +43,11 @@ const router = new Router({
       path: '/my-profiles',
       name: 'MyProfiles',
       component: Profile
+    },
+    {
+      path: '/my-properties',
+      name: 'Myproperties',
+      component: Properties
     },
     {
       path: '/about',
