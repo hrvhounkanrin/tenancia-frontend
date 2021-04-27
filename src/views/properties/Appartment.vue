@@ -34,9 +34,9 @@
                 </b-button>
                 <b-button variant="primary" class="mr-2">
                     <span class="btn-wrapper--icon">
-                        <font-awesome-icon icon="unlock"/>
+                        <font-awesome-icon icon="clone"/>
                     </span>
-                    Libérer
+                    Cloner
                 </b-button>
         </div>
         <div class="divider mt-3 blue-divider"></div>

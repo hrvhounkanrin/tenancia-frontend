@@ -137,7 +137,19 @@
                             <b>Appartements & Chambres</b>
                         </div>
                         <div class="card-header--actions">
-                            <b-dropdown no-caret right variant="link p-0 btn-link-primary" class="text-primary shadow-none p-0">
+                            <!--<div class="input-group">
+                                <input type="search" class="form-control" placeholder="Search terms here..." />
+                                <div class="input-group-append">
+                                    <b-button variant="primary" class="border-0">
+                                        <font-awesome-icon icon="search" />
+                                    </b-button>
+                                </div>
+                            </div>-->
+                             <b-button variant="primary">
+                                    <font-awesome-icon icon="home" class="mr-2" />
+                                    Ajouter appartement
+                            </b-button>
+                            <!--<b-dropdown no-caret right variant="link p-0 btn-link-primary" class="text-primary shadow-none p-0">
                                 <template slot="button-content">
                                     <div class="font-size-xl">
                                         <font-awesome-icon icon="ellipsis-h"/>
@@ -148,7 +160,7 @@
                                 <b-dropdown-item>Cloner</b-dropdown-item>
                                 <b-dropdown-divider></b-dropdown-divider>
                                 <b-dropdown-item>Supprimer</b-dropdown-item>
-                            </b-dropdown>
+                            </b-dropdown>-->
                         </div>
                     </div>
                     <div class="card-body pb-1">
@@ -221,6 +233,8 @@
         faEdit,
         faFileWord,
         faUnlock,
+        faClone,
+        faHome
     } from '@fortawesome/free-solid-svg-icons'
     import {
         faPinterest,
@@ -250,7 +264,9 @@
         faCheckSquare,
         faEdit,
         faFileWord,
-        faUnlock
+        faUnlock,
+        faClone,
+        faHome
     );
     export default {
         components: {
