@@ -3,6 +3,7 @@
         <PageTitle heading="Mes biens"
                    subheading="Ajoutez vos biens, mettez les en location et percevez vos loyer..."/>
         <div class="bg-vicious-stance pt-5 pl-5 pr-5 mb-5 rounded">
+            
             <div class="row">
                 <div class="col-xl-3 col-md-6 col-sm-12">
                     <a href="javascript:void(0);" class="mb-5 card card-box card-box-border-bottom border-success card-box-hover-rise-alt">
@@ -86,6 +87,18 @@
                 </div>
             </div>
         </div>
+        <div class="row mb-4">
+            <div class="col-lg-12 col-md-12 col-sm-8 offset-sm-2 col-xl-8 offset-xl-2">
+                <div class="input-group">
+                    <input type="search" class="form-control" placeholder="Rechercher..." />
+                    <div class="input-group-append">
+                        <b-button variant="primary" class="border-0">
+                            <font-awesome-icon icon="search" />
+                        </b-button>
+                    </div>
+                </div>
+            </div>
+        </div>
          <div class="row">
             <div class="col-lg-12 col-md-6 col-sm-12 col-xl-6">
                 <div class="card card-box mb-5">
@@ -165,7 +178,7 @@
                     </div>
                     <div class="card-body pb-1">
                         <ul class="list-group list-group-flash">
-                            <appartment v-for="(item, index) in appartements"
+                            <appartment v-for="(item, index) in paginatedAppartments"
                             :dependances="getDependencies(item.id)"
                             :index="index"
                             :intitule="item.intitule"
@@ -178,23 +191,15 @@
                  
                     <div class="divider mt-3"></div>
                     <div class="text-center py-4">
-                       <div class="p-3">
-                        <ul class="pagination justify-content-center mb-0">
-                            <li class="page-item">
-                                <a class="page-link" href="javascript:void(0)" aria-label="Previous">
-                                    <font-awesome-icon icon="chevron-left"/>
-                                </a>
-                            </li>
-                            <li class="page-item"><a class="page-link" href="javascript:void(0)">1</a></li>
-                            <li class="page-item active"><a class="page-link" href="javascript:void(0)">2</a></li>
-                            <li class="page-item"><a class="page-link" href="javascript:void(0)">3</a></li>
-                            <li class="page-item">
-                                <a class="page-link" href="javascript:void(0)" aria-label="Next">
-                                    <font-awesome-icon icon="chevron-right"/>
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
+                       <!--paginate component -->
+                       <t-pagination 
+                            :paginationLength="getPageCount()" 
+                            :perPage="perPage" 
+                            :selected="selectedPage" 
+                            @select-page="paginate"
+                            @next-page="nextPage"
+                            @previous-page="previousPage"
+                            ></t-pagination>
                     </div>
                 </div>
             </div>
@@ -207,6 +212,7 @@
 <script>
     import VueApexCharts from 'vue-apexcharts'
     import VuePerfectScrollbar from 'vue-perfect-scrollbar'
+    import paginate from '@/components/shared/'
     import Building from './Building.vue'
     import Appartment from './Appartment.vue'
     import {library} from '@fortawesome/fontawesome-svg-core'
@@ -267,7 +273,7 @@
         faUnlock,
         faClone,
         faHome
-    );
+    )
     export default {
         components: {
             VuePerfectScrollbar,
@@ -275,11 +281,17 @@
             'apexchart': VueApexCharts,
             'building': Building,
             'appartment': Appartment,
+            't-pagination':paginate
         },
         data: function () {
             return {
+                perPage: 2,
+                paginationLength: 3,
+                selectedPage:1,
+                buildingApparts:[],
                 properties:[
                 {
+                    immeuble_id:1,
                     title: "L'hibiscus (L'hibiscus (Ab-Calavi, Qtier zoundja)",
                     reference: "0987520",
                     adresse: "Calavi zoundja, Carré 787",
@@ -287,6 +299,7 @@
                     isActive: false
                 },
                 {
+                    immeuble_id:2,
                     title: "Le frangipanier (Ab-Calavi, Qtier zoca)",
                     reference: "0987521",
                     adresse: "Calavi zoundja, Carré 787",
@@ -294,6 +307,7 @@
                     isActive: false
                 },
                 {
+                    immeuble_id:3,
                     title: "Le Flamboyant (Ab-Calavi, Qtier arcon-ville)",
                     reference: "0987522",
                     adresse: "Calavi zoundja, Carré 787",
@@ -301,6 +315,7 @@
                     isActive: false
                 },
                 {
+                    immeuble_id:4,
                     title: "Les Bougainvilliers (Ab-Calavi, Qtier tankpè)",
                     reference: "0987523",
                     adresse: "Calavi zoundja, Carré 787",
@@ -308,10 +323,10 @@
                     isActive: false
                 }
                 ],
- 
                 appartements: [
                     {
                         id: 1,
+                        immeuble_id: 1,
                         intitule: '1A',
                         statut: 'LIBRE',
                         autre_description: 'Chaque chambre avec sa douche, plus une douche visiteur',
@@ -357,6 +372,7 @@
                     },
                     {
                         id: 2,
+                        immeuble_id: 1,
                         intitule: '1B',
                         statut: 'LIBRE',
                         autre_description: 'Chaque chambre avec sa douche',
@@ -402,6 +418,7 @@
                     },
                     {
                         id: 3,
+                        immeuble_id: 1,
                         intitule: '1C',
                         statut: 'LIBRE',
                         autre_description: 'Chaque chambre avec sa douche',
@@ -444,22 +461,465 @@
                             
                             
                         ]
+                    },
+                    {
+                        id: 4,
+                        immeuble_id: 1,
+                        intitule: '1D',
+                        statut: 'LIBRE',
+                        autre_description: 'Chaque chambre avec sa douche, plus une douche visiteur',
+                        dependencies: [
+                            {
+                                typedependence:{
+                                    id: 1,
+                                    libelle: 'Séjour'
+                                },
+                                nbre: 1
+                            },
+                            {
+                                typedependence:{
+                                    id: 2,
+                                    libelle: 'Chambre à coucher'
+                                },
+                                nbre: 2
+                            },
+                            {
+                                typedependence:{
+                                    id: 3,
+                                    libelle: 'Douche'
+                                },
+                                nbre: 2
+                            },                           
+                            {
+                                typedependence:{
+                                    id: 4,
+                                    libelle: 'Cuisine'
+                                },
+                                nbre: 2
+                            },                           
+                            {
+                                typedependence:{
+                                    id: 5,
+                                    libelle: 'Débarras'
+                                },
+                                nbre: 2
+                            }
+                            
+                            
+                        ]
+                    },
+                    {
+                        id: 5,
+                        immeuble_id: 3,
+                        intitule: '1E',
+                        statut: 'LIBRE',
+                        autre_description: 'Chaque chambre avec sa douche',
+                        dependencies: [
+                            {
+                                typedependence:{
+                                    id: 1,
+                                    libelle: 'Séjour'
+                                },
+                                nbre: 1
+                            },
+                            {
+                                typedependence:{
+                                    id: 2,
+                                    libelle: 'Chambre à coucher'
+                                },
+                                nbre: 2
+                            },
+                            {
+                                typedependence:{
+                                    id: 3,
+                                    libelle: 'Douche'
+                                },
+                                nbre: 2
+                            },                           
+                            {
+                                typedependence:{
+                                    id: 4,
+                                    libelle: 'Cuisine'
+                                },
+                                nbre: 2
+                            },                           
+                            {
+                                typedependence:{
+                                    id: 5,
+                                    libelle: 'Débarras'
+                                },
+                                nbre: 2
+                            }
+                            
+                            
+                        ]
+                    },
+                    {
+                        id: 6,
+                        immeuble_id: 3,
+                        intitule: '1F',
+                        statut: 'LIBRE',
+                        autre_description: 'Chaque chambre avec sa douche',
+                        dependencies: [
+                            {
+                                typedependence:{
+                                    id: 1,
+                                    libelle: 'Séjour'
+                                },
+                                nbre: 1
+                            },
+                            {
+                                typedependence:{
+                                    id: 2,
+                                    libelle: 'Chambre à coucher'
+                                },
+                                nbre: 2
+                            },
+                            {
+                                typedependence:{
+                                    id: 3,
+                                    libelle: 'Douche'
+                                },
+                                nbre: 2
+                            },                           
+                            {
+                                typedependence:{
+                                    id: 4,
+                                    libelle: 'Cuisine'
+                                },
+                                nbre: 2
+                            },                           
+                            {
+                                typedependence:{
+                                    id: 5,
+                                    libelle: 'Débarras'
+                                },
+                                nbre: 2
+                            }
+                            
+                            
+                        ]
+                    },
+                    {
+                        id: 7,
+                        immeuble_id: 3,
+                        intitule: '1G',
+                        statut: 'LIBRE',
+                        autre_description: 'Chaque chambre avec sa douche, plus une douche visiteur',
+                        dependencies: [
+                            {
+                                typedependence:{
+                                    id: 1,
+                                    libelle: 'Séjour'
+                                },
+                                nbre: 1
+                            },
+                            {
+                                typedependence:{
+                                    id: 2,
+                                    libelle: 'Chambre à coucher'
+                                },
+                                nbre: 2
+                            },
+                            {
+                                typedependence:{
+                                    id: 3,
+                                    libelle: 'Douche'
+                                },
+                                nbre: 2
+                            },                           
+                            {
+                                typedependence:{
+                                    id: 4,
+                                    libelle: 'Cuisine'
+                                },
+                                nbre: 2
+                            },                           
+                            {
+                                typedependence:{
+                                    id: 5,
+                                    libelle: 'Débarras'
+                                },
+                                nbre: 2
+                            }
+                            
+                            
+                        ]
+                    },
+                    {
+                        id: 8,
+                        immeuble_id: 3,
+                        intitule: '1I',
+                        statut: 'LIBRE',
+                        autre_description: 'Chaque chambre avec sa douche',
+                        dependencies: [
+                            {
+                                typedependence:{
+                                    id: 1,
+                                    libelle: 'Séjour'
+                                },
+                                nbre: 1
+                            },
+                            {
+                                typedependence:{
+                                    id: 2,
+                                    libelle: 'Chambre à coucher'
+                                },
+                                nbre: 2
+                            },
+                            {
+                                typedependence:{
+                                    id: 3,
+                                    libelle: 'Douche'
+                                },
+                                nbre: 2
+                            },                           
+                            {
+                                typedependence:{
+                                    id: 4,
+                                    libelle: 'Cuisine'
+                                },
+                                nbre: 2
+                            },                           
+                            {
+                                typedependence:{
+                                    id: 5,
+                                    libelle: 'Débarras'
+                                },
+                                nbre: 2
+                            }
+                            
+                            
+                        ]
+                    },
+                    {
+                        id: 9,
+                        immeuble_id: 3,
+                        intitule: '1J',
+                        statut: 'LIBRE',
+                        autre_description: 'Chaque chambre avec sa douche',
+                        dependencies: [
+                            {
+                                typedependence:{
+                                    id: 1,
+                                    libelle: 'Séjour'
+                                },
+                                nbre: 1
+                            },
+                            {
+                                typedependence:{
+                                    id: 2,
+                                    libelle: 'Chambre à coucher'
+                                },
+                                nbre: 2
+                            },
+                            {
+                                typedependence:{
+                                    id: 3,
+                                    libelle: 'Douche'
+                                },
+                                nbre: 2
+                            },                           
+                            {
+                                typedependence:{
+                                    id: 4,
+                                    libelle: 'Cuisine'
+                                },
+                                nbre: 2
+                            },                           
+                            {
+                                typedependence:{
+                                    id: 5,
+                                    libelle: 'Débarras'
+                                },
+                                nbre: 2
+                            }
+                            
+                            
+                        ]
+                    },
+                    {
+                        id: 10,
+                        immeuble_id: 3,
+                        intitule: '1K',
+                        statut: 'LIBRE',
+                        autre_description: 'Chaque chambre avec sa douche, plus une douche visiteur',
+                        dependencies: [
+                            {
+                                typedependence:{
+                                    id: 1,
+                                    libelle: 'Séjour'
+                                },
+                                nbre: 1
+                            },
+                            {
+                                typedependence:{
+                                    id: 2,
+                                    libelle: 'Chambre à coucher'
+                                },
+                                nbre: 2
+                            },
+                            {
+                                typedependence:{
+                                    id: 3,
+                                    libelle: 'Douche'
+                                },
+                                nbre: 2
+                            },                           
+                            {
+                                typedependence:{
+                                    id: 4,
+                                    libelle: 'Cuisine'
+                                },
+                                nbre: 2
+                            },                           
+                            {
+                                typedependence:{
+                                    id: 5,
+                                    libelle: 'Débarras'
+                                },
+                                nbre: 2
+                            }
+                            
+                            
+                        ]
+                    },
+                    {
+                        id: 11,
+                        immeuble_id: 3,
+                        intitule: '1L',
+                        statut: 'LIBRE',
+                        autre_description: 'Chaque chambre avec sa douche',
+                        dependencies: [
+                            {
+                                typedependence:{
+                                    id: 1,
+                                    libelle: 'Séjour'
+                                },
+                                nbre: 1
+                            },
+                            {
+                                typedependence:{
+                                    id: 2,
+                                    libelle: 'Chambre à coucher'
+                                },
+                                nbre: 2
+                            },
+                            {
+                                typedependence:{
+                                    id: 3,
+                                    libelle: 'Douche'
+                                },
+                                nbre: 2
+                            },                           
+                            {
+                                typedependence:{
+                                    id: 4,
+                                    libelle: 'Cuisine'
+                                },
+                                nbre: 2
+                            },                           
+                            {
+                                typedependence:{
+                                    id: 5,
+                                    libelle: 'Débarras'
+                                },
+                                nbre: 2
+                            }
+                            
+                            
+                        ]
+                    },
+                    {
+                        id: 12,
+                        immeuble_id: 3,
+                        intitule: '1M',
+                        statut: 'LIBRE',
+                        autre_description: 'Chaque chambre avec sa douche',
+                        dependencies: [
+                            {
+                                typedependence:{
+                                    id: 1,
+                                    libelle: 'Séjour'
+                                },
+                                nbre: 1
+                            },
+                            {
+                                typedependence:{
+                                    id: 2,
+                                    libelle: 'Chambre à coucher'
+                                },
+                                nbre: 2
+                            },
+                            {
+                                typedependence:{
+                                    id: 3,
+                                    libelle: 'Douche'
+                                },
+                                nbre: 2
+                            },                           
+                            {
+                                typedependence:{
+                                    id: 4,
+                                    libelle: 'Cuisine'
+                                },
+                                nbre: 2
+                            },                           
+                            {
+                                typedependence:{
+                                    id: 5,
+                                    libelle: 'Débarras'
+                                },
+                                nbre: 2
+                            }
+                            
+                            
+                        ]
                     }
-                ]
+                ],
+                paginatedAppartments: []
             }
         },
+        created() {
+            this.paginate(1)
+            this.selectBuilding(this.properties[0], 0)
+        },
         methods: {
+            getPageCount: function(){
+                this.paginationLength = Math.round(this.buildingApparts.length/this.perPage)
+                return this.paginationLength
+            },
+            paginate: function(pageNum){
+                let page = pageNum 
+                let per_page = this.perPage
+                let offset = (page - 1) * per_page
+                let paginatedItems = this.buildingApparts.slice(offset).slice(0, this.perPage)
+                this.selectedPage = pageNum
+                this.paginatedAppartments = paginatedItems
+            },
+            previousPage: function () {
+                console.log('Prev:', this.selectedPage)
+                if(this.selectedPage<=1) return
+                this.paginate(this.selectedPage-1)
+            },
+            nextPage: function () {
+                console.log('Next:', this.selectedPage)
+                if(this.selectedPage>=this.paginationLength) return
+                this.paginate(this.selectedPage+1)
+            },
             getDependencies: function(idAppartment) {
                 let appartment = this.$data.appartements.filter(appartment=>appartment.id==idAppartment)[0]
-                console.log(appartment)
+                //console.log(appartment)
                 let dependencies  =  appartment.dependencies.map(dep=>'0'+dep.nbre + ' '+dep.typedependence.libelle)
-                console.log(dependencies)
+                //console.log(dependencies)
                 return dependencies
             },
             selectBuilding: function (item, index) {
                 console.log('Select building: ', item)
                 this.properties.map(el=>el.isActive=false)
                 this.properties[index].isActive=true
+                this.buildingApparts = this.appartements.filter(el=>el.immeuble_id==item.immeuble_id)
+                this.paginate(1)
 
             }
         }

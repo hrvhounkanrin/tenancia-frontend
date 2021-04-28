@@ -5,7 +5,7 @@
             <small class="line-height-xs text-uppercase"><a href="javascript:void(0);" class="badge badge-pill badge-danger pl-3 pr-3">{{statut}}</a></small>
         </div>
         <div class="row">
-            <div class="col-md-2"><img height="50" width="70" src="@/assets/img/logo_tenancia.jpeg"/></div>
+            <div class="col-md-2"><img height="100" width="100" src="@/assets/icons/green-house.png"/></div>
             <div class="col-md-8">
                 <ul class="list-unstyled card-columns">
                     <!--<li v-for="(dep, index) in dependencies"  :key="index" >{{dep.typedependence}}</li>-->

@@ -48,7 +48,7 @@ export default {
  */
   async myProfiles ({ commit }) {
     let user = new User()
- let res = await user.getProfiles()
+    let res = await user.getProfiles()
 
     if (res.data.payload.lessor) {
       localStorage.setItem('lessor', JSON.stringify(res.data.payload.lessor))

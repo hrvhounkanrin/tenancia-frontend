@@ -11,3 +11,4 @@ export {
   default as AppPageNotFound
 } from './page-not-found.vue'
 export { default as alert } from './alerts.vue'
+export { default } from './paginate.vue'

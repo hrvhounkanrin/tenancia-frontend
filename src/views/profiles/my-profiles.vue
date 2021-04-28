@@ -306,7 +306,9 @@
                                         </div>
                                          <div class="col-md-12 mb-12">
                                             <b-form-group label="DATE DELIVRANCE" label-for="numero_ifu" >
-                                            <b-form-input id="numero_ifu" v-model="realEstate.date_delivrance" trim></b-form-input> </b-form-group>
+                                            <datepicker :bootstrap-styling="true" :format="customFormatter" v-model="realEstate.date_delivrance"></datepicker>
+                                            <!--<b-form-input id="numero_ifu" v-model="realEstate.date_delivrance" trim></b-form-input> -->
+                                            </b-form-group>
                                         </div>
                                     </div>
                                     <a href="javascript:void(0);" class="btn-block btn btn-primary mt-1" @click="saveRealEstate" ><span>Sauvegarder</span></a>
@@ -324,8 +326,9 @@
 <script>
 import { mapState, mapActions, mapMutations, mapGetters } from 'vuex'
 import { library } from '@fortawesome/fontawesome-svg-core'
-import { mixin } from "@/mixin/mixin";
-
+import Datepicker from 'vuejs-datepicker'
+import { mixin } from "@/mixin/mixin"
+import moment from 'moment'
 import {
   faArrowRight,
   faArrowUp,
@@ -349,7 +352,8 @@ export default {
   name: 'Profiles',
   components: {
     'font-awesome-icon': FontAwesomeIcon,
-    alert
+    alert, 
+    Datepicker
   },
   data () {
     return {
@@ -446,6 +450,9 @@ export default {
             'Cousin(e)', 'Grand-père','Grande-mère','Père','Mère','Tante','Oncle','Grande tante',
             'Soeur','Fère','Conjoint(e)','Beau-père','Belle-mère','Enfant','Parent éloigné','Neveu','Nièce'
         ].sort()
+    },
+    customFormatter() {
+      return moment(this.realEstate.date_delivrance).format('L').toString()
     },
     editTenant (e) {
       this.editingTenant = true
@@ -592,11 +599,14 @@ export default {
              this.$forceUpdate()
              return
         }
-        console.log('this.realEstate: ',this.realEstate)
         if (this.realEstate.id && this.realEstate.id > 0){
+                
+                this.realEstate.date_delivrance = moment(this.realEstate.date_delivrance, 'L').format('YYYY-MM-DD').toString()
+                console.log(this.realEstate)
                 await this.updateRealEstate(this.realEstate).then(res => this.onRealEstateActionSucess(res)).catch(err => this.onRealEstateActionFailure(err))
         }
         else{
+            console.log(this.realEstate)
             await this.createRealEstate(this.realEstate).then(res => this.onRealEstateActionSucess(res)).catch(err => this.onRealEstateActionFailure(err))
         }
         
