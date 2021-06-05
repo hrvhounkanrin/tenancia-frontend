@@ -36,29 +36,63 @@ export default ($http, $config) => {
       return Promise.reject(error)
     }
   )
-  /*    
+  
   $api.interceptors.response.use(
     (response) => {
       return response;
     },
     (error) => {
-      switch (error.response.status) {
-        case 401:
-          // Handle Unauthorized calls here
-          // Display an alert
-          break;
-        case 500:
-          // Handle 500 here
-          // redirect
-          break;
-        // and so on..
+      const errorResponse = {
+        isValidationError: false,
+        message: 'Network Error.',
+        type: 'error',
+        errors: [],
       }
-   
-      if (error.response.status == 400) {
+      const ErrorMessages = {
+        400: 'Une erreur est survenue lors du traitement de votre requête', 
+        401: 'Non autorisé, You are not Allowed',
+        403: 'Sorry, You are not allowed for This Action',
+        404: 'La ressource que vous demandez n\'existe pas.',
+        405: 'API Route Method Not Allowed',
+        500: 'Server Error, please try again later',
+        request: 'There is Some Problem With Our Servers, Please Try again Later',
+        other: 'There was some Problem with your Request, Please Try again Later',
       }
-      return Promise.reject(error);
+      if (error && error.response) {
+        switch (error.response.status) {
+          case 400:
+            errorResponse.message = ErrorMessages['400']
+            break
+          case 401:
+            errorResponse.message = ErrorMessages['401']
+            break
+          case 403:
+            errorResponse.message = ErrorMessages['403']
+            break
+          case 404:
+            errorResponse.message = ErrorMessages['404']
+            break
+          case 405:
+            errorResponse.message = ErrorMessages['405']
+            break;
+          case 500:
+            errorResponse.message = ErrorMessages['500']
+            break
+        }
+      }
+      else if (error && error.request) {
+        errorResponse.message = ErrorMessages['request']
+        // client never received a response, or request never left
+      } else if (error instanceof Error) {
+        errorResponse.message = error.message
+      } else if (typeof error === 'string') {
+        errorResponse.message = error
+      } else {
+        errorResponse.message = ErrorMessages['other']
+      }
+      return Promise.reject(errorResponse)
     }
-  )*/
+  )
   const postRequest = (data) => {
     return $api.post($config.apiVersion + data.link, data.body)
   }
