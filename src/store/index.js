@@ -4,6 +4,7 @@ import Vue from 'vue'
 import user from './modules/user'
 import banque from './modules/banque'
 import auth from './modules/auth'
+import general from './modules/general'
 import shared from './modules/shared'
 
 // import { main } from '@/app/shared/store/main-store'
@@ -16,7 +17,8 @@ export default new Vuex.Store({
     shared,
     user,
     banque,
-    auth
+    auth,
+    general
     // main
   }
 })

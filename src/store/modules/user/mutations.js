@@ -4,6 +4,9 @@ import {
   REMOVE_ADMIN,
   ADD_ADMIN,
   PROFILES,
+  CREATE_LESSOR,UPDATE_LESSOR,
+  CREATE_TENANT,UPDATE_TENANT,
+  CREATE_REAL_ESTATE,UPDATE_REAL_ESTATE
 } from './mutation-types'
 
 import Vue from 'vue'
@@ -30,5 +33,23 @@ export default {
     console.log('PROFILES MUTATION:',data)
     
     state.profiles = data
-  }
+  },
+  [CREATE_LESSOR] (state, lessor) {
+    state.profiles.lessor = lessor
+  },
+  [UPDATE_LESSOR] (state, lessor) {
+    state.profiles.lessor = lessor
+  },
+  [CREATE_TENANT] (state, tenant) {
+    state.profiles.tenant = tenant
+  },
+  [UPDATE_TENANT] (state, tenant) {
+    state.profiles.tenant = tenant
+  },
+  [CREATE_REAL_ESTATE] (state, realEstate) {
+    state.profiles.realEstate = realEstate
+  },
+  [UPDATE_REAL_ESTATE] (state, realEstate) {
+    state.profiles.realEstate = realEstate
+  },
 }
