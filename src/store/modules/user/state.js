@@ -1,4 +1,8 @@
 export default {
   admin_list: [],
-  profiles: {}
+  profiles:{
+    tenant: {},
+    lessor: {},
+    realEstate: {}
+  }
 }
