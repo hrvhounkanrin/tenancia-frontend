@@ -122,7 +122,7 @@
                             <div class="col-lg-12 col-xl-12">
                                 <div class="card card-box mb-5">
                                     <ul class="list-group list-group-flush" v-if="immeubles.length>0">
-                                        <building
+                                          <building
                                             v-for="(item, index) in immeubles"
                                             :immeuble_id="item.immeuble_id"
                                             :title="item.intitule"
@@ -173,7 +173,7 @@
                             :statut="item.statut"
                             :autre_description="item.autre_description"
                             :surfaceTotale="surfaceTotale(item)"
-                            :key="item.Id"
+                            :key="index"
                             @init-cloner="initClonerAppartment(item)"
                             @edit-appartment="editAppartment(item)"
                             />
@@ -195,7 +195,7 @@
                 </div>
             </div>
         </div>
-
+        
         <bulding-form :id="'buildingForm'" :hide-footer="false" :hide-header="false" :size="'lg'"
          @hide-modal="$bvModal.hide('buildingForm')" @save-data="saveImmeuble">
             <template #left-img>
@@ -206,50 +206,51 @@
                 </GmapMap>
             </template>
             <template #modal-content>
-                      <form>
-                        <div class="form-row">
-                           <div class="form-group col-md-12">
-                               <label for="intitule">Jour émission facture: <b> <span v-if="immeuble.jour_emission_facture < 9">0</span>{{ immeuble.jour_emission_facture }}  <small>du mois. </small></b></label>
-                                <vue-slider ref="slider" v-model="immeuble.jour_emission_facture" :value="immeuble.jour_emission_facture" :min="1" :max="30"></vue-slider>
-                            </div>
-                            <div class="form-group col-md-12">
-                               <label for="intitule">Jour valeur facture: <b> <span v-if="immeuble.jour_valeur_facture < 9">0</span>{{ immeuble.jour_valeur_facture }}  <small>du mois. </small></b></label>
-                                <vue-slider ref="slider" v-model="immeuble.jour_valeur_facture" :value="immeuble.jour_valeur_facture" :min="1" :max="30"></vue-slider>
-                            </div>
-                            <div class="form-group col-md-12">
+                <form v-if="immeuble">
+                            <div class="form-row" >
+                              <div class="form-group col-md-12">
+                                  <label for="intitule">Jour émission facture: <b> <span v-if="immeuble.jour_emission_facture < 9">0</span>{{ immeuble.jour_emission_facture }}  <small>du mois. </small></b></label>
+                                    <vue-slider ref="slider" v-model="immeuble.jour_emission_facture" :value="immeuble.jour_emission_facture" :min="1" :max="30"></vue-slider>
+                                </div>
+                                <div class="form-group col-md-12">
+                                  <label for="intitule">Jour valeur facture: <b> <span v-if="immeuble.jour_valeur_facture < 9">0</span>{{ immeuble.jour_valeur_facture }}  <small>du mois. </small></b></label>
+                                    <vue-slider ref="slider" v-model="immeuble.jour_valeur_facture" :value="immeuble.jour_valeur_facture" :min="1" :max="30"></vue-slider>
+                                </div>
+                                <div class="form-group col-md-12">
+
+                                </div>
+                                <div class="form-group col-md-12">
+                                    <label for="intitule">Référence municipale</label>
+                                    <input type="text" class="form-control" id="ref_immeuble" placeholder="Référence municipale"  trim v-model="immeuble.ref_immeuble">
+                                    <label for="intitule">Nom</label>
+                                    <input type="text" class="form-control" id="intitule" placeholder="Nom"  trim v-model="immeuble.intitule">
+                                    <label for="adresse">Adresse <span class="required">*</span></label>
+                                    <input type="text" class="form-control" id="adresse" placeholder="Quartier & maison de préférence" trim v-model="immeuble.adresse">
+                                    <span  class="invalid-feedback d-block" v-if="errors.adresseMsg" >{{errors.adresseMsg}}</span>
+
+                                    <label for="pays">Pays <span class="required">*</span></label>
+                                    <input type="text" class="form-control" id="pays" placeholder="Pays" trim v-model="immeuble.pays">
+                                    <span  class="invalid-feedback d-block" v-if="errors.paysMsg" >{{errors.paysMsg}}</span >
+                                    <label for="ville">Ville <span class="required">*</span></label>
+                                    <input type="text" class="form-control" id="ville" placeholder="Ville" trim v-model="immeuble.ville">
+                                    <span  class="invalid-feedback d-block" v-if="errors.villeMsg" >{{errors.villeMsg}}</span >
+
+                                  <label for="ville">Latitude</label>
+                                    <input type="text" class="form-control" id="lat" placeholder="Latitude" v-model="immeuble.latitude">
+                                    <label for="quartier">Longitude</label>
+                                    <input type="text" class="form-control" id="lng" placeholder="Longitude" v-model="immeuble.longitude">
+                                    <GmapAutocomplete @place_changed='setPlace'  class="form-control" />
+                                </div>
 
                             </div>
-                            <div class="form-group col-md-12">
-                                <label for="intitule">Référence municipale</label>
-                                <input type="text" class="form-control" id="ref_immeuble" placeholder="Référence municipale"  trim v-model="immeuble.ref_immeuble">
-                                <label for="intitule">Nom</label>
-                                <input type="text" class="form-control" id="intitule" placeholder="Nom"  trim v-model="immeuble.intitule">
-                                <label for="adresse">Adresse <span class="required">*</span></label>
-                                <input type="text" class="form-control" id="adresse" placeholder="Quartier & maison de préférence" trim v-model="immeuble.adresse">
-                                <span  class="invalid-feedback d-block" v-if="errors.adresseMsg" >{{errors.adresseMsg}}</span>
-
-                                <label for="pays">Pays <span class="required">*</span></label>
-                                <input type="text" class="form-control" id="pays" placeholder="Pays" trim v-model="immeuble.pays">
-                                <span  class="invalid-feedback d-block" v-if="errors.paysMsg" >{{errors.paysMsg}}</span >
-                                <label for="ville">Ville <span class="required">*</span></label>
-                                <input type="text" class="form-control" id="ville" placeholder="Ville" trim v-model="immeuble.ville">
-                                <span  class="invalid-feedback d-block" v-if="errors.villeMsg" >{{errors.villeMsg}}</span >
-
-                                <!--<label for="ville">Latitude</label>
-                                <input type="text" class="form-control" id="lat" placeholder="Latitude" v-model="immeuble.latitude">
-                                <label for="quartier">Longitude</label>
-                                <input type="text" class="form-control" id="lng" placeholder="Longitude" v-model="immeuble.longitude">
-                                <GmapAutocomplete @place_changed='setPlace'  class="form-control" />-->
-                            </div>
-
-                        </div>
-        </form>
+                </form>
             </template>
         </bulding-form>
+ 
         <b-modal id="clonerAppartment" title="Cloner appartement" centered>
             <div class="w-100 mb-4">
             <div class="d-flex flex-wrap justify-content-between mb-2">
-                <small class="line-height-xs text-uppercase text-muted"><h5 class="pt-1 pb-1"><a href="javascript:void(0);">#{{selectedImmeuble.intitule}}</a></h5></small>
+                <small class="line-height-xs text-uppercase text-muted"><h5 class="pt-1 pb-1"><a href="javascript:void(0);" v-if="selectedImmeuble">#{{selectedImmeuble.intitule}}</a></h5></small>
             </div>
             <div class="row">
                 <div class="col-md-12">
@@ -266,6 +267,11 @@
                       <input type="number" class="form-control" id="nbAppartmentToClone" placeholder="Nombre à cloner" min="1" max="10" v-model="nbAppartmentToClone">
                     </div>
                 </div>
+                <div class="col-md-12">
+                    <div class="form-group">
+                      <input type="number" class="form-control" id="nbEtageDest" placeholder="N° Etage" min="0" max="99" v-model="nbEtageDest">
+                    </div>
+                </div>
             </div>
 
                 
@@ -274,8 +280,8 @@
               <b-button variant="link" class="btn-link-dark" @click="$bvModal.hide('clonerAppartment')">Annuler</b-button>
               <b-button variant="primary" @click="clonerAppartment">Cloner</b-button>
           </div>
-      </b-modal>
-                            
+        </b-modal>
+             
 
     </div>
 </template>
@@ -383,7 +389,8 @@ export default {
       properties: [],
       paginatedAppartments: [],
       selectedAppartement:{},
-      nbAppartmentToClone: null
+      nbAppartmentToClone: null,
+      nbEtageDest: null
     }
   },
   computed: {
@@ -391,7 +398,6 @@ export default {
     ...mapGetters({
       immeubles: 'properties/immeubles',
       typedependances: 'properties/immeubles',
-      appartements: 'properties/appartements'
     }),
     ...mapState({
       api_errors: (state) => state.properties.errors,
@@ -400,21 +406,36 @@ export default {
     })
   },
   created () {
-    this.$store.dispatch('properties/getImmeubles')
-    this.$store.dispatch('properties/getTypedependances')
+    if(this.immeubles.length === 0){
+      this.$store.dispatch('properties/getImmeubles')
+    }
+    //
+    //this.$store.dispatch('properties/getTypedependances')
   },
   mounted () {
-
+    if (this.selectedImmeuble==null || this.selectedImmeuble===undefined){
+      if (this.immeubles.length > 0){
+          this.immeuble = this.immeubles[0]
+      }
+    } else{
+      this.immeuble =  this.selectedImmeuble
+    }
+    this.$store.commit('properties/SELECTED_IMMEUBLE', {})
+    this.$store.commit('properties/SELECTED_IMMEUBLE', this.immeuble)
+    this.$forceUpdate()
   },
   watch: {
     selectedImmeuble: function (newImmeuble, oldImmeuble) {
+      if(newImmeuble===undefined || this.immeubles.length ==0){
+        return
+      }
       let index = this.immeubles.findIndex(im => im.id === newImmeuble.id)
       this.immeuble = newImmeuble
-      this.immeubles.map(el => el.isActive = false)
-      this.immeubles[index].isActive = true
-      this.buildingApparts = newImmeuble.appartements
-      this.paginate(1)
-    }
+      this.buildingApparts = []
+      
+      this.selectBuilding(this.immeuble, index)
+      this.$forceUpdate()
+    },
   },
   methods: {
     ...mapActions('properties', ['createImmeuble', 'updateImmeuble']),
@@ -429,44 +450,46 @@ export default {
       return this.paginationLength
     },
     paginate: function (pageNum) {
+      if (this.selectedImmeuble===undefined || this.selectedImmeuble===null) {
+        return
+      }
       let page = pageNum
       let per_page = this.perPage
       let offset = (page - 1) * per_page
       let paginatedItems = this.selectedImmeuble.appartements.slice(offset).slice(0, this.perPage)
       this.selectedPage = pageNum
-      this.paginatedAppartments = paginatedItems
+      console.log('paginatedItems:', paginatedItems)
+      this.paginatedAppartments = []
+      this.paginatedAppartments = paginatedItems.length > 0 ? paginatedItems: []
     },
     previousPage: function () {
-      console.log('Prev:', this.selectedPage)
       if (this.selectedPage <= 1) return
       this.paginate(this.selectedPage - 1)
     },
     nextPage: function () {
-      console.log('Next:', this.selectedPage)
       if (this.selectedPage >= this.paginationLength) return
       this.paginate(this.selectedPage + 1)
     },
     getDependencies: function (appartment) {
-      console.log('selectedAppartement:', appartment)
       let dependencies = appartment.structures.map(dep => '0' + dep.nbre + ' ' + dep.typedependence.libelle)
       // console.log(dependencies)
       return dependencies
     },
     selectBuilding: function (item, index) {
-      if (this.immeubles.length === 0) {
+      if (this.immeubles.length === 0 || item===undefined) {
         return
       }
       this.immeuble = item
       this.immeubles.map(el => el.isActive = false)
       this.immeubles[index].isActive = true
+
       this.buildingApparts = item.appartements
       this.$store.commit('properties/SELECTED_IMMEUBLE', item)
-      console.log('buildingApparts:', this.buildingApparts)
-
+      
       this.paginate(1)
+      this.$forceUpdate()
     },
     editImmeuble: function (item) {
-      console.log('editImmeuble:', item)
       this.immeuble = {
         id: item.id,
         intitule: item.intitule,
@@ -485,7 +508,6 @@ export default {
       navigator.geolocation.getCurrentPosition(position => {
         this.immeuble.latitude = position.coords.latitude
         this.immeuble.longitude = position.coords.longitude
-        console.log(this.center)
       })
     },
     setPlace: function (place) {
@@ -513,7 +535,6 @@ export default {
 
       // return if any error property is not null
       if (!Object.values(this.errors).some(x => (x === null))) {
-        console.log(this.errors)
         this.$forceUpdate()
         return
       }
@@ -522,7 +543,6 @@ export default {
       if (this.immeuble.id && this.immeuble.id > 0) {
         await this.updateImmeuble(this.immeuble)
       } else {
-        console.log('start create: ', this.immeuble)
         await this.createImmeuble(this.immeuble)
       }
       this.$bvModal.hide('buildingForm')
@@ -531,7 +551,6 @@ export default {
     },
     forceRerender () {
       this.componentKey = this.componentKey + 1
-      console.log('this.componentKey:', this.componentKey)
     },
     editAppartment: function (item) {
       this.$router.push({ name: 'EditAppartment', params: { selectedImmeuble: this.selectedImmeuble, editingAppartment: item } })
@@ -544,12 +563,24 @@ export default {
        let params = {
           nbre: this.nbAppartmentToClone,
           appartement_id: this.selectedAppartement.id,
-          immeuble_id: this.selectedImmeuble.id
+          immeuble_id: this.selectedImmeuble.id,
+          level: (this.nbEtageDest==null) ? 0: this.nbEtageDest
         }
-        console.log('Clone params: ', params)
-        this.$store.dispatch('properties/clonerAppartement', params)
-        this.$store.dispatch('properties/getImmeubles')
         this.$bvModal.hide('clonerAppartment')
+        this.$store.dispatch('properties/clonerAppartement', params).then(res => {
+            if (res.status === 200) {
+              let appartements = res.data
+                console.log('clonerAppartement:', appartements.payload.appartements)
+                this.$store.commit('properties/ADD_APPARTEMENT', appartements.payload.appartements)
+                this.paginatedAppartments = []
+                this.buildingApparts = this.selectedImmeuble.appartements
+                this.paginate(1)
+            }
+        })
+        .catch(errors => {
+          this.$store.commit('properties/ERROR_ADD', { key: 'clonerAppartement', message: errors.message })
+        })
+
     }
    
   }

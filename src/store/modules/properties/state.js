@@ -2,7 +2,7 @@ export default {
   immeubles: [],
   appartements: [],
   typedependances: [],
-  selectedImmeuble: {},
+  selectedImmeuble: null,
   errors: [],
   errorOccured: false
 }

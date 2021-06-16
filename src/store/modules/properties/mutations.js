@@ -21,11 +21,22 @@ export default {
     state.selectedImmeuble = immeuble
   },
   [ADD_APPARTEMENT] (state, appartement) {
-    state.appartements = state.appartements.push(appartement)
+    console.log('ADD_APPARTEMENT:', appartement)
+    if(Array.isArray(appartement)){
+      state.selectedImmeuble.appartements.push(...appartement)
+    }
+    else{
+      state.selectedImmeuble.appartements.push(appartement)
+    }
+    
+    let index = state.immeubles.findIndex(im => im.id === state.selectedImmeuble.id)
+    state.immeubles.splice(index, 1, state.selectedImmeuble)
   },
   [UPDATE_APPARTEMENT] (state, appartement) {
-    let index = state.appartements.findIndex(app => app.id === appartement.id)
-    state.appartements.splice(index, 1, appartement)
+    let index = state.selectedImmeuble.appartements.findIndex(app => app.id === appartement.id)
+    state.selectedImmeuble.appartements.splice(index, 1, appartement)
+    // index = state.immeubles.findIndex(im => im.id === state.selectedImmeuble)
+    // state.immeubles.splice(index, 1, state.selectedImmeuble)
   },
   [DEPENDANCE_LIST] (state, dependances){
     state.typedependances = dependances

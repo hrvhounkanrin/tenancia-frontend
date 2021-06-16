@@ -273,6 +273,13 @@ export default {
   methods: {
     ...mapActions('properties/createAppartement'),
     addDependance: function (typeDependance) {
+      console.log('typeDependance:', typeDependance)
+      if(typeDependance.nbre===0 || typeDependance.nbre===null){
+        typeDependance.nbre=1
+      }
+      if(typeDependance.superficie===null){
+        typeDependance.superficie=0
+      }
       this.selectedDependance.push(typeDependance)
       this.filterValue = ''
     },
@@ -283,6 +290,7 @@ export default {
     },
     saveAppartment: async function () {
       this.appartement.immeuble_id = this.selectedImmeuble.id
+      console.log('this.selectedImmeuble:', this.selectedImmeuble)
       let structures = []
       this.selectedDependance.forEach(function (item) {
         let dep = {
