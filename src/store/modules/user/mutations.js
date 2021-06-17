@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import {
   ADMIN_LIST,
   UPDATE_ADMIN,
@@ -53,3 +54,16 @@ export default {
     state.profiles.realEstate = realEstate
   },
 }
+=======
+import {
+  PROFILES
+} from './mutation-types'
+
+export default {
+  [PROFILES] (state, data) {
+    console.log('PROFILES MUTATION:', data)
+
+    state.profiles = data
+  }
+}
+>>>>>>> ea0f95438d39187276bb192d231601cf6c2332d8

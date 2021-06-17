@@ -81,6 +81,7 @@ export default {
         },
         {
           title: 'Mon portefeuille',
+          href: '/edit-appartment',
           icon: {
             element: 'folder-icon'
           }

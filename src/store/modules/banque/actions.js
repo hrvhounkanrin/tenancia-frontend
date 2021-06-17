@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import {
   BANQUE_LIST
 } from './mutation-types'
@@ -16,3 +17,18 @@ export default {
     commit(BANQUE_LIST, banquesList.data.payload.banque)
   },
 }
+=======
+import {
+  BANQUE_LIST
+} from './mutation-types'
+
+import Banque from '@/api/banque'
+
+export default {
+  async getBanquesList ({ commit }, data) {
+    let banque = new Banque()
+    let banquesList = await banque.getBanques(data)
+    commit(BANQUE_LIST, banquesList.data.payload.banque)
+  }
+}
+>>>>>>> ea0f95438d39187276bb192d231601cf6c2332d8
