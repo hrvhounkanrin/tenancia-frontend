@@ -16,7 +16,14 @@ export default class User {
       }
     )
   }
-
+  async refreshToken (bodyParams) {
+    return await this.$serveur.postRequest(
+      {
+        body: bodyParams,
+        link: 'accounts/api-token-refresh/'
+      }
+    )
+  }
   async register (bodyParams) {
     return await this.$serveur.postRequest(
       {

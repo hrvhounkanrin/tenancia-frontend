@@ -2,6 +2,8 @@
 /* eslint-disable no-unused-vars */
 import { AUTH_TOKEN_KEY, TOKEN_EXPIRE_AT_KEY } from '@/constants'
 import moment from 'moment'
+import store from '../store'
+import router from '../router/router'
 
 export default ($http, $config) => {
   const $api = $http.create({
@@ -10,23 +12,23 @@ export default ($http, $config) => {
   })
 
   $api.interceptors.request.use(
+   
     config => {
       
       const authToken = sessionStorage.getItem(AUTH_TOKEN_KEY)
       if (authToken) {
-        const expire_at  = sessionStorage.getItem(TOKEN_EXPIRE_AT_KEY)
-        /*
-        let now = moment(new Date())
-        let end = moment(expire_at)
-        let nbMinBeforeTokenExpire = parseInt(moment.duration(end.diff(now)).asMinutes())
+        //check if token is about to expire and refresh it
+        /*let tokenExpireAt = sessionStorage.getItem(TOKEN_EXPIRE_AT_KEY)
+        let nbMinBeforeTokenExpire = moment(tokenExpireAt).diff(moment(), 'minutes')
+        let isAlreadyFetchingAccessToken = false
+        console.log(nbMinBeforeTokenExpire) 
+        if(nbMinBeforeTokenExpire > 0 && nbMinBeforeTokenExpire<=18 && !isAlreadyFetchingAccessToken){
+          console.log('Refreshing token:', store)
+          store.dispatch('auth/refreshToken')
+          isAlreadyFetchingAccessToken = true
+        }*/
        
-        if(nbMinBeforeTokenExpire > 0 && nbMinBeforeTokenExpire<=10){
-          //refresh token
-        }
-        if(nbMinBeforeTokenExpire <=0){
-          //logout
-        }
-        */
+        
         config.headers['Authorization'] = `Bearer ${authToken}`
       }
       return config
@@ -42,6 +44,14 @@ export default ($http, $config) => {
       return response;
     },
     (error) => {
+      //Check if token has expired and deconnect user
+      const tokenExpireAt = sessionStorage.getItem(TOKEN_EXPIRE_AT_KEY)
+      let nbMinBeforeTokenExpire = moment(tokenExpireAt).diff(moment(), 'minutes')
+      if(nbMinBeforeTokenExpire <=0 && error.response.status===401){
+        store.dispatch('auth/logout')
+        router.push({ name: 'Register' })
+      }
+      
       const errorResponse = {
         isValidationError: false,
         message: 'Network Error.',

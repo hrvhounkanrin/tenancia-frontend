@@ -11,7 +11,8 @@ import {
 
 import { USER_KEY, AUTH_TOKEN_KEY, TOKEN_EXPIRE_AT_KEY } from '@/constants'
 import User from '@/api/user'
-
+import router from '@/router/router'
+import tokenDuration from './getters'
 /**
    * @todo Changer la gestion des erreurs axios, revoir et harmoniser les retours d'erreurs du backend aussi
   */
@@ -36,9 +37,29 @@ const loginAccount = async ({ commit }, userData) => {
       return errors
     })
 }
+const refreshToken = async ({ commit }) =>{
+  console.log('Start refreshToken Ok: ', sessionStorage.getItem(AUTH_TOKEN_KEY))
+  console.log('Start refreshToken  tokenDuration: ', tokenDuration)
+  let user = new User()
+  await user
+    .refreshToken({'token':sessionStorage.getItem(AUTH_TOKEN_KEY)})
+    .then(res => {
+      if (res.status === 200) {
+        let userData = res.data
+        console.log('New token data:', res.data)
+        commit(AUTH_TOKEN, userData.token)
+        commit(TOKEN_EXPIRE_AT, tokenDuration)
+      }
+      return res
+    })
+    .catch(errors => {
+      commit(LOCAL_LOGIN_FAILURE, 'Une erreur est survenue.')
+      return errors
+    })
+}
 /**
    * @todo Changer la gestion des erreurs axios, revoir et harmoniser les retours d'erreurs du backend aussi
-  */
+*/
 const register = async ({ commit }, userData) => {
   let user = new User()
   let registeredUser = await user.register(userData)
@@ -80,7 +101,6 @@ const logout = ({ commit }) => {
   sessionStorage.removeItem(AUTH_TOKEN_KEY)
   sessionStorage.removeItem(USER_KEY)
   sessionStorage.removeItem(TOKEN_EXPIRE_AT_KEY)
-  return true
 }
 const googleExchangeToken = async ({ dispatch, commit }, googleToken) => {
   try {
@@ -116,4 +136,4 @@ const connectUser = ({ commit }, userData) => {
   }
 }
 
-export default { loginAccount, register, activedUserAccount, forgetPwd, verified, logout, googleExchangeToken }
+export default { loginAccount, refreshToken, register, activedUserAccount, forgetPwd, verified, logout, googleExchangeToken }

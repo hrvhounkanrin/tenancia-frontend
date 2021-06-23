@@ -10,35 +10,37 @@ import User from '@/api/user'
 import config from '@/config/backend'
 import axios from 'axios'
 
-const $api = api(axios, config)
-
+//const apiCall() = api(axios, config)
+function apiCall(){
+  return api(axios, config)
+}
 export default {
   async getPoliticy ({ commit }, data) {
-    await $api.getPoliticy(data)
+    await apiCall().getPoliticy(data)
   },
 
   async getAdminList ({ commit }, data) {
-    const admin = await $api.getAdminList(data)
+    const admin = await apiCall().getAdminList(data)
     commit(ADMIN_LIST, admin.data)
   },
 
   async addAdmin ({ commit }, data) {
-    const admin = await $api.addAdmin(data)
+    const admin = await apiCall().addAdmin(data)
     commit(ADD_ADMIN, admin.data)
   },
 
   async updateAdmin ({ commit }, data) {
-    const admin = await $api.putAdmin(data)
+    const admin = await apiCall().putAdmin(data)
     commit(UPDATE_ADMIN, admin.data)
   },
 
   async enableAdmin ({ commit }, data) {
-    const admin = await $api.enabledAdmin(data)
+    const admin = await apiCall().enabledAdmin(data)
     commit(UPDATE_ADMIN, admin.data)
   },
 
   async removeAdmin ({ commit }, data) {
-    await $api.removeAdmin(data)
+    await apiCall().removeAdmin(data)
     commit(REMOVE_ADMIN, data)
   },
 

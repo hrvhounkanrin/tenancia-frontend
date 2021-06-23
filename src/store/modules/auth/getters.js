@@ -9,5 +9,9 @@ export default {
 
   authenticated: (state) => {
     return state.authenticated
-  }
+  },
+  tokenExpireAt: (state) => {
+    return state.tokenExpireAt
+  },
+  tokenDuration: (state) => state.tokenDuration
 }

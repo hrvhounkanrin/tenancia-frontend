@@ -194,7 +194,7 @@ export default {
   components: {
     alert,
     VuePerfectScrollbar,
-    'font-awesome-icon': FontAwesomeIcon,
+    'font-awesome-icon': FontAwesomeIcon
   },
   data: function () {
     return {
@@ -274,11 +274,11 @@ export default {
     ...mapActions('properties/createAppartement'),
     addDependance: function (typeDependance) {
       console.log('typeDependance:', typeDependance)
-      if(typeDependance.nbre===0 || typeDependance.nbre===null){
-        typeDependance.nbre=1
+      if (typeDependance.nbre === 0 || typeDependance.nbre === null) {
+        typeDependance.nbre = 1
       }
-      if(typeDependance.superficie===null){
-        typeDependance.superficie=0
+      if (typeDependance.superficie === null) {
+        typeDependance.superficie = 0
       }
       this.selectedDependance.push(typeDependance)
       this.filterValue = ''

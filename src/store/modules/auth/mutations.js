@@ -4,6 +4,7 @@ import { VERIFIED, UPDATE_USER, USER, AUTH_TOKEN, AUTHENTICATED, GOOGLE_LOGIN_SU
 
 import axios from 'axios'
 import { USER_KEY, AUTH_TOKEN_KEY, TOKEN_EXPIRE_AT_KEY } from '@/constants'
+import moment from 'moment'
 
 export default {
   [VERIFIED] (state) {
@@ -13,8 +14,6 @@ export default {
     state.authenticated = !!authToken
     if (state.authenticated) {
       state.user = JSON.parse(sessionStorage.getItem(USER_KEY))
-      console.log('state.user: ', state.user)
-      // axios.defaults.headers.common["Access-Token"] = authToken;
       axios.defaults.headers.common['Authorization'] = `Bearer ${authToken}`
     }
   },
@@ -31,8 +30,10 @@ export default {
   [AUTH_TOKEN] (state, token) {
     sessionStorage.setItem(AUTH_TOKEN_KEY, token)
   },
-  [TOKEN_EXPIRE_AT] (state, expireDate) {
-    sessionStorage.setItem(TOKEN_EXPIRE_AT_KEY, expireDate)
+  [TOKEN_EXPIRE_AT] (state, tokenDuration) {
+    let tokenExpireAt = moment().add(tokenDuration, 'minutes').format('YYYY-MM-DD HH:mm:ss.SSS')
+    sessionStorage.setItem(TOKEN_EXPIRE_AT_KEY, tokenExpireAt)
+    state.tokenExpireAt = tokenDuration
   },
 
   [AUTHENTICATED] (state, authenticated) {
