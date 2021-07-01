@@ -7,4 +7,4 @@ export default {
     {id:'MONNAIE ELECTRONIQUE', label:'MONNAIE ELECTRONIQUE'},
     ]
   },
-  }
+}

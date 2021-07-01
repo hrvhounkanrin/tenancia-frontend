@@ -195,6 +195,93 @@
                 </div>
             </div>
         </div>
+        
+        <bulding-form :id="'buildingForm'" :hide-footer="false" :hide-header="false" :size="'lg'"
+         @hide-modal="$bvModal.hide('buildingForm')" @save-data="saveImmeuble">
+            <template #left-img>
+                <GmapMap v-bind="$attrs"
+                :center="{lat:immeuble.latitude, lng:immeuble.longitude}"
+                :zoom="7"
+                style="width:100%; height: 100%">
+                </GmapMap>
+            </template>
+            <template #modal-content>
+                <form v-if="immeuble">
+                            <div class="form-row" >
+                              <div class="form-group col-md-12">
+                                  <label for="intitule">Jour émission facture: <b> <span v-if="immeuble.jour_emission_facture < 9">0</span>{{ immeuble.jour_emission_facture }}  <small>du mois. </small></b></label>
+                                    <vue-slider ref="slider" v-model="immeuble.jour_emission_facture" :value="immeuble.jour_emission_facture" :min="1" :max="30"></vue-slider>
+                                </div>
+                                <div class="form-group col-md-12">
+                                  <label for="intitule">Jour valeur facture: <b> <span v-if="immeuble.jour_valeur_facture < 9">0</span>{{ immeuble.jour_valeur_facture }}  <small>du mois. </small></b></label>
+                                    <vue-slider ref="slider" v-model="immeuble.jour_valeur_facture" :value="immeuble.jour_valeur_facture" :min="1" :max="30"></vue-slider>
+                                </div>
+                                <div class="form-group col-md-12">
+
+                                </div>
+                                <div class="form-group col-md-12">
+                                    <label for="intitule">Référence municipale</label>
+                                    <input type="text" class="form-control" id="ref_immeuble" placeholder="Référence municipale"  trim v-model="immeuble.ref_immeuble">
+                                    <label for="intitule">Nom</label>
+                                    <input type="text" class="form-control" id="intitule" placeholder="Nom"  trim v-model="immeuble.intitule">
+                                    <label for="adresse">Adresse <span class="required">*</span></label>
+                                    <input type="text" class="form-control" id="adresse" placeholder="Quartier & maison de préférence" trim v-model="immeuble.adresse">
+                                    <span  class="invalid-feedback d-block" v-if="errors.adresseMsg" >{{errors.adresseMsg}}</span>
+
+                                    <label for="pays">Pays <span class="required">*</span></label>
+                                    <input type="text" class="form-control" id="pays" placeholder="Pays" trim v-model="immeuble.pays">
+                                    <span  class="invalid-feedback d-block" v-if="errors.paysMsg" >{{errors.paysMsg}}</span >
+                                    <label for="ville">Ville <span class="required">*</span></label>
+                                    <input type="text" class="form-control" id="ville" placeholder="Ville" trim v-model="immeuble.ville">
+                                    <span  class="invalid-feedback d-block" v-if="errors.villeMsg" >{{errors.villeMsg}}</span >
+
+                                  <label for="ville">Latitude</label>
+                                    <input type="text" class="form-control" id="lat" placeholder="Latitude" v-model="immeuble.latitude">
+                                    <label for="quartier">Longitude</label>
+                                    <input type="text" class="form-control" id="lng" placeholder="Longitude" v-model="immeuble.longitude">
+                                    <GmapAutocomplete @place_changed='setPlace'  class="form-control" />
+                                </div>
+
+                            </div>
+                </form>
+            </template>
+        </bulding-form>
+ 
+        <b-modal id="clonerAppartment" title="Cloner appartement" centered>
+            <div class="w-100 mb-4">
+            <div class="d-flex flex-wrap justify-content-between mb-2">
+                <small class="line-height-xs text-uppercase text-muted"><h5 class="pt-1 pb-1"><a href="javascript:void(0);" v-if="selectedImmeuble">#{{selectedImmeuble.intitule}}</a></h5></small>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <ul class="list-unstyled card-columns" v-if="selectedAppartement">
+                        <li v-for="(dep, index) in selectedAppartement.structures" :key="dep.id"><font-awesome-icon icon="check-square" class="mr-2"/>0{{dep.nbre}}  {{ dep.typedependence.libelle }}</li>
+                    </ul>
+                    <p><font-awesome-icon icon="comments"/><span class="ml-2">{{selectedAppartement.autre_description}}...</span></p>
+                </div>
+            </div>
+            <div class="divider mt-3 blue-divider mb-3"></div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group">
+                      <input type="number" class="form-control" id="nbAppartmentToClone" placeholder="Nombre à cloner" min="1" max="10" v-model="nbAppartmentToClone">
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="form-group">
+                      <input type="number" class="form-control" id="nbEtageDest" placeholder="N° Etage" min="0" max="99" v-model="nbEtageDest">
+                    </div>
+                </div>
+            </div>
+
+                
+          </div>
+          <div slot="modal-footer">
+              <b-button variant="link" class="btn-link-dark" @click="$bvModal.hide('clonerAppartment')">Annuler</b-button>
+              <b-button variant="primary" @click="clonerAppartment">Cloner</b-button>
+          </div>
+        </b-modal>
+             
 
         <bulding-form :id="'buildingForm'" :hide-footer="false" :hide-header="false" :size="'lg'"
          @hide-modal="$bvModal.hide('buildingForm')" @save-data="saveImmeuble">
