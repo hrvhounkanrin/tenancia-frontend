@@ -153,12 +153,25 @@
               </b-form-group>
             </div>
           </div>
+     
+           <div style="display:flex; flex-direction:row;"> 
+            <a
+            href="javascript:void(0);"
+            class="btn-block btn btn-primary m-1"
+            title="Save Lessor"
+            @click="saveRealEstate"
+          >
+            <span>Sauvegarder</span>
+          </a>
           <a
             href="javascript:void(0);"
-            class="btn-block btn btn-primary mt-1"
-            @click="saveRealEstate"
-            ><span>Sauvegarder</span></a
+            class="btn-block btn btn-danger m-1"
+            title="Save Lessor"
+            @click="editingRealEstate = false"
           >
+            <span>Annuler</span>
+          </a>
+          </div>
         </form>
       </div>
     </div>
