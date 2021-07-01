@@ -195,7 +195,7 @@
                 </div>
             </div>
         </div>
-        
+
         <bulding-form :id="'buildingForm'" :hide-footer="false" :hide-header="false" :size="'lg'"
          @hide-modal="$bvModal.hide('buildingForm')" @save-data="saveImmeuble">
             <template #left-img>
@@ -246,7 +246,7 @@
                 </form>
             </template>
         </bulding-form>
- 
+
         <b-modal id="clonerAppartment" title="Cloner appartement" centered>
             <div class="w-100 mb-4">
             <div class="d-flex flex-wrap justify-content-between mb-2">
@@ -274,14 +274,12 @@
                 </div>
             </div>
 
-                
           </div>
           <div slot="modal-footer">
               <b-button variant="link" class="btn-link-dark" @click="$bvModal.hide('clonerAppartment')">Annuler</b-button>
               <b-button variant="primary" @click="clonerAppartment">Cloner</b-button>
           </div>
         </b-modal>
-             
 
     </div>
 </template>
@@ -388,7 +386,7 @@ export default {
       },
       properties: [],
       paginatedAppartments: [],
-      selectedAppartement:{},
+      selectedAppartement: {},
       nbAppartmentToClone: null,
       nbEtageDest: null
     }
@@ -397,7 +395,7 @@ export default {
     ...mapGetters('user', ['haveTenantProfile', 'haveLessorProfile', 'haveRealEstateProfile', 'tenantProfile', 'lessorProfile', 'realEstateProfile']),
     ...mapGetters({
       immeubles: 'properties/immeubles',
-      typedependances: 'properties/immeubles',
+      typedependances: 'properties/immeubles'
     }),
     ...mapState({
       api_errors: (state) => state.properties.errors,
@@ -406,19 +404,19 @@ export default {
     })
   },
   created () {
-    if(this.immeubles.length === 0){
+    if (this.immeubles.length === 0) {
       this.$store.dispatch('properties/getImmeubles')
     }
     //
-    //this.$store.dispatch('properties/getTypedependances')
+    // this.$store.dispatch('properties/getTypedependances')
   },
   mounted () {
-    if (this.selectedImmeuble==null || this.selectedImmeuble===undefined){
-      if (this.immeubles.length > 0){
-          this.immeuble = this.immeubles[0]
+    if (this.selectedImmeuble == null || this.selectedImmeuble === undefined) {
+      if (this.immeubles.length > 0) {
+        this.immeuble = this.immeubles[0]
       }
-    } else{
-      this.immeuble =  this.selectedImmeuble
+    } else {
+      this.immeuble = this.selectedImmeuble
     }
     this.$store.commit('properties/SELECTED_IMMEUBLE', {})
     this.$store.commit('properties/SELECTED_IMMEUBLE', this.immeuble)
@@ -426,16 +424,16 @@ export default {
   },
   watch: {
     selectedImmeuble: function (newImmeuble, oldImmeuble) {
-      if(newImmeuble===undefined || this.immeubles.length ==0){
+      if (newImmeuble === undefined || this.immeubles.length == 0) {
         return
       }
       let index = this.immeubles.findIndex(im => im.id === newImmeuble.id)
       this.immeuble = newImmeuble
       this.buildingApparts = []
-      
+
       this.selectBuilding(this.immeuble, index)
       this.$forceUpdate()
-    },
+    }
   },
   methods: {
     ...mapActions('properties', ['createImmeuble', 'updateImmeuble']),
@@ -450,7 +448,7 @@ export default {
       return this.paginationLength
     },
     paginate: function (pageNum) {
-      if (this.selectedImmeuble===undefined || this.selectedImmeuble===null) {
+      if (this.selectedImmeuble === undefined || this.selectedImmeuble === null) {
         return
       }
       let page = pageNum
@@ -460,7 +458,7 @@ export default {
       this.selectedPage = pageNum
       console.log('paginatedItems:', paginatedItems)
       this.paginatedAppartments = []
-      this.paginatedAppartments = paginatedItems.length > 0 ? paginatedItems: []
+      this.paginatedAppartments = paginatedItems.length > 0 ? paginatedItems : []
     },
     previousPage: function () {
       if (this.selectedPage <= 1) return
@@ -476,7 +474,7 @@ export default {
       return dependencies
     },
     selectBuilding: function (item, index) {
-      if (this.immeubles.length === 0 || item===undefined) {
+      if (this.immeubles.length === 0 || item === undefined) {
         return
       }
       this.immeuble = item
@@ -485,7 +483,7 @@ export default {
 
       this.buildingApparts = item.appartements
       this.$store.commit('properties/SELECTED_IMMEUBLE', item)
-      
+
       this.paginate(1)
       this.$forceUpdate()
     },
@@ -555,34 +553,33 @@ export default {
     editAppartment: function (item) {
       this.$router.push({ name: 'EditAppartment', params: { selectedImmeuble: this.selectedImmeuble, editingAppartment: item } })
     },
-    initClonerAppartment: function(item){
+    initClonerAppartment: function (item) {
       this.selectedAppartement = item
       this.$bvModal.show('clonerAppartment')
     },
-    clonerAppartment: function(){
-       let params = {
-          nbre: this.nbAppartmentToClone,
-          appartement_id: this.selectedAppartement.id,
-          immeuble_id: this.selectedImmeuble.id,
-          level: (this.nbEtageDest==null) ? 0: this.nbEtageDest
+    clonerAppartment: function () {
+      let params = {
+        nbre: this.nbAppartmentToClone,
+        appartement_id: this.selectedAppartement.id,
+        immeuble_id: this.selectedImmeuble.id,
+        level: (this.nbEtageDest == null) ? 0 : this.nbEtageDest
+      }
+      this.$bvModal.hide('clonerAppartment')
+      this.$store.dispatch('properties/clonerAppartement', params).then(res => {
+        if (res.status === 200) {
+          let appartements = res.data
+          console.log('clonerAppartement:', appartements.payload.appartements)
+          this.$store.commit('properties/ADD_APPARTEMENT', appartements.payload.appartements)
+          this.paginatedAppartments = []
+          this.buildingApparts = this.selectedImmeuble.appartements
+          this.paginate(1)
         }
-        this.$bvModal.hide('clonerAppartment')
-        this.$store.dispatch('properties/clonerAppartement', params).then(res => {
-            if (res.status === 200) {
-              let appartements = res.data
-                console.log('clonerAppartement:', appartements.payload.appartements)
-                this.$store.commit('properties/ADD_APPARTEMENT', appartements.payload.appartements)
-                this.paginatedAppartments = []
-                this.buildingApparts = this.selectedImmeuble.appartements
-                this.paginate(1)
-            }
-        })
+      })
         .catch(errors => {
           this.$store.commit('properties/ERROR_ADD', { key: 'clonerAppartement', message: errors.message })
         })
-
     }
-   
+
   }
 }
 </script>

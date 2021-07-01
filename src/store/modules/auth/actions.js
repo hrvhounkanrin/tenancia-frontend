@@ -1,8 +1,10 @@
 import {
   VERIFIED,
+  UPDATE_USER,
   USER,
   AUTH_TOKEN,
   AUTHENTICATED,
+  GOOGLE_LOGIN_SUCCESS,
   GOOGLE_LOGIN_FAILURE,
   LOCAL_LOGIN_FAILURE,
   LOCAL_LOGIN_SUCCESS,
@@ -18,10 +20,11 @@ import tokenDuration from './getters'
   */
 const loginAccount = async ({ commit }, userData) => {
   let user = new User()
-  await user
+  return await user
     .login(userData)
     .then(res => {
-      if (res.status === 200) {
+      
+      if (res.status == 200) {
         let userData = res.data
         commit(USER, userData.user)
         commit(AUTH_TOKEN, userData.token)
@@ -68,11 +71,11 @@ const register = async ({ commit }, userData) => {
 
 const activedUserAccount = async ({ commit }, userData) => {
   let user = new User()
-  await user
+  return await user
     .activeAccount(userData)
     .then(res => {
       console.log('user data', res)
-      if (res.status === 200) {
+      if (res.status == 200) {
         connectUser(res.data)
         return res.data
       } else {
@@ -88,7 +91,7 @@ const activedUserAccount = async ({ commit }, userData) => {
 
 const forgetPwd = async ({ commit }, userData) => {
   let user = new User()
-  await user.forgetPassword(userData)
+  return await user.forgetPassword(userData)
 }
 const verified = ({ commit }) => {
   commit(VERIFIED)
