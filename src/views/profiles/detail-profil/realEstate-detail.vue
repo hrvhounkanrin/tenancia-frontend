@@ -24,15 +24,16 @@
           class="btn-block btn btn-primary mt-1"
           @click="editRealEstate"
           title="Learn more"
-          ><span>{{
-            !haveRealEstateProfile ? "Créer mon profil" : "Modifier mon profil"
-          }}</span></a
+          >
+                    <span>{{(getProfiles && !getProfiles.real_estate) ? 'Créer mon profil' : 'Modifier mon profil' }}</span>
+
+          </a
         >
       </div>
     </div>
     <div
       class="card card-box mb-5"
-      v-if="haveRealEstateProfile && !editingRealEstate"
+      v-if="getProfiles && getProfiles.real_estate && !editingRealEstate"
     >
       <div class="card-indicator bg-warning"></div>
       <div class="card-body px-4 py-3">
@@ -41,7 +42,7 @@
         </div>
         <div class="d-flex align-items-left justify-content-start">
           <span class="text-black-50 d-block" id="locataire_profession">{{
-            realEstateProfile.raison_social
+            getProfiles.real_estate.raison_social
           }}</span>
         </div>
         <div class="d-flex align-items-left justify-content-start">
@@ -49,7 +50,7 @@
         </div>
         <div class="d-flex align-items-left justify-content-start">
           <span class="text-black-50 d-block" id="locataire_profession">{{
-            realEstateProfile.num_telephone
+            getProfiles.real_estate.num_telephone
           }}</span>
         </div>
         <div class="d-flex align-items-left justify-content-start">
@@ -57,7 +58,7 @@
         </div>
         <div class="d-flex align-items-left justify-content-start">
           <span class="text-black-50 d-block" id="locataire_profession">{{
-            realEstateProfile.adresse
+            getProfiles.real_estate.adresse
           }}</span>
         </div>
         <div class="d-flex align-items-left justify-content-start">
@@ -65,7 +66,7 @@
         </div>
         <div class="d-flex align-items-left justify-content-start">
           <span class="text-black-50 d-block" id="locataire_profession">{{
-            realEstateProfile.num_carte_professionnel
+            getProfiles.real_estate.num_carte_professionnel
           }}</span>
         </div>
         <div class="d-flex align-items-left justify-content-start">
@@ -73,7 +74,7 @@
         </div>
         <div class="d-flex align-items-left justify-content-start">
           <span class="text-black-50 d-block" id="locataire_profession">{{
-            realEstateProfile.date_delivrance
+            getProfiles.real_estate.date_delivrance
           }}</span>
         </div>
         <div class="d-flex align-items-left justify-content-start">
@@ -81,7 +82,7 @@
         </div>
         <div class="d-flex align-items-left justify-content-start">
           <span class="text-black-50 d-block" id="locataire_profession">{{
-            realEstateProfile.numero_ifu
+            getProfiles.real_estate.numero_ifu
           }}</span>
         </div>
       </div>
@@ -152,12 +153,25 @@
               </b-form-group>
             </div>
           </div>
+     
+           <div style="display:flex; flex-direction:row;"> 
+            <a
+            href="javascript:void(0);"
+            class="btn-block btn btn-primary m-1"
+            title="Save Lessor"
+            @click="saveRealEstate"
+          >
+            <span>Sauvegarder</span>
+          </a>
           <a
             href="javascript:void(0);"
-            class="btn-block btn btn-primary mt-1"
-            @click="saveRealEstate"
-            ><span>Sauvegarder</span></a
+            class="btn-block btn btn-danger m-1"
+            title="Save Lessor"
+            @click="editingRealEstate = false"
           >
+            <span>Annuler</span>
+          </a>
+          </div>
         </form>
       </div>
     </div>
@@ -230,106 +244,74 @@ export default {
         num_telephone: null,
         adresse: null,
         num_carte_professionnel: null,
+
       },
     };
   },
   created: function () {
-    this.getBanques();
     this.countries = mixin.methods.getAllCountry(this.onlyCountries);
   },
   computed: {
-    ...mapGetters("user", [
-      "haveLessorProfile",
-      "tenantProfile",
-      "lessorProfile",
-      "realEstateProfile",
-    ]),
-    ...mapGetters("banque", ["banquesList", "modePaiementList"]),
+        ...mapGetters("user", ["getProfiles"]),
+
+    ...mapGetters("banque", ["banquesList"]),
     ...mapGetters("auth", ["user"]),
     ...mapGetters("general", ["iceRelation"]),
   },
   methods: {
-    ...mapActions("banque", ["getBanquesList"]),
-    ...mapActions("user", ["createLessor", "updateLessor"]),
-
-    async getBanques() {
-      await this.getBanquesList();
-    },
+    ...mapActions('user', ['createUserProfil', 'updateUserProfil']),
 
     customFormatter() {
       return moment(this.realEstate.date_delivrance).format("L").toString();
     },
-    editLessor(e) {
-      this.editingLessor = true;
-      if (this.haveLessorProfile) {
-        this.lessor = this.lessorProfile;
-        this.lessor.banque_id = this.lessorProfile.banque.id;
-        console.log(
-          "res",
-          this.banquesList.find(
-            (x) => x.libbanque == this.lessor.banque.libbanque
-          )
-        );
-        this.$forceUpdate();
+     editRealEstate(e) {
+      this.editingRealEstate = true;
+      if (this.getProfiles && this.getProfiles.real_estate) {
+        this.realEstate = this.getProfiles.real_estate;
       }
     },
-    onLessorActionSucess(res) {
-      let lessor = res.payload;
-      let profiles = {
-        lessor: lessor,
-        tenant: this.tenantProfile,
-        real_estate: this.realEstateProfile,
-      };
-      this.setProfiles(profiles);
-      this.editingLessor = false;
-      this.$forceUpdate();
+
+    onRealEstateActionSucess(res) {
+      this.editingRealEstate = false;
     },
-    onLessorActionFailure(err) {
-      this.errors.lessorMsg = err.response.data.message;
-      this.editingLessor = true;
-      this.$forceUpdate();
+    onRealEstateActionFailure(err) {
+      this.errors.tenantMsg = err.response.data.message;
+            this.editingRealEstate = true;
+
     },
-    async saveLessor() {
+
+    async saveRealEstate() {
       this.errors = {};
-      this.errors.phone_numberMsg = !this.lessor.phone_number
-        ? "Veuillez renseigner votre n° téléphone"
+      this.errors.raisonSocialMsg = !this.realEstate.raison_sociale
+        ? "Veuillez renseigner le nom de l'agence"
         : null;
-      this.errors.pays_residenceMsg = !this.lessor.pays_residence
-        ? "Veuillez choisir votre pays de résidence"
+      this.errors.phone_numberMsg = !this.realEstate.num_telephone
+        ? "Veuillez renseigner le numéro de téléphone"
         : null;
-      this.errors.banque_idMsg = !this.lessor.banque_id
-        ? "Veuillez choisir une banque"
-        : null;
-      this.errors.mode_paiementMsg = !this.lessor.mode_paiement
-        ? "Veuillez choisir un mode de paiement"
-        : null;
-      this.errors.numcompteMsg = !this.lessor.numcompte
-        ? "Veuillez renseigner votre numéro de compte"
+      this.errors.adresse = !this.tenant.adresseMsg
+        ? "Veuillez renseigner l'adresse de l'agence"
         : null;
 
       //return if any error property is not null
       if (!Object.values(this.errors).some((x) => x === null)) {
-        vm.editingLessor = true;
-        this.$forceUpdate();
+        vm.editingRealEstate = true;
         return;
       }
-
-      if (this.lessor.id && this.lessor.id > 0) {
-        await this.updateLessor({ ...this.lessor, user_id: this.user.id })
-          .then((res) => this.onLessorActionSucess(res))
-          .catch((err) => this.onLessorActionFailure(err));
+      if (this.realEstate.id && this.realEstate.id > 0) {
+        this.realEstate.date_delivrance = moment(
+          this.realEstate.date_delivrance,
+          "L"
+        )
+          .format("YYYY-MM-DD")
+          .toString();
+        console.log(this.realEstate);
+        await this.updateUserProfil(this.realEstate)
+          .then((res) => this.onRealEstateActionSucess(res))
+          .catch((err) => this.onRealEstateActionFailure(err));
       } else {
-        await this.createLessor({
-          banque_id: this.lessor.banque_id,
-          id: this.lessor.id,
-          mode_paiement: this.lessor.mode_paiement,
-          numcompte: this.lessor.numcompte,
-          phone_number: this.lessor.phone_number,
-          pays_residence: this.lessor.pays_residence,
-          user_id: this.user.id,
-        })
-          .then((res) => this.onLessorActionSucess(res))
-          .catch((err) => this.onLessorActionFailure(err));
+        await this.createUserProfil(this.realEstate)
+          .then((res) => this.onRealEstateActionSucess(res))
+          .catch((err) => this.onRealEstateActionFailure(err));
       }
     },
   },

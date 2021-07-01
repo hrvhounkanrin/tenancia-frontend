@@ -14,11 +14,12 @@
           @click="editLessor"
           title="Editer mon profil bailleur"
         >
-          <span>{{(!haveLessorProfile) ? 'Créer mon profil' : 'Modifier mon profil' }}</span>
+        <!-- {{(getProfiles && !getProfiles.lessor)?'true':'false'}} -->
+          <span>{{(getProfiles && !getProfiles.lessor) ? 'Créer mon profil' : 'Modifier mon profil' }}</span>
         </a>
       </div>
     </div>
-    <div class="card card-box mb-5" v-if="haveLessorProfile && !editingLessor">
+    <div class="card card-box mb-5" v-if="getProfiles && getProfiles.lessor && !editingLessor">
       <div class="card-indicator bg-first"></div>
       <div class="card-body px-4 py-3">
         <div class="d-flex align-items-left justify-content-start">
@@ -30,7 +31,7 @@
           <span
             class="text-black-50 d-block"
             id="locataire_profession"
-          >{{ countries.find(pays => pays.id == lessorProfile.pays_residence).label }}</span>
+          >{{ countries.find(pays => pays.id == getProfiles.lessor.pays_residence).label }}</span>
         </div>
         <div class="d-flex align-items-left justify-content-start">
           <b>
@@ -41,7 +42,7 @@
           <span
             class="text-black-50 d-block"
             id="locataire_profession"
-          >{{lessorProfile.phone_number}}</span>
+          >{{getProfiles.lessor.phone_number}}</span>
         </div>
         <div class="d-flex align-items-left justify-content-start">
           <b>
@@ -52,7 +53,7 @@
           <span
             class="text-black-50 d-block"
             id="locataire_profession"
-          >{{lessorProfile.mode_paiement}}</span>
+          >{{getProfiles.lessor.mode_paiement}}</span>
         </div>
         <div class="d-flex align-items-left justify-content-start">
           <b>
@@ -63,7 +64,7 @@
           <span
             class="text-black-50 d-block"
             id="locataire_profession"
-          >{{(lessorProfile.banque!=null)? lessorProfile.banque.libbanque: '-'}}</span>
+          >{{(getProfiles.lessor.banque!=null)? getProfiles.lessor.banque.libbanque: '-'}}</span>
         </div>
         <div class="d-flex align-items-left justify-content-start">
           <b>
@@ -71,7 +72,15 @@
           </b>
         </div>
         <div class="d-flex align-items-left justify-content-start">
-          <span class="text-black-50 d-block" id="locataire_profession">{{lessorProfile.numcompte}}</span>
+          <span class="text-black-50 d-block" id="locataire_profession">{{getProfiles.lessor.numcompte}}</span>
+        </div>
+        <div class="d-flex align-items-left justify-content-start">
+          <b>
+            <span class="d-block">N° IFU</span>
+          </b>
+        </div>
+        <div class="d-flex align-items-left justify-content-start">
+          <span class="text-black-50 d-block" id="locataire_profession">{{getProfiles.lessor.numero_ifu}}</span>
         </div>
         <div class="d-flex align-items-left">
           <font-awesome-icon class="text-danger" icon="question-circle" />
@@ -139,15 +148,30 @@
                 <b-form-input id="numero_compte" v-model="lessor.numcompte" trim></b-form-input>
               </b-form-group>
             </div>
+            <div class="col-md-12 mb-12">
+              <b-form-group label="N° IFU" label-for="num_ifu">
+                <b-form-input id="num_ifu" v-model="lessor.numero_ifu" trim></b-form-input>
+              </b-form-group>
+            </div>
           </div>
-          <a
+          <div style="display:flex; flex-direction:row;"> 
+            <a
             href="javascript:void(0);"
-            class="btn-block btn btn-primary mt-1"
+            class="btn-block btn btn-primary m-1"
             title="Save Lessor"
             @click="saveLessor"
           >
             <span>Sauvegarder</span>
           </a>
+          <a
+            href="javascript:void(0);"
+            class="btn-block btn btn-danger m-1"
+            title="Save Lessor"
+            @click="editingLessor = false"
+          >
+            <span>Annuler</span>
+          </a>
+          </div>
         </form>
       </div>
     </div>
@@ -198,61 +222,52 @@ export default {
         phone_number: null,
         banque_id: null,
         numcompte: null,
-        mode_paiement: null
+        numero_ifu: null,
+        mode_paiement: null,
+        profile_type: 'lessor',
       }
     };
   },
   created: function() {
-    this.getBanques();
     this.countries = mixin.methods.getAllCountry(this.onlyCountries);
   },
   computed: {
-    ...mapGetters("user", ["haveLessorProfile",'tenantProfile', 'lessorProfile', 'realEstateProfile']),
+    ...mapGetters("user", ["getProfiles"]),
     ...mapGetters("banque", ["banquesList", "modePaiementList"]),
     ...mapGetters("auth", ["user"]),
-    ...mapGetters("general", ["iceRelation"])
   },
   methods: {
-    ...mapActions('user', ['createLessor', 'updateLessor']),
+    ...mapActions('user', ['createUserProfil', 'updateUserProfil']),
 
-    async getBanques() {
-      await this.getBanquesList();
-    },
-
-    customFormatter() {
-      return moment(this.realEstate.date_delivrance)
-        .format("L")
-        .toString();
-    },
     editLessor(e) {
       this.editingLessor = true;
-      if (this.haveLessorProfile) {
-        this.lessor = this.lessorProfile;
-        this.lessor.banque_id = this.lessorProfile.banque.id;
+      if (this.getProfiles && this.getProfiles.lessor) {
+        this.lessor = this.getProfiles.lessor;
+        this.lessor.banque_id = this.getProfiles.lessor.banque.id;
         console.log(
           "res",
           this.banquesList.find(
             x => x.libbanque == this.lessor.banque.libbanque
           )
         );
-        this.$forceUpdate();
+        // this.$forceUpdate();
       }
     },
     onLessorActionSucess(res) {
-      let lessor = res.payload;
-      let profiles = {
-        lessor: lessor,
-        tenant: this.tenantProfile,
-        real_estate: this.realEstateProfile
-      };
-      this.setProfiles(profiles);
+      // let lessor = res.payload;
+      // let profiles = {
+      //   lessor: lessor,
+      //   tenant: this.tenantProfile,
+      //   real_estate: this.realEstateProfile
+      // };
+      // this.setProfiles(profiles);
       this.editingLessor = false;
-      this.$forceUpdate();
+      // this.$forceUpdate();
     },
     onLessorActionFailure(err) {
       this.errors.lessorMsg = err.response.data.message;
       this.editingLessor = true;
-      this.$forceUpdate();
+      // this.$forceUpdate();
     },
     async saveLessor() {
       this.errors = {};
@@ -272,26 +287,32 @@ export default {
         ? "Veuillez renseigner votre numéro de compte"
         : null;
 
+         this.errors.numifuMsg = !this.lessor.numero_ifu
+        ? "Veuillez renseigner votre numéro IFU"
+        : null;
+
       //return if any error property is not null
       if (!Object.values(this.errors).some(x => x === null)) {
         vm.editingLessor = true;
-        this.$forceUpdate();
+        // this.$forceUpdate();
         return;
       }
 
       if (this.lessor.id && this.lessor.id > 0) {
-        await this.updateLessor({ ...this.lessor, user_id: this.user.id })
+        await this.updateUserProfil({ ...this.lessor, user_id: this.user.id })
           .then(res => this.onLessorActionSucess(res))
           .catch(err => this.onLessorActionFailure(err));
       } else {
-        await this.createLessor({
+        await this.createUserProfil({
           banque_id: this.lessor.banque_id,
           id: this.lessor.id,
           mode_paiement: this.lessor.mode_paiement,
           numcompte: this.lessor.numcompte,
+          numero_ifu: this.lessor.numero_ifu,
           phone_number: this.lessor.phone_number,
           pays_residence: this.lessor.pays_residence,
-          user_id: this.user.id
+          user_id: this.user.id,
+          profile_type:"lessor"
         })
           .then(res => this.onLessorActionSucess(res))
           .catch(err => this.onLessorActionFailure(err));
