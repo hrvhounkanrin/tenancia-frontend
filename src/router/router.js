@@ -8,6 +8,10 @@ import Properties from '@/views/properties/Properties.vue'
 import AppartmentForm from '@/views/properties/AppartmentForm.vue'
 Vue.use(Router)
 
+
+
+
+
 const router = new Router({
   mode: 'history',
   scrollBehavior () {
@@ -72,8 +76,23 @@ router.beforeEach(
   authGuard
 )
 
-// router.afterEach(() => {
-//   setTimeout(() => NProgress.done(), 500);
-// });
+
+ /**
+ * Do not throw an exception if push is rejected by redirection from navigation guard
+ */
+ const originalPush = router.push
+ router.push = function push(location, onResolve, onReject) {
+     if (onResolve || onReject) {
+         return originalPush.call(this, location, onResolve, onReject)
+     }
+     // if Redirected when going from <path> to another <path> error
+     return originalPush.call(this, location).catch((err) => {
+         if(Router.isNavigationFailure(err, Router.NavigationFailureType.redirected)) {
+             return Promise.resolve(false)
+         }
+         // Otherwise throw error
+         return Promise.reject(err)
+     })
+ }
 
 export default router
