@@ -11,35 +11,35 @@ import User from '@/api/user'
 import config from '@/config/backend'
 import axios from 'axios'
 
-const $api = api(axios, config)
+const $api = () => api(axios, config)
 
 export default {
   async getPoliticy ({ commit }, data) {
-    await $api.getPoliticy(data)
+    await $api().getPoliticy(data)
   },
 
   async getAdminList ({ commit }, data) {
-    const admin = await $api.getAdminList(data)
+    const admin = await $api().getAdminList(data)
     commit(ADMIN_LIST, admin.data)
   },
 
   async addAdmin ({ commit }, data) {
-    const admin = await $api.addAdmin(data)
+    const admin = await $api().addAdmin(data)
     commit(ADD_ADMIN, admin.data)
   },
 
   async updateAdmin ({ commit }, data) {
-    const admin = await $api.putAdmin(data)
+    const admin = await $api().putAdmin(data)
     commit(UPDATE_ADMIN, admin.data)
   },
 
   async enableAdmin ({ commit }, data) {
-    const admin = await $api.enabledAdmin(data)
+    const admin = await $api().enabledAdmin(data)
     commit(UPDATE_ADMIN, admin.data)
   },
 
   async removeAdmin ({ commit }, data) {
-    await $api.removeAdmin(data)
+    await $api().removeAdmin(data)
     commit(REMOVE_ADMIN, data)
   },
 
