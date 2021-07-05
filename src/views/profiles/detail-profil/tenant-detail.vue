@@ -291,7 +291,6 @@ export default {
         phone_number: null,
         numero_ifu: null,
         profile_type: 'tenant',
-
       },
     };
   },
@@ -357,7 +356,7 @@ export default {
       }
 
       if (this.tenant.id && this.tenant.id > 0) {
-        await this.updateUserProfil(this.tenant)
+        await this.updateUserProfil({...this.tenant, profile_type: 'tenant'})
           .then((res) => this.onTenantActionSucess(res))
           .catch((err) => this.onTenantActionFailure(err));
       } else {
