@@ -299,7 +299,7 @@ export default {
       }
 
       if (this.lessor.id && this.lessor.id > 0) {
-        await this.updateUserProfil({ ...this.lessor, user_id: this.user.id })
+        await this.updateUserProfil({ ...this.lessor, user_id: this.user.id,  profile_type: 'lessor' })
           .then(res => this.onLessorActionSucess(res))
           .catch(err => this.onLessorActionFailure(err));
       } else {

@@ -244,7 +244,7 @@ export default {
         num_telephone: null,
         adresse: null,
         num_carte_professionnel: null,
-
+        profile_type: 'real_estate'
       },
     };
   },
@@ -305,7 +305,7 @@ export default {
           .format("YYYY-MM-DD")
           .toString();
         console.log(this.realEstate);
-        await this.updateUserProfil(this.realEstate)
+        await this.updateUserProfil({...this.realEstate, profile_type: 'real_estate'})
           .then((res) => this.onRealEstateActionSucess(res))
           .catch((err) => this.onRealEstateActionFailure(err));
       } else {
