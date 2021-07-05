@@ -318,6 +318,7 @@
                                   <input
                                     v-model="user.confirm"
                                     class="form-control"
+                                    placeholder="Confirmer mot de passe"
                                     type="password"
                                   />
                                   <span>{{ errors[0] }}</span>
