@@ -6,6 +6,7 @@
           <div class="flex-grow-1 w-100 d-flex align-items-center">
             <div class="bg-composed-wrapper--content">
               <div class="row no-gutters">
+                <!--Start first tab-->
                 <div class="col-lg-5">
                   <div class="min-vh-100">
                     <div class="flex-grow-1 w-100 d-flex align-items-center">
@@ -83,6 +84,8 @@
                     </div>
                   </div>
                 </div>
+                <!--End of first tab-->
+                <!--Start of second tab-->
                 <div class="col-lg-7 d-flex align-items-center">
                   <div class="col-lg-6 mx-auto px-0">
                     <b-tabs pills nav-class="nav-line mx-3 my-5">
@@ -360,6 +363,7 @@
                     </b-tabs>
                   </div>
                 </div>
+                <!--End of second tab-->
               </div>
             </div>
           </div>

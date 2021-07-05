@@ -271,7 +271,7 @@ export default {
 
   },
   methods: {
-    ...mapActions('properties/createAppartement'),
+    ...mapActions('properties', ['createAppartement', ]),
     addDependance: function (typeDependance) {
       console.log('typeDependance:', typeDependance)
       if (typeDependance.nbre === 0 || typeDependance.nbre === null) {

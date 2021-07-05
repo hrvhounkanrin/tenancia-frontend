@@ -104,6 +104,7 @@ const logout = ({ commit }) => {
   sessionStorage.removeItem(AUTH_TOKEN_KEY)
   sessionStorage.removeItem(USER_KEY)
   sessionStorage.removeItem(TOKEN_EXPIRE_AT_KEY)
+  localStorage.clear()
 }
 const googleExchangeToken = async ({ dispatch, commit }, googleToken) => {
   try {

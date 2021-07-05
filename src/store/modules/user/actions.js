@@ -50,7 +50,6 @@ export default {
   async myProfiles ({ commit }) {
     let user = new User()
     let res = await user.getProfiles()
-
     if (res.data.payload.lessor) {
       localStorage.setItem('lessor', JSON.stringify(res.data.payload.lessor))
     }
@@ -76,7 +75,6 @@ export default {
      async createUserProfil ({ commit }, data) {
       let user = new User()
       let newProfile = await user.createProfile(data);
-      console.log("newProfile", newProfile)
       commit(PROFILES, newProfile.data.payload)
 
     },
@@ -90,7 +88,6 @@ export default {
     async updateUserProfil ({ commit }, data) {
     let user = new User()
     let newProfile = await user.updateProfile(data);
-    console.log("newProfile", newProfile)
     commit(PROFILES, newProfile)
 
   },
