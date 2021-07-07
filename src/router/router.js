@@ -6,6 +6,7 @@ import Register from '@/views/register'
 import Profile from '@/views/profiles/my-profiles.vue'
 import Properties from '@/views/properties/Properties.vue'
 import AppartmentForm from '@/views/properties/AppartmentForm.vue'
+import ContractList from '@/views/contrats/contract-list.vue'
 Vue.use(Router)
 
 
@@ -53,6 +54,11 @@ const router = new Router({
       path: '/my-properties',
       name: 'Myproperties',
       component: Properties
+    },
+    {
+      path: '/my-contracts',
+      name: 'MyContracts',
+      component: ContractList
     },
     {
       path: '/edit-appartment',
