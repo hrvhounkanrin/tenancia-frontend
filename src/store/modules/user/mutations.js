@@ -1,5 +1,5 @@
 import {
-  PROFILES
+  PROFILES, 
 } from './mutation-types'
 
 export default {
@@ -7,5 +7,5 @@ export default {
     console.log('PROFILES MUTATION:', data)
 
     state.profiles = data
-  }
+  }, 
 }

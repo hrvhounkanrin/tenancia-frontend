@@ -16,14 +16,7 @@ export default class User {
       }
     )
   }
-  async refreshToken (bodyParams) {
-    return await this.$serveur.postRequest(
-      {
-        body: bodyParams,
-        link: 'accounts/api-token-refresh/'
-      }
-    )
-  }
+
   async register (bodyParams) {
     return await this.$serveur.postRequest(
       {
@@ -77,54 +70,23 @@ export default class User {
       }
     )
   }
-  async createTenant (bodyParams) {
+  
+  async createProfile (bodyParams) {
     return await this.$serveur.postRequest(
       {
         body: bodyParams,
-        link: 'client_action/create_client'
-      }
-    )
-  }
-  async updateTenant (bodyParams) {
-    return await this.$serveur.postRequest(
-      {
-        body: bodyParams,
-        link: 'client_action/update_client'
+        link: 'profile_action/create_profile'
       }
     )
   }
 
-  async createLessor (bodyParams) {
+  async updateProfile (bodyParams) {
     return await this.$serveur.postRequest(
       {
         body: bodyParams,
-        link: 'proprietaire_action/create_proprio'
-      }
-    )
-  }
-  async updateLessor (bodyParams) {
-    return await this.$serveur.postRequest(
-      {
-        body: bodyParams,
-        link: "proprietaire_action/update_proprio"
+        link: 'profile_action/update_profile'
       }
     )
   }
 
-  async createRealEstate (bodyParams) {
-    return await this.$serveur.postRequest(
-      {
-        body: bodyParams,
-        link: 'realestate_action/create_mandataire'
-      }
-    )
-  }
-  async updateRealEstate (bodyParams) {
-    return await this.$serveur.postRequest(
-      {
-        body: bodyParams,
-        link: "realestate_action/update_mandataire"
-      }
-    )
-  }
 }

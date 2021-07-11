@@ -88,6 +88,7 @@ export default {
         },
         {
           title: 'Mes contrats',
+          href: '/my-contracts',
           icon: {
             element: 'file-text-icon'
           }

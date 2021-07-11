@@ -6,7 +6,5 @@ export default {
   },
   errors: null,
   connectedUser: null,
-  token: null,
-  tokenExpireAt: null,
-  tokenDuration: null, //In minutes
+  token: null
 }
