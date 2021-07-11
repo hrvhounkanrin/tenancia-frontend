@@ -1,5 +1,7 @@
+// babel.config.js
 module.exports = {
-  presets: [
-    '@vue/app'
-  ]
+  presets:[
+    "@babel/preset-env",
+  ],
+  plugins: ["transform-vue-jsx"]
 }
