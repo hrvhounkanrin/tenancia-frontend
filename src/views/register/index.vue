@@ -89,7 +89,7 @@
                 <div class="col-lg-7 d-flex align-items-center">
                   <div class="col-lg-6 mx-auto px-0">
                     <b-tabs pills nav-class="nav-line mx-3 my-5">
-                       <b-tab title="Sign in" :active="selected_tab_name === 'login'">
+                       <b-tab title="Sign in" :active="selected_tab_name === 'login'" id="signin-tab">
                         <div slot="title">
                           Se connecter
                           <div class="divider"></div>
@@ -185,7 +185,7 @@
                               <div class="text-center">
                                 <button
                                   type="submit"
-                                  class="btn btn-primary btn-lg btn-block"
+                                  class="btn btn-primary btn-lg btn-block" id="btn-connect"
                                 >
                                   Se connecter
                                 </button>
@@ -194,7 +194,7 @@
                           </div>
                         </div>
                       </b-tab>
-                      <b-tab title="Overview" :active="selected_tab_name === 'register'">
+                      <b-tab title="Overview" :active="selected_tab_name === 'register'" id="signup-tab">
                         <div slot="title">
                           Créer un compte
                           <div class="divider"></div>
@@ -374,8 +374,8 @@
 </template>
 
 <script>
-import GoogleLogin from 'vue-google-login'
-import { mapState, mapGetters,mapActions, mapMutations } from 'vuex'
+// import GoogleLogin from 'vue-google-login'
+import { mapState, mapGetters, mapActions, mapMutations } from 'vuex'
 import { library } from '@fortawesome/fontawesome-svg-core'
 import {
   faQuestionCircle,
@@ -393,7 +393,6 @@ import {
   faGoogle
 } from '@fortawesome/free-brands-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
-import { ErrorBoundary } from '@/app/shared/components'
 import { ValidationObserver, ValidationProvider, setInteractionMode } from 'vee-validate'
 
 import { alert } from '@/components/shared/'
@@ -417,17 +416,15 @@ export default {
   name: 'Register',
   components: {
     'font-awesome-icon': FontAwesomeIcon,
-    ErrorBoundary,
     ValidationObserver,
     ValidationProvider,
-    GoogleLogin,
+    // GoogleLogin,
     alert
   },
   data () {
     return {
       params: {
-        client_id:
-          '185957473371-5fp3ntcah051m746ssq71c7raqsif2fl.apps.googleusercontent.com'
+        client_id: '185957473371-5fp3ntcah051m746ssq71c7raqsif2fl.apps.googleusercontent.com'
       },
       user: {
         first_name: '',
@@ -449,13 +446,12 @@ export default {
       errorOccured: state => state.auth.status.errorOccured,
       errorMsg: state => state.auth.errors
     }),
-        ...mapGetters("user", ["getProfiles"]),
+    ...mapGetters('user', ['getProfiles'])
 
   },
   created: function () {
-    const c_type = this.$route.params.c_type
-    console.log('c_type', this.$route.params)
-    this.selected_tab_name = c_type
+    // const actveTab = this.$route.params.c_type
+    // this.selected_tab_name = actveTab
   },
   methods: {
     ...mapActions('auth', [
@@ -466,7 +462,7 @@ export default {
       'getBackendResponse',
       'googleLoginFailure'
     ]),
-     ...mapActions('user', [
+    ...mapActions('user', [
       'myProfiles'
     ]),
     ...mapMutations('auth', {
@@ -506,14 +502,12 @@ export default {
       this.submitted = true
       await this.loginAccount(this.credential)
         .then(res => {
-             this.myProfiles().then(res_profiles =>{
-              //  this.setProfiles(res_profiles.data.payload)
-               this.$router.push({ name: 'Home' })
-              //  console.log('Profile data:', res_profiles.data.payload)
+          this.myProfiles().then(userProfiles => {
+            this.$router.push({ name: 'Home' })
           }
-        ).catch(error=>{
-              console.log(error, 'Une erreur est survenue lors de la récupération de vos profiles')
-            })
+          ).catch(error => {
+            console.log(error, 'Une erreur est survenue lors de la récupération de vos profiles')
+          })
         })
         .catch(error => {
           console.log('handleLogin', error)

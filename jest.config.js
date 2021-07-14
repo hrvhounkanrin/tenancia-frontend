@@ -167,7 +167,7 @@ module.exports = {
   // testRunner: "jest-circus/runner",
 
   // This option sets the URL for the jsdom environment. It is reflected in properties such as location.href
-  // testURL: "http://localhost",
+  testURL: "http://localhost",
 
   // Setting this value to "fake" allows the use of fake timers for functions such as "setTimeout"
   // timers: "real",
@@ -186,7 +186,8 @@ module.exports = {
   // Configuring any required "Transpiler" tools
   transform: {
     "^.+\\.js$": "babel-jest",
-    "^.+\\.vue$": "vue-jest"
+    "^.+\\.vue$": "vue-jest",
+    ".+\\.(css|styl|less|sass|scss|png|jpg|svg|ttf|woff|woff2)$": "jest-transform-stub"
   },
 
   // An array of regexp pattern strings that are matched against all source file paths, matched files will skip transformation
