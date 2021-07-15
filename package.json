@@ -9,7 +9,7 @@
     "test:e2e": "vue-cli-service test:e2e",
     "test:unit": "vue-cli-service test:unit",
     "test:jest": "cross-env NODE_ENV=test jest",
-    "test": "cross-env NODE_ENV=test jest", 
+    "test": "cross-env NODE_ENV=test jest",
     "test-watch": "npm run test -- --watch"
   },
   "dependencies": {
