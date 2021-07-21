@@ -305,7 +305,7 @@ export default {
     editTenant(e) {
       this.editingTenant = true;
       if (this.getProfiles && this.getProfiles.tenant) {
-        this.tenant = this.getProfiles.tenant;
+        this.tenant = {...this.getProfiles.tenant, profile_type: 'tenant',};
       }
     },
 

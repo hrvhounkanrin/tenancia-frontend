@@ -50,24 +50,25 @@ export default {
   async myProfiles ({ commit }) {
     let user = new User()
     let res = await user.getProfiles()
-    if (res.data.payload.lessor) {
-      localStorage.setItem('lessor', JSON.stringify(res.data.payload.lessor))
-    }
 
-    if (res.data.payload.tenant) {
-      localStorage.setItem('tenant', JSON.stringify(res.data.payload.tenant))
-    }
+    // if (res.data.payload.lessor) {
+    //   localStorage.setItem('lessor', JSON.stringify(res.data.payload.lessor))
+    // }
 
-    if (res.data.payload.realEstate) {
-      localStorage.setItem('realEstate', JSON.stringify(res.data.payload.realEstate))
-    }
+    // if (res.data.payload.tenant) {
+    //   localStorage.setItem('tenant', JSON.stringify(res.data.payload.tenant))
+    // }
+
+    // if (res.data.payload.realEstate) {
+    //   localStorage.setItem('realEstate', JSON.stringify(res.data.payload.realEstate))
+    // }
 
     commit(PROFILES, res.data.payload)
 
   },
 
     /**
-   * Create any profil
+   * Create any pr
    * @returns {} Commit any profil.
    */
 
@@ -80,7 +81,7 @@ export default {
     },
 
         /**
-   * Update any profil
+   * Update any profil$$
    * @returns {} Commit any profil.
    */
 
@@ -88,7 +89,8 @@ export default {
     async updateUserProfil ({ commit }, data) {
     let user = new User()
     let newProfile = await user.updateProfile(data);
-    commit(PROFILES, newProfile)
+    console.log("newProfile", newProfile)
+    commit(PROFILES, newProfile.data.payload)
 
   },
 
