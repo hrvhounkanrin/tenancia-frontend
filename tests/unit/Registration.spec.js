@@ -65,4 +65,24 @@ describe('index.vue Test', () => {
     const singninButton = wrapper.find('#btn-connect')
     expect(singninButton.exists()).toBe(false)
   })
+  it('check last name render', () => {
+    const lastName = wrapper.find('#last_name')
+    expect(lastName.exists()).toBe(true)
+  })
+  it('check first name render', () => {
+    const lastName = wrapper.find('#first_name')
+    expect(lastName.exists()).toBe(true)
+  })
+  it('check signupEmail render', () => {
+    const signupEmail = wrapper.find('#registering_email')
+    expect(signupEmail.exists()).toBe(true)
+  })
+  it('check signupPassword render', () => {
+    const signupPassword = wrapper.find('#signupPassword')
+    expect(signupPassword.exists()).toBe(true)
+  })
+  it('check signupPassConfirmation render', () => {
+    const signupPassConfirmation = wrapper.find('#signupPassConfirmation')
+    expect(signupPassConfirmation.exists()).toBe(true)
+  })
 })

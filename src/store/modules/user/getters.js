@@ -1,18 +1,18 @@
 export default {
   getProfiles: (state) => {
     // lecture des profiles du localstorage mais je suis pas sur que ce soit bien de faire une modif dans un getter
-    let profiles = {}
-    if (localStorage.getItem('lessor')) {
-      profiles.lessor = JSON.parse(localStorage.getItem('lessor'))
-    }
-    if (localStorage.getItem('tenant')) {
-      profiles.tenant = JSON.parse(localStorage.getItem('tenant'))
-    }
-    if (localStorage.getItem('realEstate')) {
-      profiles.realEstate = JSON.parse(localStorage.getItem('realEstate'))
-    }
-    if (Object.entries(profiles).length === 0) { return profiles }
-    state.profiles = profiles
+    // let profiles = {}
+    // if (localStorage.getItem('lessor')) {
+    //   profiles.lessor = JSON.parse(localStorage.getItem('lessor'))
+    // }
+    // if (localStorage.getItem('tenant')) {
+    //   profiles.tenant = JSON.parse(localStorage.getItem('tenant'))
+    // }
+    // if (localStorage.getItem('realEstate')) {
+    //   profiles.realEstate = JSON.parse(localStorage.getItem('realEstate'))
+    // }
+    // if (Object.entries(profiles).length === 0) { return profiles }
+    // state.profiles = profiles
     return state.profiles
   },
   // tenantProfile: (state) => {

@@ -89,7 +89,7 @@
                 <div class="col-lg-7 d-flex align-items-center">
                   <div class="col-lg-6 mx-auto px-0">
                     <b-tabs pills nav-class="nav-line mx-3 my-5">
-                       <b-tab title="Sign in" :active="selected_tab_name === 'login'" id="signin-tab">
+                       <b-tab active title="Sign in" id="signin-tab">
                         <div slot="title">
                           Se connecter
                           <div class="divider"></div>
@@ -194,7 +194,7 @@
                           </div>
                         </div>
                       </b-tab>
-                      <b-tab title="Overview" :active="selected_tab_name === 'register'" id="signup-tab">
+                      <b-tab title="Overview" id="signup-tab">
                         <div slot="title">
                           Créer un compte
                           <div class="divider"></div>
@@ -296,7 +296,7 @@
                                     type="password"
                                     class="form-control"
                                     placeholder="Mot de passe"
-                                    id="registering_pas"
+                                    id="signupPassword"
                                     v-model="user.password"
                                     name="password"
                                     :class="{
@@ -321,6 +321,7 @@
                                   <input
                                     v-model="user.confirm"
                                     class="form-control"
+                                    id="signupPassConfirmation"
                                     placeholder="Confirmer mot de passe"
                                     type="password"
                                   />

@@ -31,7 +31,7 @@
           <span
             class="text-black-50 d-block"
             id="locataire_profession"
-          >{{ countries.find(pays => pays.id == getProfiles.lessor.pays_residence).label }}</span>
+          >{{ countries.find(pays => pays.id == getProfiles.lessor.pays_residence)?countries.find(pays => pays.id == getProfiles.lessor.pays_residence).label: "" }}</span>
         </div>
         <div class="d-flex align-items-left justify-content-start">
           <b>
@@ -242,7 +242,7 @@ export default {
     editLessor(e) {
       this.editingLessor = true;
       if (this.getProfiles && this.getProfiles.lessor) {
-        this.lessor = this.getProfiles.lessor;
+        this.lessor = {...this.getProfiles.lessor, profile_type: 'lessor',};
         this.lessor.banque_id = this.getProfiles.lessor.banque.id;
         console.log(
           "res",
