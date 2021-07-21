@@ -38,6 +38,7 @@ export default {
         }
       })
       .catch(errors => {
+        console.log('Error creating immeuble: ', errors)
         commit(ERROR_ADD, { key: 'createImmeuble', message: errors.message })
         return errors
       })
