@@ -24,11 +24,13 @@
           class="btn-block btn btn-primary mt-1"
           @click="editRealEstate"
           title="Learn more"
-          >
-                    <span>{{(getProfiles && !getProfiles.real_estate) ? 'Créer mon profil' : 'Modifier mon profil' }}</span>
-
-          </a
         >
+          <span>{{
+            getProfiles && !getProfiles.real_estate
+              ? "Créer mon profil"
+              : "Modifier mon profil"
+          }}</span>
+        </a>
       </div>
     </div>
     <div
@@ -70,11 +72,17 @@
           }}</span>
         </div>
         <div class="d-flex align-items-left justify-content-start">
+          <span class="text-black-50 d-block" id="numero_ifu">{{
+            getProfiles.real_estate.numero_ifu
+          }}</span
+          >$
+        </div>
+        <div class="d-flex align-items-left justify-content-start">
           <b><span class="d-block">DATE DELIVRANCE</span></b>
         </div>
         <div class="d-flex align-items-left justify-content-start">
           <span class="text-black-50 d-block" id="locataire_profession">{{
-            getProfiles.real_estate.date_delivrance
+            formatDelivranceDate(getProfiles.real_estate.date_delivrance)
           }}</span>
         </div>
         <div class="d-flex align-items-left justify-content-start">
@@ -104,7 +112,7 @@
             <div class="col-md-12 mb-12">
               <b-form-group
                 label="N° TELEPHONE"
-                label-for="tenant_phone_number"
+                label-for="realEstate_phone_number"
               >
                 <span
                   class="invalid-feedback d-block"
@@ -143,6 +151,18 @@
               </b-form-group>
             </div>
             <div class="col-md-12 mb-12">
+              <b-form-group label="N° IFU" label-for="numero_ifu">
+                <span class="invalid-feedback d-block">{{
+                  errors.numero_ifuMsg
+                }}</span>
+                <b-form-input
+                  id="numero_ifu"
+                  trim
+                  v-model="realEstate.numero_ifu"
+                ></b-form-input>
+              </b-form-group>
+            </div>
+            <div class="col-md-12 mb-12">
               <b-form-group label="DATE DELIVRANCE" label-for="numero_ifu">
                 <datepicker
                   :bootstrap-styling="true"
@@ -153,24 +173,24 @@
               </b-form-group>
             </div>
           </div>
-     
-           <div style="display:flex; flex-direction:row;"> 
+
+          <div style="display: flex; flex-direction: row">
             <a
-            href="javascript:void(0);"
-            class="btn-block btn btn-primary m-1"
-            title="Save Lessor"
-            @click="saveRealEstate"
-          >
-            <span>Sauvegarder</span>
-          </a>
-          <a
-            href="javascript:void(0);"
-            class="btn-block btn btn-danger m-1"
-            title="Save Lessor"
-            @click="editingRealEstate = false"
-          >
-            <span>Annuler</span>
-          </a>
+              href="javascript:void(0);"
+              class="btn-block btn btn-primary m-1"
+              title="Save Lessor"
+              @click="saveRealEstate"
+            >
+              <span>Sauvegarder</span>
+            </a>
+            <a
+              href="javascript:void(0);"
+              class="btn-block btn btn-danger m-1"
+              title="Save Lessor"
+              @click="editingRealEstate = false"
+            >
+              <span>Annuler</span>
+            </a>
           </div>
         </form>
       </div>
@@ -196,7 +216,7 @@ import {
 
 export default {
   name: "lessor-detail",
-  // props: { tenant: Object },
+  // props: { realEstate: Object },
   components: {
     "font-awesome-icon": FontAwesomeIcon,
     alert,
@@ -243,8 +263,9 @@ export default {
         raison_social: null,
         num_telephone: null,
         adresse: null,
+        numero_ifu: null,
         num_carte_professionnel: null,
-
+        profile_type: "real_estate",
       },
     };
   },
@@ -252,22 +273,27 @@ export default {
     this.countries = mixin.methods.getAllCountry(this.onlyCountries);
   },
   computed: {
-        ...mapGetters("user", ["getProfiles"]),
+    ...mapGetters("user", ["getProfiles"]),
 
     ...mapGetters("banque", ["banquesList"]),
     ...mapGetters("auth", ["user"]),
     ...mapGetters("general", ["iceRelation"]),
   },
   methods: {
-    ...mapActions('user', ['createUserProfil', 'updateUserProfil']),
-
+    ...mapActions("user", ["createUserProfil", "updateUserProfil"]),
+    formatDelivranceDate(dte) {
+      return moment(dte).format("DD/MM/YYYY").toString();
+    },
     customFormatter() {
       return moment(this.realEstate.date_delivrance).format("L").toString();
     },
-     editRealEstate(e) {
+    editRealEstate(e) {
       this.editingRealEstate = true;
       if (this.getProfiles && this.getProfiles.real_estate) {
-        this.realEstate = this.getProfiles.real_estate;
+        this.realEstate = {
+          ...this.getProfiles.real_estate,
+          profile_type: "real_estate",
+        };
       }
     },
 
@@ -275,9 +301,8 @@ export default {
       this.editingRealEstate = false;
     },
     onRealEstateActionFailure(err) {
-      this.errors.tenantMsg = err.response.data.message;
-            this.editingRealEstate = true;
-
+      this.errors.realEstateMsg = err.response.data.message;
+      this.editingRealEstate = true;
     },
 
     async saveRealEstate() {
@@ -288,8 +313,11 @@ export default {
       this.errors.phone_numberMsg = !this.realEstate.num_telephone
         ? "Veuillez renseigner le numéro de téléphone"
         : null;
-      this.errors.adresse = !this.tenant.adresseMsg
+      this.errors.adresse = !this.realEstate.adresseMsg
         ? "Veuillez renseigner l'adresse de l'agence"
+        : null;
+      this.errors.numero_ifuMsg = !this.realEstate.numero_ifu
+        ? "Veuillez renseigner votre N° IFU"
         : null;
 
       //return if any error property is not null
@@ -299,16 +327,20 @@ export default {
       }
       if (this.realEstate.id && this.realEstate.id > 0) {
         this.realEstate.date_delivrance = moment(
-          this.realEstate.date_delivrance,
-          "L"
+          this.realEstate.date_delivrance
         )
           .format("YYYY-MM-DD")
           .toString();
-        console.log(this.realEstate);
+        console.log(this.realEstate, "REAL");
         await this.updateUserProfil(this.realEstate)
           .then((res) => this.onRealEstateActionSucess(res))
           .catch((err) => this.onRealEstateActionFailure(err));
       } else {
+        this.realEstate.date_delivrance = moment(
+          this.realEstate.date_delivrance
+        )
+          .format("YYYY-MM-DD")
+          .toString();
         await this.createUserProfil(this.realEstate)
           .then((res) => this.onRealEstateActionSucess(res))
           .catch((err) => this.onRealEstateActionFailure(err));
