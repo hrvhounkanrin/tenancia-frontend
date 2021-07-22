@@ -1,7 +1,7 @@
 <template>
   <div>
         <PageTitle heading="Appartement"
-                   subheading="Edition appartement & dépendances..."/>
+                   subheading="Configurer votre appartement en ajoutant les dépendances..."/>
                    <div class="row">
                        <div class="col-lg-12 col-md-12 col-sm-8 offset-sm-2 col-xl-8 offset-xl-2">
                                 <alert  variant="warning" v-for="err in api_errors" :msg="err.message" icon="bell" :dismissSecs="15" :dismissible="true" :title="'Oups..'" :key="err.key"></alert>
@@ -12,8 +12,8 @@
             <div class="card card-box mb-5">
                 <div class="card-header">
                     <div class="card-header--title">
-                        <small>Immeuble/Maison :  {{selectedImmeuble.ref_immeuble}}({{selectedImmeuble.intitule}})</small>
-                        <b>Appartement</b>
+                       <b> Immeuble/Maison :  {{selectedImmeuble.ref_immeuble}}({{selectedImmeuble.intitule}})</b>
+                        <small>Nouvel Appartement</small>
                     </div>
                     <div class="card-header--actions">
                         <b-badge pill variant="success">{{surfaceTotale}}m² de surface habitable</b-badge>
@@ -80,19 +80,17 @@
         <div class="col-md-6">
                 <div class="card card-box mb-5">
                     <div class="card-header">
-                        <div class="card-header--title">
-                            <small>Liste des types de dépendances-</small>
-                            <div class="col-lg-8 col-md-8 col-sm-8 col-xl-8 ">
-
-                            </div>
-                        </div>
+                         <div class="card-header--title">
+                        <b>Types de dépendances</b>
+                        <small>Choisissez un type de dépendance, renseigner le nombre et la dimension puis ajoutez..</small>
+                    </div>
                        <div class="card-header--actions">
                             {{filterValue}}
                         </div>
                     </div>
                     <div class="card-body">
                         <div class="input-group mb-2" >
-                            <input type="search" class="form-control"  v-model="filterValue" />
+                            <input type="search" class="form-control" placeholder="Filtrer type de dépendances" v-model="filterValue" />
                             <div class="input-group-append">
                                 <b-button variant="primary" class="border-0">
                                     <font-awesome-icon icon="search" />
@@ -124,7 +122,7 @@
                             <div class="ml-auto">
                                 <b-button variant="primary">
                                     <font-awesome-icon icon="plus" class="mr-2" />
-                                    Créer type dépendance
+                                    Créer un nouveau type dépendance
                                 </b-button>
                             </div>
                         </div>
@@ -242,6 +240,9 @@ export default {
     surfaceTotale: function () {
       console.log(this.selectedDependance)
       return this.selectedDependance.reduce((accumulateur, item) => accumulateur + parseFloat(item.superficie) * parseFloat(item.nbre), 0)
+    },
+    heading: function () {
+        return this.selectedImmeuble.ref_immeuble +'('+selectedImmeuble.intitule+')'
     }
   },
   created () {

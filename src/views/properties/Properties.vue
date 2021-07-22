@@ -122,15 +122,15 @@
                             <div class="col-lg-12 col-xl-12">
                                 <div class="card card-box mb-5">
                                     <ul class="list-group list-group-flush" v-if="immeubles.length>0">
-                                          <building
+                                          <building-detail
                                             v-for="(item, index) in immeubles"
                                             :immeuble_id="item.immeuble_id"
                                             :title="item.intitule"
                                             :reference="item.ref_immeuble"
                                             :city="item.ville"
                                             :adresse="item.adresse"
-                                            :jour_emission_facture="item.jour_emission_facture"
-                                            :jour_valeur_facture="item.jour_valeur_facture"
+                                            :jour-emission-facture="item.jour_emission_facture"
+                                            :jour-valeur-facture="item.jour_valeur_facture"
                                             :isActive="item.isActive"
                                             :index="index"
                                             :key="item.id"
@@ -139,7 +139,7 @@
                                             @mouseover.native="hover = true"
                                             @mouseleave.native="hover = false"
                                             @edit-immeuble="editImmeuble(item)"
-                                        ></building>
+                                        ></building-detail>
                                     </ul>
                                 </div>
                             </div>
@@ -195,7 +195,7 @@
                 </div>
             </div>
         </div>
-        
+
         <bulding-form :id="'buildingForm'" :hide-footer="false" :hide-header="false" :size="'lg'"
          @hide-modal="$bvModal.hide('buildingForm')" @save-data="saveImmeuble">
             <template #left-img>
@@ -246,7 +246,7 @@
                 </form>
             </template>
         </bulding-form>
- 
+
         <b-modal id="clonerAppartment" title="Cloner appartement" centered>
             <div class="w-100 mb-4">
             <div class="d-flex flex-wrap justify-content-between mb-2">
@@ -255,7 +255,7 @@
             <div class="row">
                 <div class="col-md-12">
                     <ul class="list-unstyled card-columns" v-if="selectedAppartement">
-                        <li v-for="(dep, index) in selectedAppartement.structures" :key="dep.id"><font-awesome-icon icon="check-square" class="mr-2"/>0{{dep.nbre}}  {{ dep.typedependence.libelle }}</li>
+                        <li v-for="dep in selectedAppartement.structures" :key="dep.id"><font-awesome-icon icon="check-square" class="mr-2"/>0{{dep.nbre}}  {{ dep.typedependence.libelle }}</li>
                     </ul>
                     <p><font-awesome-icon icon="comments"/><span class="ml-2">{{selectedAppartement.autre_description}}...</span></p>
                 </div>
@@ -274,14 +274,12 @@
                 </div>
             </div>
 
-                
           </div>
           <div slot="modal-footer">
               <b-button variant="link" class="btn-link-dark" @click="$bvModal.hide('clonerAppartment')">Annuler</b-button>
               <b-button variant="primary" @click="clonerAppartment">Cloner</b-button>
           </div>
         </b-modal>
-             
 
         <bulding-form :id="'buildingForm'" :hide-footer="false" :hide-header="false" :size="'lg'"
          @hide-modal="$bvModal.hide('buildingForm')" @save-data="saveImmeuble">
@@ -342,7 +340,7 @@
             <div class="row">
                 <div class="col-md-12">
                     <ul class="list-unstyled card-columns" v-if="selectedAppartement">
-                        <li v-for="(dep, index) in selectedAppartement.structures" :key="dep.id"><font-awesome-icon icon="check-square" class="mr-2"/>0{{dep.nbre}}  {{ dep.typedependence.libelle }}</li>
+                        <li v-for="dep in selectedAppartement.structures" :key="dep.id"><font-awesome-icon icon="check-square" class="mr-2"/>0{{dep.nbre}}  {{ dep.typedependence.libelle }}</li>
                     </ul>
                     <p><font-awesome-icon icon="comments"/><span class="ml-2">{{selectedAppartement.autre_description}}...</span></p>
                 </div>
@@ -374,78 +372,23 @@
 <script>
 
 import { mapActions, mapGetters, mapState } from 'vuex'
+import { library } from '@fortawesome/fontawesome-svg-core'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
-import VuePerfectScrollbar from 'vue-perfect-scrollbar'
+import { fas } from '@fortawesome/free-solid-svg-icons'
+// import VuePerfectScrollbar from 'vue-perfect-scrollbar'
 import vueSlider from 'vue-slider-component'
 import paginate, { alert } from '@/components/shared/'
-import Building from './Building.vue'
+import BuildingDetail from './BuildingDetail.vue'
 import Appartment from './Appartment.vue'
-import { library } from '@fortawesome/fontawesome-svg-core'
 import BuildingForm from './BuildingForm.vue'
+library.add(fas)
 
-import {
-  faChevronRight,
-  faPlus,
-  faEye,
-  faArrowUp,
-  faNewspaper,
-  faLightbulb,
-  faUser,
-  faEllipsisH,
-  faChevronLeft,
-  faArrowDown,
-  faFileAudio,
-  faFileVideo,
-  faFileExcel,
-  faComments,
-  faBalanceScale,
-  faCarBattery,
-  faBinoculars,
-  faHourglass,
-  faCheckSquare,
-  faEdit,
-  faFileWord,
-  faUnlock,
-  faClone,
-  faHome
-} from '@fortawesome/free-solid-svg-icons'
-import {
-  faPinterest
-} from '@fortawesome/free-brands-svg-icons'
-
-library.add(
-  faChevronRight,
-  faPlus,
-  faEye,
-  faArrowUp,
-  faNewspaper,
-  faLightbulb,
-  faUser,
-  faEllipsisH,
-  faChevronLeft,
-  faArrowDown,
-  faPinterest,
-  faFileAudio,
-  faFileVideo,
-  faFileExcel,
-  faComments,
-  faBalanceScale,
-  faCarBattery,
-  faBinoculars,
-  faHourglass,
-  faCheckSquare,
-  faEdit,
-  faFileWord,
-  faUnlock,
-  faClone,
-  faHome
-)
 export default {
   components: {
-    VuePerfectScrollbar,
+    // VuePerfectScrollbar,
     vueSlider,
     'font-awesome-icon': FontAwesomeIcon,
-    'building': Building,
+    'building-detail': BuildingDetail,
     'appartment': Appartment,
     't-pagination': paginate,
     'bulding-form': BuildingForm,
@@ -510,7 +453,7 @@ export default {
   },
   watch: {
     selectedImmeuble: function (newImmeuble, oldImmeuble) {
-      if (newImmeuble === undefined || this.immeubles.length == 0) {
+      if (newImmeuble === undefined || this.immeubles.length === 0) {
         return
       }
       let index = this.immeubles.findIndex(im => im.id === newImmeuble.id)
@@ -538,8 +481,7 @@ export default {
         return
       }
       let page = pageNum
-      let per_page = this.perPage
-      let offset = (page - 1) * per_page
+      let offset = (page - 1) * this.perPage
       let paginatedItems = this.selectedImmeuble.appartements.slice(offset).slice(0, this.perPage)
       this.selectedPage = pageNum
       console.log('paginatedItems:', paginatedItems)
@@ -556,7 +498,6 @@ export default {
     },
     getDependencies: function (appartment) {
       let dependencies = appartment.structures.map(dep => '0' + dep.nbre + ' ' + dep.typedependence.libelle)
-      // console.log(dependencies)
       return dependencies
     },
     selectBuilding: function (item, index) {
@@ -564,7 +505,8 @@ export default {
         return
       }
       this.immeuble = item
-      this.immeubles.map(el => el.isActive = false)
+      this.immeubles.forEach(el => (el.isActive = false))
+
       this.immeubles[index].isActive = true
 
       this.buildingApparts = item.appartements
