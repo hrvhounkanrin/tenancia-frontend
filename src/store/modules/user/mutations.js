@@ -1,5 +1,5 @@
 import {
-  PROFILES, 
+  PROFILES
 } from './mutation-types'
 
 export default {
@@ -15,6 +15,7 @@ export default {
     if (data.realEstate) {
       localStorage.setItem('realEstate', JSON.stringify(data.realEstate))
     }
+    localStorage.setItem('profiles', JSON.stringify(data))
     state.profiles = data
-  }, 
+  }
 }

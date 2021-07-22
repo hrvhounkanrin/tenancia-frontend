@@ -195,7 +195,7 @@
                 </div>
             </div>
         </div>
-        
+
         <bulding-form :id="'buildingForm'" :hide-footer="false" :hide-header="false" :size="'lg'"
          @hide-modal="$bvModal.hide('buildingForm')" @save-data="saveImmeuble">
             <template #left-img>
@@ -246,7 +246,7 @@
                 </form>
             </template>
         </bulding-form>
- 
+
         <b-modal id="clonerAppartment" title="Cloner appartement" centered>
             <div class="w-100 mb-4">
             <div class="d-flex flex-wrap justify-content-between mb-2">
@@ -274,14 +274,12 @@
                 </div>
             </div>
 
-                
           </div>
           <div slot="modal-footer">
               <b-button variant="link" class="btn-link-dark" @click="$bvModal.hide('clonerAppartment')">Annuler</b-button>
               <b-button variant="primary" @click="clonerAppartment">Cloner</b-button>
           </div>
         </b-modal>
-             
 
         <bulding-form :id="'buildingForm'" :hide-footer="false" :hide-header="false" :size="'lg'"
          @hide-modal="$bvModal.hide('buildingForm')" @save-data="saveImmeuble">
@@ -322,11 +320,11 @@
                                     <input type="text" class="form-control" id="ville" placeholder="Ville" trim v-model="immeuble.ville">
                                     <span  class="invalid-feedback d-block" v-if="errors.villeMsg" >{{errors.villeMsg}}</span >
 
-                                <!--  <label for="ville">Latitude</label>
+                                  <label for="ville">Latitude</label>
                                     <input type="text" class="form-control" id="lat" placeholder="Latitude" v-model="immeuble.latitude">
                                     <label for="quartier">Longitude</label>
                                     <input type="text" class="form-control" id="lng" placeholder="Longitude" v-model="immeuble.longitude">
-                                    <GmapAutocomplete @place_changed='setPlace'  class="form-control" />-->
+                                    <GmapAutocomplete @place_changed='setPlace'  class="form-control" />
                                 </div>
 
                             </div>
@@ -479,7 +477,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters('user', ['getProfiles', 'haveTenantProfile', 'haveLessorProfile', 'haveRealEstateProfile', 'tenantProfile', 'lessorProfile', 'realEstateProfile']),
+    ...mapGetters('user', ['haveTenantProfile', 'haveLessorProfile', 'haveRealEstateProfile', 'tenantProfile', 'lessorProfile', 'realEstateProfile']),
     ...mapGetters({
       immeubles: 'properties/immeubles',
       typedependances: 'properties/immeubles'
@@ -494,7 +492,8 @@ export default {
     if (this.immeubles.length === 0) {
       this.$store.dispatch('properties/getImmeubles')
     }
-    console.log('getProfiles', this.getProfiles.lessor)
+    //
+    // this.$store.dispatch('properties/getTypedependances')
   },
   mounted () {
     if (this.selectedImmeuble == null || this.selectedImmeuble === undefined) {
@@ -622,9 +621,8 @@ export default {
         this.$forceUpdate()
         return
       }
-      console.log('this.getProfiles.lessor: ', this.getProfiles)
       if (!this.immeuble.intitule || this.immeuble.intitule.trim() === '') delete this.immeuble.intitule
-      this.immeuble.proprietaire_id = this.getProfiles.lessor.id
+      this.immeuble.proprietaire_id = this.lessorProfile.id
       if (this.immeuble.id && this.immeuble.id > 0) {
         await this.updateImmeuble(this.immeuble)
       } else {
