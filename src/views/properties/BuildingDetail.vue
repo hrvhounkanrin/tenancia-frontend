@@ -28,7 +28,7 @@
             <div class="col-6 col-md-3">
                 <div class="text-center">
                     <span class="text-black-50 d-block">Jour facture</span>
-                    <b class="font-size-xm">{{ (jour_valeur_facture <= 9) ? '0' : '' }}{{jour_valeur_facture}}</b> du mois
+                    <b class="font-size-xm">{{ cpJourValeurFacture }}</b>
                 </div>
             </div>
             <div class="text-center col-6 col-md-2">
@@ -50,32 +50,24 @@
 </template>
 
 <script>
-import {library} from '@fortawesome/fontawesome-svg-core'
-    import {
-        faChevronRight,
-        faPlus,
-        faEye,
-        faArrowUp,
-        faNewspaper,
-        faLightbulb,
-        faUser,
-        faEllipsisH,
-        faChevronLeft,
-        faArrowDown,
-        faFileAudio,
-        faFileVideo,
-        faFileExcel,
-        faComments,
-        faBalanceScale,
-        faCarBattery,
-        faBinoculars,
-        faHourglass
-    } from '@fortawesome/free-solid-svg-icons'
-    import {FontAwesomeIcon} from '@fortawesome/vue-fontawesome'
+import { library } from '@fortawesome/fontawesome-svg-core'
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
+import { fas } from '@fortawesome/free-solid-svg-icons'
+library.add(fas)
 export default {
-  name: 'Building',
+  name: 'BuildingDetail',
   components: {
-      'font-awesome-icon': FontAwesomeIcon,
+    'font-awesome-icon': FontAwesomeIcon
+  },
+  computed: {
+    // left pad 0 if jourValeurFacture less than 9
+    cpJourValeurFacture: function () {
+      if (this.jourValeurFacture < 9) { return '0' + this.jourValeurFacture + ' du mois' } else { return this.jourValeurFacture + ' du mois' }
+    },
+    // left pad 0 if jourEmissionFacture less than 9
+    cpJourEmissionFacture: function () {
+      if (this.jourEmissionFacture < 9) { return '0' + this.jourEmissionFacture + ' du mois' } else { return this.jourEmissionFacture + ' du mois' }
+    }
   },
   props: {
     index: Number,
@@ -83,11 +75,10 @@ export default {
     reference: String,
     adresse: String,
     city: String,
-    jour_emission_facture: Number,
-    jour_valeur_facture: Number,
+    jourEmissionFacture: Number,
+    jourValeurFacture: Number,
     selected: Boolean
   }
 
 }
 </script>
-

@@ -122,15 +122,15 @@
                             <div class="col-lg-12 col-xl-12">
                                 <div class="card card-box mb-5">
                                     <ul class="list-group list-group-flush" v-if="immeubles.length>0">
-                                          <building-detail
+                                          <building
                                             v-for="(item, index) in immeubles"
                                             :immeuble_id="item.immeuble_id"
                                             :title="item.intitule"
                                             :reference="item.ref_immeuble"
                                             :city="item.ville"
                                             :adresse="item.adresse"
-                                            :jour-emission-facture="item.jour_emission_facture"
-                                            :jour-valeur-facture="item.jour_valeur_facture"
+                                            :jour_emission_facture="item.jour_emission_facture"
+                                            :jour_valeur_facture="item.jour_valeur_facture"
                                             :isActive="item.isActive"
                                             :index="index"
                                             :key="item.id"
@@ -139,7 +139,7 @@
                                             @mouseover.native="hover = true"
                                             @mouseleave.native="hover = false"
                                             @edit-immeuble="editImmeuble(item)"
-                                        ></building-detail>
+                                        ></building>
                                     </ul>
                                 </div>
                             </div>
@@ -255,7 +255,7 @@
             <div class="row">
                 <div class="col-md-12">
                     <ul class="list-unstyled card-columns" v-if="selectedAppartement">
-                        <li v-for="dep in selectedAppartement.structures" :key="dep.id"><font-awesome-icon icon="check-square" class="mr-2"/>0{{dep.nbre}}  {{ dep.typedependence.libelle }}</li>
+                        <li v-for="(dep, index) in selectedAppartement.structures" :key="dep.id"><font-awesome-icon icon="check-square" class="mr-2"/>0{{dep.nbre}}  {{ dep.typedependence.libelle }}</li>
                     </ul>
                     <p><font-awesome-icon icon="comments"/><span class="ml-2">{{selectedAppartement.autre_description}}...</span></p>
                 </div>
@@ -320,11 +320,11 @@
                                     <input type="text" class="form-control" id="ville" placeholder="Ville" trim v-model="immeuble.ville">
                                     <span  class="invalid-feedback d-block" v-if="errors.villeMsg" >{{errors.villeMsg}}</span >
 
-                                <!--  <label for="ville">Latitude</label>
+                                  <label for="ville">Latitude</label>
                                     <input type="text" class="form-control" id="lat" placeholder="Latitude" v-model="immeuble.latitude">
                                     <label for="quartier">Longitude</label>
                                     <input type="text" class="form-control" id="lng" placeholder="Longitude" v-model="immeuble.longitude">
-                                    <GmapAutocomplete @place_changed='setPlace'  class="form-control" />-->
+                                    <GmapAutocomplete @place_changed='setPlace'  class="form-control" />
                                 </div>
 
                             </div>
@@ -340,7 +340,7 @@
             <div class="row">
                 <div class="col-md-12">
                     <ul class="list-unstyled card-columns" v-if="selectedAppartement">
-                        <li v-for="dep in selectedAppartement.structures" :key="dep.id"><font-awesome-icon icon="check-square" class="mr-2"/>0{{dep.nbre}}  {{ dep.typedependence.libelle }}</li>
+                        <li v-for="(dep, index) in selectedAppartement.structures" :key="dep.id"><font-awesome-icon icon="check-square" class="mr-2"/>0{{dep.nbre}}  {{ dep.typedependence.libelle }}</li>
                     </ul>
                     <p><font-awesome-icon icon="comments"/><span class="ml-2">{{selectedAppartement.autre_description}}...</span></p>
                 </div>
@@ -372,23 +372,78 @@
 <script>
 
 import { mapActions, mapGetters, mapState } from 'vuex'
-import { library } from '@fortawesome/fontawesome-svg-core'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
-import { fas } from '@fortawesome/free-solid-svg-icons'
-// import VuePerfectScrollbar from 'vue-perfect-scrollbar'
+import VuePerfectScrollbar from 'vue-perfect-scrollbar'
 import vueSlider from 'vue-slider-component'
 import paginate, { alert } from '@/components/shared/'
-import BuildingDetail from './BuildingDetail.vue'
+import Building from './Building.vue'
 import Appartment from './Appartment.vue'
+import { library } from '@fortawesome/fontawesome-svg-core'
 import BuildingForm from './BuildingForm.vue'
-library.add(fas)
 
+import {
+  faChevronRight,
+  faPlus,
+  faEye,
+  faArrowUp,
+  faNewspaper,
+  faLightbulb,
+  faUser,
+  faEllipsisH,
+  faChevronLeft,
+  faArrowDown,
+  faFileAudio,
+  faFileVideo,
+  faFileExcel,
+  faComments,
+  faBalanceScale,
+  faCarBattery,
+  faBinoculars,
+  faHourglass,
+  faCheckSquare,
+  faEdit,
+  faFileWord,
+  faUnlock,
+  faClone,
+  faHome
+} from '@fortawesome/free-solid-svg-icons'
+import {
+  faPinterest
+} from '@fortawesome/free-brands-svg-icons'
+
+library.add(
+  faChevronRight,
+  faPlus,
+  faEye,
+  faArrowUp,
+  faNewspaper,
+  faLightbulb,
+  faUser,
+  faEllipsisH,
+  faChevronLeft,
+  faArrowDown,
+  faPinterest,
+  faFileAudio,
+  faFileVideo,
+  faFileExcel,
+  faComments,
+  faBalanceScale,
+  faCarBattery,
+  faBinoculars,
+  faHourglass,
+  faCheckSquare,
+  faEdit,
+  faFileWord,
+  faUnlock,
+  faClone,
+  faHome
+)
 export default {
   components: {
-    // VuePerfectScrollbar,
+    VuePerfectScrollbar,
     vueSlider,
     'font-awesome-icon': FontAwesomeIcon,
-    'building-detail': BuildingDetail,
+    'building': Building,
     'appartment': Appartment,
     't-pagination': paginate,
     'bulding-form': BuildingForm,
@@ -422,7 +477,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters('user', ['getProfiles', 'haveTenantProfile', 'haveLessorProfile', 'haveRealEstateProfile', 'tenantProfile', 'lessorProfile', 'realEstateProfile']),
+    ...mapGetters('user', ['haveTenantProfile', 'haveLessorProfile', 'haveRealEstateProfile', 'tenantProfile', 'lessorProfile', 'realEstateProfile']),
     ...mapGetters({
       immeubles: 'properties/immeubles',
       typedependances: 'properties/immeubles'
@@ -437,7 +492,8 @@ export default {
     if (this.immeubles.length === 0) {
       this.$store.dispatch('properties/getImmeubles')
     }
-    console.log('getProfiles', this.getProfiles.lessor)
+    //
+    // this.$store.dispatch('properties/getTypedependances')
   },
   mounted () {
     if (this.selectedImmeuble == null || this.selectedImmeuble === undefined) {
@@ -453,7 +509,7 @@ export default {
   },
   watch: {
     selectedImmeuble: function (newImmeuble, oldImmeuble) {
-      if (newImmeuble === undefined || this.immeubles.length === 0) {
+      if (newImmeuble === undefined || this.immeubles.length == 0) {
         return
       }
       let index = this.immeubles.findIndex(im => im.id === newImmeuble.id)
@@ -481,7 +537,8 @@ export default {
         return
       }
       let page = pageNum
-      let offset = (page - 1) * this.perPage
+      let per_page = this.perPage
+      let offset = (page - 1) * per_page
       let paginatedItems = this.selectedImmeuble.appartements.slice(offset).slice(0, this.perPage)
       this.selectedPage = pageNum
       console.log('paginatedItems:', paginatedItems)
@@ -498,6 +555,7 @@ export default {
     },
     getDependencies: function (appartment) {
       let dependencies = appartment.structures.map(dep => '0' + dep.nbre + ' ' + dep.typedependence.libelle)
+      // console.log(dependencies)
       return dependencies
     },
     selectBuilding: function (item, index) {
@@ -505,8 +563,7 @@ export default {
         return
       }
       this.immeuble = item
-      this.immeubles.forEach(el => (el.isActive = false))
-
+      this.immeubles.map(el => el.isActive = false)
       this.immeubles[index].isActive = true
 
       this.buildingApparts = item.appartements
@@ -564,9 +621,8 @@ export default {
         this.$forceUpdate()
         return
       }
-      console.log('this.getProfiles.lessor: ', this.getProfiles)
       if (!this.immeuble.intitule || this.immeuble.intitule.trim() === '') delete this.immeuble.intitule
-      this.immeuble.proprietaire_id = this.getProfiles.lessor.id
+      this.immeuble.proprietaire_id = this.lessorProfile.id
       if (this.immeuble.id && this.immeuble.id > 0) {
         await this.updateImmeuble(this.immeuble)
       } else {
