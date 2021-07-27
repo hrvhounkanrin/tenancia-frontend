@@ -95,6 +95,7 @@ export default {
         },
         {
           title: 'Mes quittances',
+          href: '/edit-contrat',
           icon: {
             element: 'clipboard-icon'
           }

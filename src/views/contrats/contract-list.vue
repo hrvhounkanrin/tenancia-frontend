@@ -10,12 +10,13 @@
                     <div class="card-header pr-2">
                         <div class="card-header--title">
                             <small>Vue bailleur</small>
-                            <b>Liste des contrats</b>
+                            <b>Liste des contrats de bail</b>
                         </div>
                         <div class="card-header--actions">
-                            <a href="javascript:void(0)" class="btn btn-sm text-primary btn-link" v-b-tooltip.hover title="Refresh">
-                                <font-awesome-icon spin icon="sync"/>
-                            </a>
+                            <b-button variant="primary">
+                                    <font-awesome-icon icon="plus" class="mr-2" />
+                                    Créer un nouveau contrat
+                                </b-button>
                         </div>
                     </div>
                     <div class="card-body p-0">

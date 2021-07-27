@@ -25,6 +25,7 @@ import Pages from '@/components/shared/pagesLayout.vue'
 import Apps from '@/components/shared/appLayout.vue'
 import Layouts from '@/components/shared/layoutsExamples.vue'
 import PageTitle from '@/components/shared/PageTitle'
+import VueMask from 'v-mask'
 
 Vue.component('vue-phone-number-input', VuePhoneNumberInput)
 Vue.component('autocomplete-input', VueSimpleSuggest)
@@ -42,6 +43,7 @@ const gauthOption = {
 
 Vue.use(VueToast)
 Vue.use(VueSweetalert2)
+Vue.use(VueMask)
 Vue.use(GAuth, gauthOption)
 Vue.use(VueGoogleMaps, {
   load: {

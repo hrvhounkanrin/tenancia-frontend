@@ -7,6 +7,7 @@ import general from './modules/general'
 import properties from './modules/properties'
 import auth from './modules/auth'
 import shared from './modules/shared'
+import contrats from './modules/contrats'
 
 // import { main } from '@/app/shared/store/main-store'
 
@@ -20,6 +21,7 @@ export default new Vuex.Store({
     banque,
     auth,
     general,
-    properties
+    properties,
+    contrats
   }
 })
