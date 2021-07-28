@@ -24,8 +24,8 @@ const toggleFullScreen = () => {
     cancelFullScreen.call(doc)
   }
 }
-const currencyToNumber= function(currency){
-  const stringValue = currency.replaceAll(/\s/g,'').replace(/FCFA/g, "").replace(/$/g, "").replace(/EUR/g, "")
+const currencyToNumber = function(currency){
+  const stringValue = currency.replaceAll(/\s/g,'').replace(/[^\d.-]/g, '')
   console.log('currencyToNumber:', stringValue)
   return parseInt(stringValue)
 }
