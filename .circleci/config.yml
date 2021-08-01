@@ -17,7 +17,7 @@ jobs:
     steps:
       - checkout
       - run: 
-        name: Run unit test
+        name: install npm dependencies
         command: |
           npm install --production=false
       - run: 
@@ -30,5 +30,5 @@ workflows:
   version: 2
   integration:
     jobs:
-      - build
       - test
+      - build
