@@ -239,9 +239,7 @@
                                 v-if="errors.realEstateDependencyMsg"
                                 >{{ errors.realEstateDependencyMsg }}</span
                               > -->
-                              <!-- <span class="text-danger">
-                                {{ errors.first("Type de dépendance") }}
-                              </span> -->
+                             
                             </b-form-group></b-col
                           >
                         </b-row>
