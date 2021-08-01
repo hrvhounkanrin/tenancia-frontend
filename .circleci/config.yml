@@ -17,9 +17,13 @@ jobs:
     steps:
       - checkout
       - run: 
+        name: Install global cross-env
+        command: |
+          npm test
+      - run: 
           name: Run unit test
           command: |
-            npm test
+            npm install --global cross-env
 
 workflows:
   version: 2
