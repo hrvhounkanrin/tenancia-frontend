@@ -213,7 +213,7 @@
                   <font-awesome-icon icon="plus" class="mr-2" />
                   Créer un nouveau type dépendance
                 </b-button>
-
+              
                 <div>
                   <b-modal
                     hide-footer
@@ -266,6 +266,7 @@
                     </div>
                   </b-modal>
                 </div>
+                -->
               </div>
             </div>
           </div>
@@ -352,13 +353,13 @@ export default {
     };
   },
   props: {
-    selectedImmeuble: Object,
     editingAppartment: Object,
   },
   computed: {
     ...mapGetters({
       dependances: "properties/dependances",
       immeubles: "properties/immeubles",
+      selectedImmeuble: "properties/selectedImmeuble"
     }),
     ...mapState({
       api_errors: (state) => state.properties.errors,

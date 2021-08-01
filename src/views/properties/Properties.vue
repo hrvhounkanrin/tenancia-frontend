@@ -234,16 +234,10 @@
               <b>Appartements & Chambres</b>
             </div>
             <div class="card-header--actions">
-              <router-link
-                class="btn btn-primary"
-                :to="{
-                  name: 'EditAppartment',
-                  params: { selectedImmeuble: immeuble },
-                }"
-              >
-                <font-awesome-icon icon="home" class="mr-2" />
-                Ajouter
-              </router-link>
+              <b-button variant="primary" @click="addAppartement">
+                <font-awesome-icon icon="plus" class="mr-2" />
+                Ajouter Appartement/Chambre
+              </b-button>
             </div>
           </div>
           <div class="card-body pb-1">
@@ -902,6 +896,9 @@ export default {
         longitude: 0,
       };
       this.$bvModal.show("buildingForm");
+    },
+    addAppartement: function () {
+      this.$router.push({ name: 'EditAppartment'})
     },
     saveImmeuble: async function () {
       this.errors = {};

@@ -65,13 +65,13 @@ export default {
     let accessoireLoyer = new AcccessoireLoyer()
     try {
       let res = await accessoireLoyer.getAccessoireLoyer(data)
-      let typeAccessoireLoyer = res.data.payload.accessoireloyer
+      let typeAccessoireLoyer = res.data.payload
       typeAccessoireLoyer = typeAccessoireLoyer.map(obj => {
         obj['montant'] = null
         obj['is_peridic'] = false
         return obj
       })
-      console.log('getAccessoireLoyer:', typeAccessoireLoyer)
+      console.log('getAccessoireLoyer:', res)
       commit(ACCESSOIRE_LIST, typeAccessoireLoyer)
       return typeAccessoireLoyer
     } catch (errors) {
@@ -84,7 +84,7 @@ export default {
     return accessoireLoyer.createAccessoireLoyer(data)
       .then(res => {
         if (res.status === 200) {
-          let accessoire = res.data.payload.accessoireloyer
+          let accessoire = res.data.payload
           commit(ADD_APPARTEMENT, accessoire)
         }
       })

@@ -5,6 +5,7 @@ import Home from '../views/Home.vue'
 import Register from '@/views/register'
 import Profile from '@/views/profiles/my-profiles.vue'
 import Properties from '@/views/properties/Properties.vue'
+import AppartementForm from '@/views/properties/AppartmentForm.vue'
 import ContractList from '@/views/contrats/contract-list.vue'
 import ContratForm from '@/views/contrats/contrat-form.vue'
 Vue.use(Router)
@@ -59,6 +60,11 @@ const router = new Router({
       path: '/my-contracts',
       name: 'MyContracts',
       component: ContractList
+    },
+    {
+      path: '/edit-appartment',
+      name: 'EditAppartment',
+      component: AppartementForm
     },
     {
       path: '/edit-contrat',

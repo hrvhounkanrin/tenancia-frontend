@@ -5,18 +5,29 @@
       subheading="Que vous soyez bailleurs, locataire ou agent immobilier, nous vous rendons la vie facile."
       :steps="breadcrumb"
     />
+   <div class="row">
+                <div class="col-xl-4 col-md-4 col-sm-12">
+                    <tenant-detail haveTenantProfile></tenant-detail>
+                </div>
+                <div class="col-xl-4 col-md-4 col-sm-12">
+                  <lessor-detail></lessor-detail>
+                </div>
+                <div class="col-xl-4 col-md-4 col-sm-12">
+                   <realEstate-detail></realEstate-detail>
+                </div>
 
+            </div>
     <div class="container">
       <div class="mb-5">
         <div class="row">
           <div class="col-lg-4">
-            <tenant-detail haveTenantProfile></tenant-detail>
+            
           </div>
           <div class="col-lg-4">
-            <lessor-detail></lessor-detail>
+            
           </div>
           <div class="col-lg-4">
-            <realEstate-detail></realEstate-detail>
+            
           </div>
 
         </div>
