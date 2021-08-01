@@ -61,7 +61,7 @@
         <div class="d-flex align-items-left justify-content-start">
           <span class="text-black-50 d-block" id="numero_ifu">{{
             getProfiles.tenant.numero_ifu
-          }}</span>$
+          }}</span>
         </div>
         <div class="d-flex align-items-left justify-content-start">
           <b>
