@@ -19,9 +19,9 @@ jobs:
       - run: 
         name: Run unit test
         command: |
-          npm install --global cross-env
+          npm install --production=false
       - run: 
-        name: Install global cross-env
+        name: test
         command: |
           npm test
      
