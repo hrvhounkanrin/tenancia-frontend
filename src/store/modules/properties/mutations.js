@@ -42,7 +42,7 @@ export default {
     state.typedependances = dependances
   },
   [ADD_DEPENDANCE] (state, dependance) {
-    state.typedependances = state.typedependances.push(dependance)
+    state.typedependances.unshift(dependance)
   },
   [ERROR_ADD] (state, errorObj) {
     state.errors.push(errorObj)

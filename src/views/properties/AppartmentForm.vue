@@ -234,12 +234,7 @@
                                 name="Type de dépendance"
                               >
                               </b-form-input>
-                              <!-- <span
-                                class="invalid-feedback d-block"
-                                v-if="errors.realEstateDependencyMsg"
-                                >{{ errors.realEstateDependencyMsg }}</span
-                              > -->
-                             
+                            
                             </b-form-group></b-col
                           >
                         </b-row>
@@ -337,6 +332,7 @@ export default {
   },
   data: function () {
     return {
+      real_estate_dependency: null,
       add_real_estate_dependency: false,
       componentKey: 0,
       filterValue: "",
@@ -430,8 +426,21 @@ export default {
   },
   watch: {},
   methods: {
-    ...mapActions("properties", ["createAppartement"]),
-    addRealEstatateDependency() {},
+    ...mapActions("properties", ["createAppartement", "createNewDependency"]),
+    async addRealEstatateDependency() {
+      try {
+        this.add_real_estate_dependency = true;
+        await this.createNewDependency({
+          libelle:this.real_estate_dependency,
+          utilite:this.real_estate_dependency,
+        }).then((res) => {
+          this.add_real_estate_dependency = false;
+          this.makeToast("Dépendance", "Dépendance ajouté avec succès", "success");
+          this.real_estate_dependency = null;
+        });
+      } catch (error) {}
+
+    },
 
     addDependance: function (typeDependance) {
       console.log("typeDependance:", typeDependance);
@@ -451,6 +460,15 @@ export default {
       this.selectedDependance.splice(index, 1);
       console.log("this.selectedDependance:", this.selectedDependance);
     },
+    makeToast(title, msg, variant) {
+      this.$bvToast.toast(`${msg}`, {
+        title: `${title}`,
+        variant: variant,
+        autoHideDelay: 2000,
+        solid: true,
+      });
+    },
+
     saveAppartment: async function () {
       this.appartement.immeuble_id = this.selectedImmeuble.id;
       console.log("this.selectedImmeuble:", this.selectedImmeuble);
