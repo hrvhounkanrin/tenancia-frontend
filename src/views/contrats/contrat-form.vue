@@ -70,20 +70,54 @@
                            
                          </div>
                          <div class="col-md-6">
-                            <b-form-group>
-                              <label for="montant_bail">Email locataire</label>
-                              <b-input-group>
-                                  <b-form-input placeholder="Rechercher locataire par email"></b-form-input>
-                                  <b-input-group-text slot="prepend" v-model="contrat.locataire">
-                                      <font-awesome-icon icon="search" class="search-icon w-auto" />
-                                  </b-input-group-text>
-                              </b-input-group>
-                        </b-form-group>
-                      </div>
+                            <label for="montant_bail">Email locataire</label>
+                             <vue-typeahead-bootstrap
+                                    class="mb-4"
+                                    v-model="filterTenantQuery"
+                                    :data="retrievedTenants"
+                                    :serializer="item => item.user.email"
+                                    :screen-reader-text-serializer="item => `Github user ${item.user.first_name}`"
+                                    highlightClass="special-highlight-class"
+                                    
+                                    :minMatchingChars="3"
+                                    placeholder="Recherche du locataire par email"
+                                    inputClass="special-input-class"                               
+                                    @input="searchTenants"
+                                    @hit="selectedTenant = $event"
+                                  >
+                                  <!-- :disabledValues="(selecteduser ? [selecteduser.login] : [])" -->
+                                    <template slot="suggestion" slot-scope="{ data, htmlText }">
+                                
+                                       <div class="align-box-row">
+                                          <div class="mr-2">
+                                              <a href="javascript:void(0);" class="avatar-icon-wrapper avatar-icon-lg m-0" v-b-tooltip title="View details">
+                                                  <div class="dot-badge"></div>
+                                                  <div class="avatar-icon"><img src="@/assets/img/avatars/avatar7.jpg" alt=""></div>
+                                              </a>
+                                          </div>
+                                          <div class="flex-grow-1">
+                                              <div class="d-flex align-items-left">
+                                                  <span class="font-size-lg">{{data.user.last_name +' '+data.user.first_name}}</span>
+                                              </div>
+                                              <div class="mt-2  align-items-left">
+                                                <font-awesome-icon icon="envelope" class="mr-1"/>
+                                                <span class="pr-1" v-html="htmlText"></span>
+                                              </div>
+                                              <div class="mt-2  align-items-left">
+                                                <font-awesome-icon icon="phone-alt" class="mr-1"/>
+                                                <span class="pr-1">{{data.phone_number}}</span>
+                                              </div>
+                                            
+                                          </div>
+                                      </div>
+                                    </template>
+                                  </vue-typeahead-bootstrap>
+                            
+                          </div>
                       
                    
                     </div>
-                    <div class="row">
+                    <div class="row" v-if="selectedTenant">
                             <div class="col-md-12">
                             <a href="javascript:void(0);" class="card card-box mb-2 card-box-border-bottom border-first">
                                 <div class="card-body">
@@ -91,19 +125,19 @@
                                         <div>
                                             <div class="font-weight-bold">
                                                 <small class="text-black-50 d-block mb-1 text-uppercase">Locataire</small>
-                                                <span class="font-size-sm  mt-1">REBBY MUNDAYI</span>
+                                                <span class="font-size-sm  mt-1">{{selectedTenant.user.last_name +' '+selectedTenant.user.first_name}}</span>
                                             </div>
                                             <div class="mt-2">
                                                 <font-awesome-icon icon="phone-alt" class="mr-1"/>
-                                                <span class="pr-1">97873407</span>
+                                                <span class="pr-1">{{selectedTenant.phone_number}}</span>
                                             </div>
                                              <div class="mt-2">
                                                 <font-awesome-icon icon="envelope" class="mr-1"/>
-                                                <span class="pr-1">rebby-mundayi@gmail.com</span>
+                                                <span class="pr-1">{{selectedTenant.user.email}}</span>
                                             </div>
                                         </div>
-                                        <div class="ml-auto card-hover-indicator align-self-center">
-                                            <font-awesome-icon icon="chevron-right" class="font-size-xl"/>
+                                        <div class="ml-auto card-hover-indicator align-self-center" @click="removeTenant">
+                                            <font-awesome-icon icon="trash" class="font-size-xl danger" style="color: red;"/>
                                         </div>
                                     </div>
                                 </div>
@@ -135,6 +169,7 @@
                                 </div>
                                 </div>
                             </div>
+                            <div class="divider"></div>
                         </b-list-group-item>
                     </b-list-group >
                    <!--</VuePerfectScrollbar>-->
@@ -184,14 +219,22 @@
                                 <b-list-group-item  class="d-flex bg-light justify-content-between align-items-center"  v-for="item in notSelectedAccessories" :key="item.id">{{item.libelle}}
                                 <span class="">        
                                     <div class="input-group">
-                                      <label :for="'chk_' + item.id" >Périodique</label>
-                                      <input type="checkbox" class="form-control" aria-describedby="basic-addon2" v-model="item.is_peridic" :id="'chk_' + item.id">
-                                      <input type="text" class="form-control" placeholder="Montant (F CFA)" aria-label="Montant (F CFA)" aria-describedby="basic-addon2"  v-model="item.montant" :id="'montant_' + item.id" v-money="money">
-                                      <div class="input-group-append">
-                                          <b-button variant="primary" sclass="border-0" @click="addAccessoires(item)"><font-awesome-icon icon="plus"/></b-button >
+                                      <div class="input-group-prepend">
+                                        <label class="input-group-text" :for="'chk_' + item.id" >Périodique</label>
                                       </div>
+                                      <div class="input-group-prepend">
+                                        <div class="input-group-text">
+                                          <b-form-checkbox size="lg" v-model="item.is_peridic" :id="'chk_' + item.id">NON</b-form-checkbox>
+                                        </div>
+                                      </div>
+                                      <input type="text" class="form-control" placeholder="Montant (F CFA)" aria-label="Montant (F CFA)" aria-describedby="basic-addon2" size="sm" v-model="item.montant" :id="'montant_' + item.id" v-money="money">
+                                      <div class="input-group-prepend">
+                                        <button class="btn btn-outline-primary btn-sm" type="button" @click="addAccessoires(item)" ><font-awesome-icon icon="plus"/></button>
+                                      </div>
+                               
                                     </div>
                                 </span>
+                                
                                 </b-list-group-item>
                             </VuePerfectScrollbar>
                         </b-list-group>
@@ -224,8 +267,12 @@ import { alert } from '@/components/shared/'
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import { fas } from '@fortawesome/free-solid-svg-icons'
+import TenantItem from './tenant-item.vue';
 import {VMoney} from 'v-money'
 import utils from '@/utils/index'
+import VueBootstrapTypeahead from 'vue-bootstrap-typeahead'
+import {debounce} from 'lodash'
+
 library.add(fas)
 const currencyMask = {
     decimal: '.',
@@ -236,6 +283,7 @@ const currencyMask = {
 }
 export default {
   components: {
+    'vue-typeahead-bootstrap': VueBootstrapTypeahead,
     alert,
     VuePerfectScrollbar,
     'font-awesome-icon': FontAwesomeIcon
@@ -243,10 +291,14 @@ export default {
   directives: {money: VMoney},
   data: function () {
     return {
+      TenantItem,
+      defaultAvatar: require('@/assets/img/hero-bg/hero-1.jpg'),
+      filterTenantQuery: '',
       money: currencyMask,
       componentKey: 0,
       filterValue: '',
       selectedAccessoires: [], // liste des accessoires sélectionnées
+      selectedTenant: null,
       contrat: {
         reference_bail: null,
         date_signature: null,
@@ -265,6 +317,8 @@ export default {
         }
     }
   },
+  watch: {
+  },
   props: {
     selectedAppartement: Object,
     editingContrat: Object
@@ -272,7 +326,9 @@ export default {
   computed: {
     ...mapGetters({
       typeAccessoires: 'contrats/typeAccessoireLoyer',
-      contrats: 'contrats/contrats'
+      contrats: 'contrats/contrats',
+      retrievedTenants: 'contrats/retrievedTenants',
+      searchTenantRequest: 'contrats/searchTenantRequest'
     }),
     ...mapState({
       api_errors: (state) => state.contrats.errors
@@ -283,7 +339,6 @@ export default {
      * ...
      */
     notSelectedAccessories: function () {
-      console.log('this.typeAccessoires:', this.typeAccessoires)
         if (!Array.isArray(this.typeAccessoires)) return []
         let selectedId = this.selectedAccessoires.map(item => item.id)
         let allNotSelected = this.typeAccessoires.filter(item => selectedId.includes(item.id) === false)
@@ -296,7 +351,6 @@ export default {
      */
     totalBail: function () {
       if (this.selectedAccessoires.length===0) return 0
-      console.log('addAccessoires:', )
       return this.selectedAccessoires.reduce((accumulateur, item) => accumulateur + utils.currencyToNumber(item.montant), 0)
     }
   },
@@ -320,17 +374,28 @@ export default {
       })
     }
   },
-  watch: {
-
-  },
   methods: {
-    ...mapActions('contrat', ['createContrat']),
+    ...mapActions('contrats', ['createContrat', 'searchTenantsByEmail']),
+     removeTenant: function(){
+        this.selectedTenant=null
+      },
+      searchTenants: debounce(function(){
+          if(this.filterTenantQuery.trim()==='') return []
+          let that = this
+          let params = { q: this.filterTenantQuery }
+          let res = this.searchTenantsByEmail(params)
+          console.log('searchTenants res:', res)
+          res.then(function(response){
+            console.log('that: ', that, response.data.payload)
+            that.$store.commit('contrats/TENANTS', response.data.payload)
+            console.log('retrievedTenants: ', that.retrievedTenants)
+            return response.data.payload
+          })
+      }, 500),
     addAccessoires: function (accessoire) {
-      
-      if (accessoire.montant === 0 || accessoire.montant === null) {
+      if (accessoire.montant === 0 || accessoire.montant === null) {searchTenantsByEmail
         return
       }
-
       this.selectedAccessoires.push(accessoire)
       this.filterValue = ''
     },
@@ -339,6 +404,13 @@ export default {
       this.selectedAccessoires.splice(index, 1)
       console.log('this.selectedDependance:', this.selectedAccessoires)
     },
+    /*
+    searchTenants: function (email) {
+      let params = {
+        q: email
+      }
+      this.$store.dispatch('contrats/searchTenantsByEmail' , params)
+    }*/
     saveAppartment: async function () {
       this.appartement.immeuble_id = this.selectedAppartement.id
       console.log('this.selectedAppartement:', this.selectedAppartement)
@@ -363,3 +435,53 @@ export default {
   }
 }
 </script>
+
+<style lang="scss">
+  @import 'bootstrap/scss/bootstrap.scss';
+
+  .special-input-class{
+    background-color:#0056b3 !important;
+    color: white !important;
+  }
+  .special-highlight-class{
+    font-weight: 900;
+    color: #585656;
+  }
+</style>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

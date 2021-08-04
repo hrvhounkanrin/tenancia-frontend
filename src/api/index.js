@@ -1,11 +1,14 @@
 /* eslint-disable no-console */
 /* eslint-disable no-unused-vars */
+import axios, { CancelTokenStatic } from 'axios'
 import { AUTH_TOKEN_KEY, TOKEN_EXPIRE_AT_KEY } from '@/constants'
 import moment from 'moment'
 import store from '../store'
 import router from '../router/router'
 
 export default ($http, $config) => {
+
+  
   const $api = $http.create({
     baseURL: $config.serverURL,
     headers: { 'Content-Type': 'application/json' }
@@ -134,3 +137,6 @@ export default ($http, $config) => {
     deleteRequest
   }
 }
+
+
+

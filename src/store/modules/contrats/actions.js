@@ -1,9 +1,9 @@
 import {
   ERROR_ADD, ERROR_REMOVE, CONTRAT_LIST, ADD_CONTRAT, UPDATE_CONTRAT,
   AGREE_CONTRAT, ACCESSOIRE_LIST, ADD_ACCESSOIRE, UPDATE_ACCESSOIRE,
-  SELECTED_CONTRAT
+  SELECTED_CONTRAT, TENANTS, SEARCHTENANTREQUEST
 } from './mutation-types'
-
+import { searchTenantRequest } from './getters'
 import Contrat from '@/api/contrat'
 import AcccessoireLoyer from '@/api/accessoireLoyer'
 
@@ -106,5 +106,20 @@ export default {
         commit(ERROR_ADD, { key: 'updateAccessoireLoyer', message: errors.message })
         return errors
       })
+  },
+  async searchTenantsByEmail ({ commit }, data) {
+    commit(ERROR_REMOVE, 'searchTenantsByEmail')
+    // console.log('searchTenantRequest:', searchTenantRequest)
+    if (searchTenantRequest) searchTenantRequest.cancel()
+    let contrat = new Contrat()
+    try {
+      const request = contrat.searchTenantsByEmail(data)
+      commit(SEARCHTENANTREQUEST, request.source)
+      console.log('request:', request)
+      return request.promise
+        
+    } catch (errors) {
+      commit(ERROR_ADD, { key: 'searchTenantsByEmail', message: errors.message })
+    }
   }
 }

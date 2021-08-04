@@ -1,9 +1,10 @@
 /* eslint-disable no-console */
 /* eslint-disable no-unused-vars */
-
+import axios from 'axios'
 import api from '@/api/index'
 import config from '@/config/backend'
-import axios from 'axios'
+const CancelToken = axios.CancelToken
+
 
 export default class Contrat {
   $serveur = api(axios, config)
@@ -40,4 +41,21 @@ export default class Contrat {
         }
       )
   }
+
+  searchTenantsByEmail(bodyParams){
+    const source = CancelToken.source()
+    const promise = this.$serveur.postRequest(
+      {
+          body: bodyParams,
+          link: 'client_action/retrieve_client'
+      },
+      {
+        cancelToken: source.token
+      }
+    )
+    return {
+      promise, source
+    }
+  }
+  
  }

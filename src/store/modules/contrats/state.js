@@ -2,6 +2,8 @@ export default {
   contrats: [],
   selectedContrat: null,
   typeAccessoireLoyer: [],
+  tenants: [],
   errors: [],
-  errorOccured: false
+  errorOccured: false,
+  searchTenantRequest: null
 }

@@ -8,8 +8,6 @@ import VueSweetalert2 from 'vue-sweetalert2'
 import 'sweetalert2/dist/sweetalert2.min.css'
 import VuePhoneNumberInput from 'vue-phone-number-input'
 import 'vue-phone-number-input/dist/vue-phone-number-input.css'
-import VueSimpleSuggest from 'vue-simple-suggest'
-import 'vue-simple-suggest/dist/styles.css' // Optional CSS
 import * as VueGoogleMaps from 'vue2-google-maps'
  
 // import VueGeolocation from 'vue-browser-geolocation'
@@ -28,7 +26,6 @@ import PageTitle from '@/components/shared/PageTitle'
 import VueMask from 'v-mask'
 
 Vue.component('vue-phone-number-input', VuePhoneNumberInput)
-Vue.component('autocomplete-input', VueSimpleSuggest)
 
 Vue.component('PageTitle', PageTitle)
 Vue.component('default-layout', Default)
