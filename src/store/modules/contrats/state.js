@@ -5,5 +5,7 @@ export default {
   tenants: [],
   errors: [],
   errorOccured: false,
-  searchTenantRequest: null
+  searchTenantRequest: null,
+  freeAppartmentRequest: null,
+  freeAppartment: []
 }

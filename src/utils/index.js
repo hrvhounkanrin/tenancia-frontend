@@ -25,11 +25,35 @@ const toggleFullScreen = () => {
   }
 }
 const currencyToNumber = function(currency){
-  const stringValue = currency.replaceAll(/\s/g,'').replace(/[^\d.-]/g, '')
-  console.log('currencyToNumber:', stringValue)
-  return parseInt(stringValue)
+    console.log('currencyToNumber:', currency)
+    const convertedNumber = currency
+    try {
+      const stringValue = currency.replaceAll(/\s/g,'').replace(/[^\d.-]/g, '')
+      return parseInt(stringValue)
+    } catch(err) {
+      return convertedNumber
+    }
 }
+const periodiciteToString = function(periodicite){
+  strPeridicite =''
+  if(periodicite===12){
+    periodicite = 'MENSUELLE'
+  }
+  if(periodicite===4){
+    periodicite = 'TRIMESTRIELLE'
+  }
+  if(periodicite===2){
+    periodicite = 'SEMESNTRIELLE'
+  }
+  if(periodicite===2){
+    periodicite = 'ANNUELLE'
+  }
+  return strPeridicite
+}
+
+
 export default {
   toggleFullScreen,
-  currencyToNumber
+  currencyToNumber,
+  periodiciteToString
 }

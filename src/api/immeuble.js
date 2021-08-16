@@ -32,5 +32,13 @@ export default class Immeuble {
       }
     )
   }
+  async reverseGeocoding (bodyParams) {
+    return await this.$serveur.postRequest(
+      {
+        body: bodyParams,
+        link: 'immeuble_action/reverse_geocoding'
+      }
+    )
+  }
   
  }

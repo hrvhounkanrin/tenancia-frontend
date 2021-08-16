@@ -24,3 +24,37 @@
 .required {
   color: red;
 }
+
+.proposition > td:first-child{
+  border-left-style:solid;
+  border-width:1px !important;
+  border-left-color:#4191ff !important;
+}
+.encours > td:first-child{
+  border-left-style:solid;
+  border-width:1px !important;
+  border-left-color:#1bc943 !important;
+}
+.resilie > td:first-child{
+  border-left-style:solid;
+  border-width:1px !important;
+  border-left-color:#f4772e !important;
+}
+.faProposition {
+  color: #4191ff;
+}
+.faEncours {
+  color: #1bc943;
+}
+.faResilie {
+  color: #f4772e;
+}
+.borderProposition {
+  border-color: #4191ff;
+}
+.borderEncours {
+  border-color: #1bc943;
+}
+.borderResilie {
+  border-color: #f4772e;
+}

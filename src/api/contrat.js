@@ -42,12 +42,28 @@ export default class Contrat {
       )
   }
 
-  searchTenantsByEmail(bodyParams){
+ searchTenantsByEmail(bodyParams){
     const source = CancelToken.source()
     const promise = this.$serveur.postRequest(
       {
           body: bodyParams,
           link: 'client_action/retrieve_client'
+      },
+      {
+        cancelToken: source.token
+      }
+    )
+    return {
+      promise, source
+    }
+  }
+
+  getFreeAppartment(bodyParams){
+    const source = CancelToken.source()
+    const promise = this.$serveur.getRequest(
+      {
+          body: bodyParams,
+          link: 'logement_action/get_logement'
       },
       {
         cancelToken: source.token

@@ -3,6 +3,7 @@ export default {
   appartements: [],
   typedependances: [],
   selectedImmeuble: null,
+  reverseGeocodingResponse: null,
   errors: [],
   errorOccured: false
 }

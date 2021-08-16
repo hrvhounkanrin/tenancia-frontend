@@ -1,6 +1,6 @@
 import {
   IMMEUBLE_LIST, ADD_IMMEUBLE, UPDATE_IMMEUBLE,SELECTED_IMMEUBLE, APPARTEMENT_LIST,
-  ADD_APPARTEMENT, UPDATE_APPARTEMENT,DEPENDANCE_LIST,ADD_DEPENDANCE, ERROR_ADD, ERROR_REMOVE
+  ADD_APPARTEMENT, UPDATE_APPARTEMENT,DEPENDANCE_LIST,ADD_DEPENDANCE, ERROR_ADD, ERROR_REMOVE, REVERSE_GEOCODING_RESPONSE
 } from './mutation-types'
 
 export default {
@@ -20,6 +20,9 @@ export default {
   [SELECTED_IMMEUBLE] (state, immeuble) {
     state.selectedImmeuble = immeuble
   },
+  [REVERSE_GEOCODING_RESPONSE] (state, data) {
+    state.reverseGeocodingResponse = data
+  },
   [ADD_APPARTEMENT] (state, appartement) {
     console.log('ADD_APPARTEMENT:', appartement)
     if(Array.isArray(appartement)){
@@ -35,8 +38,6 @@ export default {
   [UPDATE_APPARTEMENT] (state, appartement) {
     let index = state.selectedImmeuble.appartements.findIndex(app => app.id === appartement.id)
     state.selectedImmeuble.appartements.splice(index, 1, appartement)
-    // index = state.immeubles.findIndex(im => im.id === state.selectedImmeuble)
-    // state.immeubles.splice(index, 1, state.selectedImmeuble)
   },
   [DEPENDANCE_LIST] (state, dependances){
     state.typedependances = dependances

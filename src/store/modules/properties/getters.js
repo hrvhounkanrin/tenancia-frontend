@@ -2,6 +2,9 @@ export default {
   immeubles: state => {
     return state.immeubles
   },
+  getImmeubleById: (state, id) => {
+    return state.immeubles.find(im => im.id === id)
+  },
   appartements: state => {
     return state.appartements
   },
@@ -10,6 +13,9 @@ export default {
   },
   selectedImmeuble: state => {
     return state.selectedImmeuble
+  },
+  reverseGeocodingResponse: state => {
+    return state.reverseGeocodingResponse
   },
   errorMessage: state => {
     return state.errorMessage

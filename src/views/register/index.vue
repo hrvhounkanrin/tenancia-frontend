@@ -395,9 +395,9 @@ import {
 } from '@fortawesome/free-brands-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import { ValidationObserver, ValidationProvider, setInteractionMode } from 'vee-validate'
-
-import { alert } from '@/components/shared/'
 import './register-validation'
+import { alert } from '@/components/shared/'
+
 
 library.add(
   faQuestionCircle,
@@ -441,6 +441,7 @@ export default {
       selected_tab_name: 'register'
     }
   },
+  
   computed: {
     ...mapState({
       error: state => state.alert.message,

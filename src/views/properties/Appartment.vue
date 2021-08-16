@@ -27,18 +27,20 @@
                 </span>
                 <span class="btn-wrapper--label">Modifier</span>
             </b-button>
-                <b-button variant="primary" class="mr-2">
-                    <span class="btn-wrapper--icon">
-                        <font-awesome-icon icon="file-word"/>
-                    </span>
-                    Ajouter un contrat
-                </b-button>
-                <b-button variant="primary" class="mr-2" @click="$emit('init-cloner')">
-                    <span class="btn-wrapper--icon">
-                        <font-awesome-icon icon="clone"/>
-                    </span>
-                    Cloner
-                </b-button>
+            <router-link :to="{name: 'EditContrat'}">
+              <b-button variant="primary" class="mr-2">
+                  <span class="btn-wrapper--icon">
+                      <font-awesome-icon icon="file-word"/>
+                  </span>
+                  Ajouter un contrat
+              </b-button>
+            </router-link>
+            <b-button variant="primary" class="mr-2" @click="$emit('init-cloner')">
+                <span class="btn-wrapper--icon">
+                    <font-awesome-icon icon="clone"/>
+                </span>
+                Cloner
+            </b-button>
         </div>
         <div class="divider mt-3 blue-divider"></div>
     </div>

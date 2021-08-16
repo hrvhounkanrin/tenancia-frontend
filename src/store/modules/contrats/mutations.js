@@ -1,7 +1,8 @@
 import {
   ERROR_ADD, ERROR_REMOVE, CONTRAT_LIST, ADD_CONTRAT, UPDATE_CONTRAT,
   AGREE_CONTRAT, ACCESSOIRE_LIST, ADD_ACCESSOIRE, UPDATE_ACCESSOIRE,
-  SELECTED_CONTRAT, TENANTS, SEARCHTENANTREQUEST
+  SELECTED_CONTRAT, TENANTS, SEARCHTENANTREQUEST, GETFREEAPPARTMENTREQUEST,
+  GETFREEAPPARTMENT
 } from './mutation-types'
 
 export default {
@@ -13,6 +14,12 @@ export default {
   },
   [SEARCHTENANTREQUEST] (state, request) {
     state.searchTenantRequest = request
+  },
+  [GETFREEAPPARTMENTREQUEST] (state, request) {
+    state.freeAppartmentRequest = request
+  },
+  [GETFREEAPPARTMENT] (state, data) {
+    state.freeAppartment = data
   },
   [ADD_CONTRAT] (state, contrat) {
     state.contrats.push(contrat)

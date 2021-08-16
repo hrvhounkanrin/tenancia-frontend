@@ -1,9 +1,9 @@
 import {
   ERROR_ADD, ERROR_REMOVE, CONTRAT_LIST, ADD_CONTRAT, UPDATE_CONTRAT,
   AGREE_CONTRAT, ACCESSOIRE_LIST, ADD_ACCESSOIRE, UPDATE_ACCESSOIRE,
-  SELECTED_CONTRAT, TENANTS, SEARCHTENANTREQUEST
+  SELECTED_CONTRAT, TENANTS, SEARCHTENANTREQUEST, GETFREEAPPARTMENTREQUEST
 } from './mutation-types'
-import { searchTenantRequest } from './getters'
+import { searchTenantRequest, freeAppartmentRequest } from './getters'
 import Contrat from '@/api/contrat'
 import AcccessoireLoyer from '@/api/accessoireLoyer'
 
@@ -15,6 +15,7 @@ export default {
     return contrat.getContrats(data)
       .then(res => {
         if (res.status === 200) {
+          console.log('getContrats: ',res)
           let contrats = res.data.payload
           commit(CONTRAT_LIST, contrats)
           if (contrats.length > 0) {
@@ -30,7 +31,7 @@ export default {
   async createContrat ({ commit }, data) {
     commit(ERROR_REMOVE, 'createContrat')
     let contrat = new Contrat()
-    return await contrat.createContrat(data)
+    return  contrat.createContrat(data)
       .then(res => {
         if (res.status === 200) {
           let contrats = res.data.payload
@@ -59,7 +60,6 @@ export default {
       })
   },
 
-  // -----APPARTEMENT-----
   async getAccessoireLoyer ({ commit }, data) {
     commit(ERROR_REMOVE, 'getAccessoireLoyer')
     let accessoireLoyer = new AcccessoireLoyer()
@@ -71,7 +71,6 @@ export default {
         obj['is_peridic'] = false
         return obj
       })
-      console.log('getAccessoireLoyer:', res)
       commit(ACCESSOIRE_LIST, typeAccessoireLoyer)
       return typeAccessoireLoyer
     } catch (errors) {
@@ -115,11 +114,21 @@ export default {
     try {
       const request = contrat.searchTenantsByEmail(data)
       commit(SEARCHTENANTREQUEST, request.source)
-      console.log('request:', request)
       return request.promise
-        
     } catch (errors) {
       commit(ERROR_ADD, { key: 'searchTenantsByEmail', message: errors.message })
+    }
+  },
+  async getFreeAppartment ({ commit }, data) {
+    commit(ERROR_REMOVE, 'getFreeAppartment')
+    if (freeAppartmentRequest) freeAppartmentRequest.cancel()
+    let contrat = new Contrat()
+    try {
+      const request = contrat.getFreeAppartment(data)
+      commit(GETFREEAPPARTMENTREQUEST, request.source)
+      return request.promise
+    } catch (errors) {
+      commit(ERROR_ADD, { key: 'getFreeAppartment', message: errors.message })
     }
   }
 }

@@ -8,7 +8,7 @@
       <div class="row">
         <div class="col-xl-3 col-md-6 col-sm-12">
           <a
-            href="javascript:void(0);"
+            href="javascript:void(0)"
             class="
               mb-5
               card card-box card-box-border-bottom
@@ -44,7 +44,7 @@
         </div>
         <div class="col-xl-3 col-md-6 col-sm-12">
           <a
-            href="javascript:void(0);"
+            href="javascript:void(0)"
             class="
               mb-5
               card card-box card-box-border-bottom
@@ -78,7 +78,7 @@
         </div>
         <div class="col-xl-3 col-md-6 col-sm-12">
           <a
-            href="javascript:void(0);"
+            href="javascript:void(0)"
             class="
               mb-5
               card card-box card-box-border-bottom
@@ -112,7 +112,7 @@
         </div>
         <div class="col-xl-3 col-md-6 col-sm-12">
           <a
-            href="javascript:void(0);"
+            href="javascript:void(0)"
             class="
               mb-5
               card card-box card-box-border-bottom
@@ -286,7 +286,7 @@
           v-bind="$attrs"
           :center="{ lat: immeuble.latitude, lng: immeuble.longitude }"
           :zoom="7"
-          style="width: 100%; height: 100%"
+          style="width: 100% height: 100%"
         >
         </GmapMap>
       </template>
@@ -407,10 +407,7 @@
                 placeholder="Longitude"
                 v-model="immeuble.longitude"
               />
-              <GmapAutocomplete
-                @place_changed="setPlace"
-                class="form-control"
-              />
+        
             </div>
           </div>
         </form>
@@ -422,7 +419,7 @@
         <div class="d-flex flex-wrap justify-content-between mb-2">
           <small class="line-height-xs text-uppercase text-muted"
             ><h5 class="pt-1 pb-1">
-              <a href="javascript:void(0);" v-if="selectedImmeuble"
+              <a href="javascript:void(0)" v-if="selectedImmeuble"
                 >#{{ selectedImmeuble.intitule }}</a
               >
             </h5></small
@@ -497,9 +494,9 @@
       <template #left-img>
         <GmapMap
           v-bind="$attrs"
-          :center="{ lat: immeuble.latitude, lng: immeuble.longitude }"
-          :zoom="7"
-          style="width: 100%; height: 100%"
+          :center="center"
+          :zoom="12"
+          style="width: 100% height: 100%"
         >
         </GmapMap>
       </template>
@@ -620,7 +617,7 @@
         <div class="d-flex flex-wrap justify-content-between mb-2">
           <small class="line-height-xs text-uppercase text-muted"
             ><h5 class="pt-1 pb-1">
-              <a href="javascript:void(0);" v-if="selectedImmeuble"
+              <a href="javascript:void(0)" v-if="selectedImmeuble"
                 >#{{ selectedImmeuble.intitule }}</a
               >
             </h5></small
@@ -687,18 +684,18 @@
 </template>
 
 <script>
-import { mapActions, mapGetters, mapState } from "vuex";
-import { library } from "@fortawesome/fontawesome-svg-core";
-import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
-import { fas } from "@fortawesome/free-solid-svg-icons";
+import { mapActions, mapGetters, mapState } from "vuex"
+import { library } from "@fortawesome/fontawesome-svg-core"
+import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome"
+import { fas } from "@fortawesome/free-solid-svg-icons"
 // import VuePerfectScrollbar from 'vue-perfect-scrollbar'
-import vueSlider from "vue-slider-component";
-import paginate, { alert } from "@/components/shared/";
-import BuildingDetail from "./BuildingDetail.vue";
-import Appartment from "./Appartment.vue";
-import BuildingForm from "./BuildingForm.vue";
-library.add(fas);
-import { mixin } from "@/mixin/mixin";
+import vueSlider from "vue-slider-component"
+import paginate, { alert } from "@/components/shared/"
+import BuildingDetail from "./BuildingDetail.vue"
+import Appartment from "./Appartment.vue"
+import BuildingForm from "./BuildingForm.vue"
+library.add(fas)
+import { mixin } from "@/mixin/mixin"
 
 export default {
   components: {
@@ -713,6 +710,7 @@ export default {
   },
   data: function () {
     return {
+      gettingLocation: false,
       componentKey: 0,
       errors: {},
       currentPlace: null,
@@ -734,12 +732,12 @@ export default {
       properties: [],
       onlyCountries: ["BJ", "TG", "CI", "NE", "NG", "CM", "BF", "ML", "FR"],
       countries: [],
-
+      center: null,
       paginatedAppartments: [],
       selectedAppartement: {},
       nbAppartmentToClone: null,
       nbEtageDest: null,
-    };
+    }
   },
   computed: {
     ...mapGetters("user", [
@@ -763,40 +761,72 @@ export default {
   },
   created() {
     if (this.immeubles.length === 0) {
-      this.countries = mixin.methods.getAllCountry(this.onlyCountries);
+      this.countries = mixin.methods.getAllCountry(this.onlyCountries)
 
-      this.$store.dispatch("properties/getImmeubles");
+      this.$store.dispatch("properties/getImmeubles")
     }
-    console.log("getProfiles", this.getProfiles.lessor);
+    console.log("getProfiles", this.getProfiles.lessor)
   },
   mounted() {
-    if (this.selectedImmeuble == null || this.selectedImmeuble === undefined) {
-      if (this.immeubles.length > 0) {
-        this.immeuble = this.immeubles[0];
-      }
-    } else {
-      this.immeuble = this.selectedImmeuble;
-    }
-    this.$store.commit("properties/SELECTED_IMMEUBLE", {});
-    this.$store.commit("properties/SELECTED_IMMEUBLE", this.immeuble);
-    this.$forceUpdate();
+
+    this.locateMe()
+    console.log('this.center: ', this.center)
+    this.$store.commit("properties/SELECTED_IMMEUBLE", {})
+    this.$store.commit("properties/SELECTED_IMMEUBLE", this.immeuble)
+    this.$forceUpdate()
   },
   watch: {
     selectedImmeuble: function (newImmeuble, oldImmeuble) {
       if (newImmeuble === undefined || this.immeubles.length === 0) {
-        return;
+        return
       }
-      let index = this.immeubles.findIndex((im) => im.id === newImmeuble.id);
-      this.immeuble = newImmeuble;
-      this.buildingApparts = [];
+      let index = this.immeubles.findIndex((im) => im.id === newImmeuble.id)
+      this.immeuble = newImmeuble
+      this.buildingApparts = []
 
-      this.selectBuilding(this.immeuble, index);
-      this.$forceUpdate();
+      this.selectBuilding(this.immeuble, index)
+      this.$forceUpdate()
     },
+    center: function (newCenter, oldCenter) {
+      this.$store.dispatch("properties/reverseGeocoding", newCenter)
+    }
   },
   methods: {
-    ...mapActions("properties", ["createImmeuble", "updateImmeuble"]),
-    /**
+    ...mapActions("properties", ["createImmeuble", "updateImmeuble", "reverseGeocoding"]),
+      async getLocation() {
+        
+        return new Promise((resolve, reject) => {
+
+          if(!("geolocation" in navigator)) {
+            reject(new Error("La géolocalisation n'est pas disponible dans votre navigator."))
+          }
+
+          navigator.geolocation.getCurrentPosition(pos => {
+            resolve(pos)
+          }, err => {
+            reject(err)
+          })
+
+        })
+      },
+      async locateMe() {
+          this.gettingLocation = true
+          try {
+            this.gettingLocation = false
+            const location = await this.getLocation()
+            this.center = {lat: location.coords.latitude, lng: location.coords.longitude}
+            
+          } catch(e) {
+            this.gettingLocation = false
+            this.$toast.open({
+              message: e.message,
+              type: 'error',
+              duration: 3000,
+              pauseOnHover: true
+            })
+          }
+      },
+     /**
      * Retourne la surface totale habitable d'un appartement
      */
     surfaceTotale: function (appartement) {
@@ -804,60 +834,60 @@ export default {
         (accumulateur, item) =>
           accumulateur + parseFloat(item.superficie) * parseFloat(item.nbre),
         0
-      );
+      )
     },
     getPageCount: function () {
       this.paginationLength = Math.round(
         this.buildingApparts.length / this.perPage
-      );
-      return this.paginationLength;
+      )
+      return this.paginationLength
     },
     paginate: function (pageNum) {
       if (
         this.selectedImmeuble === undefined ||
         this.selectedImmeuble === null
       ) {
-        return;
+        return
       }
-      let page = pageNum;
-      let offset = (page - 1) * this.perPage;
+      let page = pageNum
+      let offset = (page - 1) * this.perPage
       let paginatedItems = this.selectedImmeuble.appartements
         .slice(offset)
-        .slice(0, this.perPage);
-      this.selectedPage = pageNum;
-      console.log("paginatedItems:", paginatedItems);
-      this.paginatedAppartments = [];
+        .slice(0, this.perPage)
+      this.selectedPage = pageNum
+      console.log("paginatedItems:", paginatedItems)
+      this.paginatedAppartments = []
       this.paginatedAppartments =
-        paginatedItems.length > 0 ? paginatedItems : [];
+        paginatedItems.length > 0 ? paginatedItems : []
     },
     previousPage: function () {
-      if (this.selectedPage <= 1) return;
-      this.paginate(this.selectedPage - 1);
+      if (this.selectedPage <= 1) return
+      this.paginate(this.selectedPage - 1)
     },
     nextPage: function () {
-      if (this.selectedPage >= this.paginationLength) return;
-      this.paginate(this.selectedPage + 1);
+      if (this.selectedPage >= this.paginationLength) return
+      this.paginate(this.selectedPage + 1)
     },
     getDependencies: function (appartment) {
       let dependencies = appartment.structures.map(
         (dep) => "0" + dep.nbre + " " + dep.typedependence.libelle
-      );
-      return dependencies;
+      )
+      return dependencies
     },
     selectBuilding: function (item, index) {
       if (this.immeubles.length === 0 || item === undefined) {
-        return;
+        return
       }
-      this.immeuble = item;
-      this.immeubles.forEach((el) => (el.isActive = false));
+      this.immeuble = item
+      this.immeubles.forEach((el) => (el.isActive = false))
 
-      this.immeubles[index].isActive = true;
+      this.immeubles[index].isActive = true
 
-      this.buildingApparts = item.appartements;
-      this.$store.commit("properties/SELECTED_IMMEUBLE", item);
+      this.buildingApparts = item.appartements
+      this.$store.commit("properties/SELECTED_IMMEUBLE", item)
 
-      this.paginate(1);
-      this.$forceUpdate();
+      this.paginate(1)
+      this.$forceUpdate()
     },
     editImmeuble: function (item) {
       this.immeuble = {
@@ -871,17 +901,8 @@ export default {
         jour_valeur_facture: item.jour_valeur_facture,
         latitude: item.latitude,
         longitude: item.longitude,
-      };
-      this.$bvModal.show("buildingForm");
-    },
-    geolocate: function () {
-      navigator.geolocation.getCurrentPosition((position) => {
-        this.immeuble.latitude = position.coords.latitude;
-        this.immeuble.longitude = position.coords.longitude;
-      });
-    },
-    setPlace: function (place) {
-      this.currentPlace = place;
+      }
+      this.$bvModal.show("buildingForm")
     },
     addImmeuble: function () {
       this.immeuble = {
@@ -894,44 +915,44 @@ export default {
         isActive: false,
         latitude: 0,
         longitude: 0,
-      };
-      this.$bvModal.show("buildingForm");
+      }
+      this.$bvModal.show("buildingForm")
     },
     addAppartement: function () {
       this.$router.push({ name: 'EditAppartment'})
     },
     saveImmeuble: async function () {
-      this.errors = {};
+      this.errors = {}
       this.errors.paysMsg = !this.immeuble.pays
         ? "Veuillez renseigner le pays"
-        : null;
+        : null
       this.errors.villeMsg = !this.immeuble.ville
         ? "Veuillez renseigner la ville"
-        : null;
+        : null
       this.errors.adresseMsg = !this.immeuble.adresse
         ? "Veuillez renseigner une adresse"
-        : null;
+        : null
 
       // return if any error property is not null
       if (!Object.values(this.errors).some((x) => x === null)) {
-        this.$forceUpdate();
-        return;
+        this.$forceUpdate()
+        return
       }
-      console.log("this.getProfiles.lessor: ", this.getProfiles);
+      console.log("this.getProfiles.lessor: ", this.getProfiles)
       if (!this.immeuble.intitule || this.immeuble.intitule.trim() === "")
-        delete this.immeuble.intitule;
-      this.immeuble.proprietaire_id = this.getProfiles.lessor.id;
+        delete this.immeuble.intitule
+      this.immeuble.proprietaire_id = this.getProfiles.lessor.id
       if (this.immeuble.id && this.immeuble.id > 0) {
-        await this.updateImmeuble(this.immeuble);
+        await this.updateImmeuble(this.immeuble)
       } else {
-        await this.createImmeuble(this.immeuble);
+        await this.createImmeuble(this.immeuble)
       }
-      this.$bvModal.hide("buildingForm");
-      this.$store.dispatch("properties/getImmeubles");
-      this.$forceUpdate();
+      this.$bvModal.hide("buildingForm")
+      this.$store.dispatch("properties/getImmeubles")
+      this.$forceUpdate()
     },
     forceRerender() {
-      this.componentKey = this.componentKey + 1;
+      this.componentKey = this.componentKey + 1
     },
     editAppartment: function (item) {
       this.$router.push({
@@ -940,11 +961,11 @@ export default {
           selectedImmeuble: this.selectedImmeuble,
           editingAppartment: item,
         },
-      });
+      })
     },
     initClonerAppartment: function (item) {
-      this.selectedAppartement = item;
-      this.$bvModal.show("clonerAppartment");
+      this.selectedAppartement = item
+      this.$bvModal.show("clonerAppartment")
     },
     clonerAppartment: function () {
       let params = {
@@ -952,33 +973,34 @@ export default {
         appartement_id: this.selectedAppartement.id,
         immeuble_id: this.selectedImmeuble.id,
         level: this.nbEtageDest == null ? 0 : this.nbEtageDest,
-      };
-      this.$bvModal.hide("clonerAppartment");
+      }
+      this.$bvModal.hide("clonerAppartment")
       this.$store
         .dispatch("properties/clonerAppartement", params)
         .then((res) => {
           if (res.status === 200) {
-            let appartements = res.data;
+            let appartements = res.data
             console.log(
               "clonerAppartement:",
               appartements.payload.appartements
-            );
+            )
             this.$store.commit(
               "properties/ADD_APPARTEMENT",
               appartements.payload.appartements
-            );
-            this.paginatedAppartments = [];
-            this.buildingApparts = this.selectedImmeuble.appartements;
-            this.paginate(1);
+            )
+            this.paginatedAppartments = []
+            this.buildingApparts = this.selectedImmeuble.appartements
+            this.paginate(1)
           }
         })
         .catch((errors) => {
+          console.log('Cloner app')
           this.$store.commit("properties/ERROR_ADD", {
             key: "clonerAppartement",
             message: errors.message,
-          });
-        });
+          })
+        })
     },
   },
-};
+}
 </script>

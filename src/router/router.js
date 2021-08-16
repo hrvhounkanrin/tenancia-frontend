@@ -68,7 +68,7 @@ const router = new Router({
     },
     {
       path: '/edit-contrat',
-      name: 'edit-contrat',
+      name: 'EditContrat',
       props: true,
       component: ContratForm
     },

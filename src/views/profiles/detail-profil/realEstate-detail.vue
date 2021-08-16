@@ -205,7 +205,7 @@ import { alert } from "@/components/shared/";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import Datepicker from "vuejs-datepicker";
 import { mixin } from "@/mixin/mixin";
-import moment from "moment";
+import moment from "moment"
 import {
   faArrowRight,
   faArrowUp,

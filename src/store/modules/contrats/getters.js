@@ -16,5 +16,11 @@ export default {
   },
   errorMessage: state => {
     return state.errorMessage
-  }
+  }, 
+  retrievedAppartments: state => {
+    return state.freeAppartment
+  },
+  freeAppartmentRequest: state => {
+    return state.freeAppartmentRequest
+  },
 }

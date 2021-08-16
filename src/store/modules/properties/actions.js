@@ -1,11 +1,12 @@
 import {
   IMMEUBLE_LIST, ADD_IMMEUBLE, UPDATE_IMMEUBLE, APPARTEMENT_LIST, SELECTED_IMMEUBLE,
-  ADD_APPARTEMENT, DEPENDANCE_LIST, ADD_DEPENDANCE, UPDATE_APPARTEMENT, ERROR_ADD, ERROR_REMOVE
+  ADD_APPARTEMENT, DEPENDANCE_LIST, ADD_DEPENDANCE, UPDATE_APPARTEMENT, ERROR_ADD, ERROR_REMOVE, REVERSE_GEOCODING_RESPONSE
 } from './mutation-types'
 
 import Immeuble from '@/api/immeuble'
 import Appartement from '@/api/appartement'
 import TypeDependance from '@/api/typeDependance'
+import Util from '@/api/utils'
 
 export default {
 
@@ -102,20 +103,13 @@ export default {
       })
   },
   async clonerAppartement ({ commit }, data) {
+    console.log('clonerAppartement data: ', data)
     commit(ERROR_REMOVE, 'clonerAppartement')
     let appartement = new Appartement()
     return appartement.clonerAppartement(data)
-     /* .then(res => {
-        if (res.status === 200) {
-          let appartements = res.data
-          console.log('clonerAppartement:', appartements.payload.appartements)
-          commit(ADD_APPARTEMENT, appartements.payload.appartements)
-        }
-      })
-      .catch(errors => {
-        commit(ERROR_ADD, { key: 'clonerAppartement', message: errors.message })
-      })*/
+  
   },
+ 
   // -----TYPE DEPENDANCES-----
   async getTypedependances ({ commit }, data) {
     commit(ERROR_REMOVE, 'getTypedependances')
@@ -149,6 +143,22 @@ export default {
       .catch(errors => {
         commit(ERROR_ADD, { key: 'createTypeDependance', message: errors.message })
         return false
+      })
+  },
+  async reverseGeocoding({commit}, data){
+    commit(ERROR_REMOVE, 'reverseGeocoding')
+    let immeuble = new Immeuble()
+    return immeuble.reverseGeocoding(data)
+      .then(res => {
+        if (res.status === 200) {
+          let places = res.data.payload
+          console.log(places)
+          commit(REVERSE_GEOCODING_RESPONSE, places)
+        }
+      })
+      .catch(errors => {
+        commit(ERROR_ADD, { key: 'reverseGeocoding', message: errors.message })
+        return errors
       })
   }
 

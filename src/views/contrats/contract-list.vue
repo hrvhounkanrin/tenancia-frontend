@@ -2,7 +2,7 @@
     <div>
         <PageTitle heading="Mes contrats de bail" subheading="Advanced interaction controls to your HTML tables the free & easy way"/>
         <div>
-            <contract-dashboard></contract-dashboard>
+            <!--<contract-dashboard></contract-dashboard>-->
         </div>
         <div class="row">
             <div class="col-lg-12 col-md-8 col-sm-12 col-xl-8">
@@ -11,12 +11,17 @@
                         <div class="card-header--title">
                             <small>Vue bailleur</small>
                             <b>Liste des contrats de bail</b>
+                            <font-awesome-icon icon="circle" class="ml-3 faProposition"/> Contrat en proposition
+                            <font-awesome-icon icon="circle" class="mr-2 ml-3 faEncours"  /> Contrat en en cours
+                            <font-awesome-icon icon="circle" class="mr-2 ml-3 faResilie" /> Contrat à terme ou résilié
                         </div>
                         <div class="card-header--actions">
-                            <b-button variant="primary">
+                            <router-link :to="{name: 'EditContrat'}">
+                                 <b-button variant="primary">
                                     <font-awesome-icon icon="plus" class="mr-2" />
                                     Créer un nouveau contrat
                                 </b-button>
+                            </router-link>
                         </div>
                     </div>
                     <div class="card-body p-0">
@@ -32,46 +37,52 @@
                                         <th scope="col" class="text-left">Loyer</th>
                                         <th scope="col">Proch. échéance</th>
                                         <th scope="col"></th>
+                                        <th scope="col"></th>
                                     </tr>
                                     </thead>
                                     <tbody class="list">
-                                    <tr class="resilie">
+                                    <tr :class="statutStyle(co.statut).style" v-for="co in contrats" :key="co.reference_bail">
                                         <td style="">
                                              <div class="align-box-row">
                                                 <span class="d-block">
-                                                    0-C - Les cocotiers
-                                                    <small class="d-block text-black-50"><font-awesome-icon icon="map-marked" class="mr-1" />(Agla Fignonhou)</small>
+                                                    {{co.appartement.intitule}} - {{co.appartement.immeuble_intitule}}
+                                                    <small class="d-block text-black-50"><font-awesome-icon icon="map-marked" class="mr-1" />({{co.appartement.ville}})</small>
                                                 </span>
                                             </div>
 
                                         </td>
                                          <td>
-                                            <div class="badge badge-warning px-3">F0929203</div>
+                                            <div class="badge  px-3" :class="statutStyle(co.statut).badge">{{co.reference_bail}}</div>
                                         </td>
                                         <td class="owner">
                                             <div class="align-box-row">
                                                 <div class="pl-2">
                                                     <span class="d-block">
-                                                        HOUNKKPONOU JONAS
+                                                        {{co.client.user.first_name + ' '+co.client.user.last_name}}
                                                         <small class="d-block text-black-50">
-                                                            <font-awesome-icon :icon="['fas', 'phone-alt']" /> 98 67 45 90
+                                                            <font-awesome-icon :icon="['fas', 'phone-alt']"  /> {{co.client.phone_number}}
                                                         </small>
                                                         <small class="d-block text-black-50">
-                                                            <font-awesome-icon :icon="['fas', 'envelope']" /> jonas.hounkponou@gmail.com
+                                                            <font-awesome-icon :icon="['fas', 'envelope']" /> {{co.client.user.email}}
                                                         </small>
                                                     </span>
                                                 </div>
                                             </div>
                                         </td>
                                         <td >
-                                            01/01/2021
+                                            {{co.date_effet}}
                                         </td>
                                         <td class="text-left">
-                                            50000 XOF
+                                            {{co.montant_bail}} F CFA
                                         </td>
                                         <td>
-                                            05/08/2021
+                                            {{co.prochaine_echeance}}
                                         </td>
+                                         <td>
+                                             <a href="#"><font-awesome-icon icon="eye" @click="setActiveContrat(co)" class="fa-2x" :class="statutStyle(co.statut).faStyle"/></a>
+                                            
+                                        </td>
+                                        
                                         <td class="text-center" width="5%">
                                             <b-dropdown no-caret right variant="link p-0 btn-link-primary" class="text-primary">
                                                 <template slot="button-content">
@@ -79,218 +90,14 @@
                                                         <font-awesome-icon icon="ellipsis-h"/>
                                                     </div>
                                                 </template>
-                                                <b-dropdown-item>Voir détails</b-dropdown-item>
+                                                <b-dropdown-item >Voir détails</b-dropdown-item>
                                                 <b-dropdown-item>Voir règlements</b-dropdown-item>
                                                 <b-dropdown-divider></b-dropdown-divider>
                                                 <b-dropdown-item active>Résilier</b-dropdown-item>
                                             </b-dropdown>
                                         </td>
                                     </tr>
-                                    <tr class="proposition">
-                                        <td>
-                                             <div class="align-box-row">
-                                                <span class="d-block">
-                                                    0-C - Les cocotiers
-                                                    <small class="d-block text-black-50">(Agla Fignonhou)</small>
-                                                </span>
-                                            </div>
-
-                                        </td>
-                                         <td>
-                                             <div class="badge badge-first px-3">F0929203</div>
-                                        </td>
-                                        <td class="owner">
-                                            <div class="align-box-row">
-                                                <div class="pl-2">
-                                                    <span class="d-block">
-                                                        HOUNKKPONOU JONAS
-                                                        <small class="d-block text-black-50">
-                                                            <font-awesome-icon :icon="['fas', 'phone-alt']" /> 98 67 45 90
-                                                        </small>
-                                                        <small class="d-block text-black-50">
-                                                            <font-awesome-icon :icon="['fas', 'envelope']" /> jonas.hounkponou@gmail.com
-                                                        </small>
-                                                    </span>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td >
-                                            01/01/2021
-                                        </td>
-                                        <td class="text-left">
-                                            50000 XOF
-                                        </td>
-                                        <td>
-                                            05/08/2021
-                                        </td>
-                                        <td class="text-center" width="5%">
-                                            <b-dropdown no-caret right variant="link p-0 btn-link-primary" class="text-primary">
-                                                <template slot="button-content">
-                                                    <div class="font-size-xl">
-                                                        <font-awesome-icon icon="ellipsis-h"/>
-                                                    </div>
-                                                </template>
-                                                 <b-dropdown-item>Voir détails</b-dropdown-item>
-                                                <b-dropdown-item>Voir règlements</b-dropdown-item>
-                                                <b-dropdown-divider></b-dropdown-divider>
-                                                <b-dropdown-item active>Résilier</b-dropdown-item>
-                                            </b-dropdown>
-                                        </td>
-                                    </tr>
-                                     <tr class="encours">
-                                        <td>
-                                             <div class="align-box-row">
-                                                <span class="d-block">
-                                                    0-C - Les cocotiers
-                                                    <small class="d-block text-black-50">(Agla Fignonhou)</small>
-                                                </span>
-                                            </div>
-
-                                        </td>
-                                         <td>
-                                             <div class="badge badge-success px-3">F0929203</div>
-
-                                        </td>
-                                        <td class="owner">
-                                            <div class="align-box-row">
-                                                <div class="pl-2">
-                                                    <span class="d-block">
-                                                        HOUNKKPONOU JONAS
-                                                        <small class="d-block text-black-50">
-                                                            <font-awesome-icon :icon="['fas', 'phone-alt']" /> 98 67 45 90
-                                                        </small>
-                                                        <small class="d-block text-black-50">
-                                                            <font-awesome-icon :icon="['fas', 'envelope']" /> jonas.hounkponou@gmail.com
-                                                        </small>
-                                                    </span>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td >
-                                            01/01/2021
-                                        </td>
-                                        <td class="text-left">
-                                            50000 XOF
-                                        </td>
-                                        <td>
-                                            05/08/2021
-                                        </td>
-                                        <td class="text-center" width="5%">
-                                            <b-dropdown no-caret right variant="link p-0 btn-link-primary" class="text-primary">
-                                                <template slot="button-content">
-                                                    <div class="font-size-xl">
-                                                        <font-awesome-icon icon="ellipsis-h"/>
-                                                    </div>
-                                                </template>
-                                                <b-dropdown-item>Voir détails</b-dropdown-item>
-                                                <b-dropdown-item>Voir règlements</b-dropdown-item>
-                                                <b-dropdown-divider></b-dropdown-divider>
-                                                <b-dropdown-item active>Résilier</b-dropdown-item>
-                                            </b-dropdown>
-                                        </td>
-                                    </tr>
-                                     <tr class="proposition">
-                                        <td>
-                                             <div class="align-box-row">
-                                                <span class="d-block">
-                                                    0-C - Les cocotiers
-                                                    <small class="d-block text-black-50">(Agla Fignonhou)</small>
-                                                </span>
-                                            </div>
-
-                                        </td>
-                                         <td>
-                                            <div class="badge badge-first px-3">F0929203</div>
-                                        </td>
-                                        <td class="owner">
-                                            <div class="align-box-row">
-                                                <div class="pl-2">
-                                                    <span class="d-block">
-                                                        HOUNKKPONOU JONAS
-                                                        <small class="d-block text-black-50">
-                                                            <font-awesome-icon :icon="['fas', 'phone-alt']" /> 98 67 45 90
-                                                        </small>
-                                                        <small class="d-block text-black-50">
-                                                            <font-awesome-icon :icon="['fas', 'envelope']" /> jonas.hounkponou@gmail.com
-                                                        </small>
-                                                    </span>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td >
-                                            01/01/2021
-                                        </td>
-                                        <td class="text-left">
-                                            50000 XOF
-                                        </td>
-                                        <td>
-                                            05/08/2021
-                                        </td>
-                                        <td class="text-center" width="5%">
-                                            <b-dropdown no-caret right variant="link p-0 btn-link-primary" class="text-primary">
-                                                <template slot="button-content">
-                                                    <div class="font-size-xl">
-                                                        <font-awesome-icon icon="ellipsis-h"/>
-                                                    </div>
-                                                </template>
-                                                 <b-dropdown-item>Voir détails</b-dropdown-item>
-                                                <b-dropdown-item>Voir règlements</b-dropdown-item>
-                                                <b-dropdown-divider></b-dropdown-divider>
-                                                <b-dropdown-item active>Résilier</b-dropdown-item>
-                                            </b-dropdown>
-                                        </td>
-                                    </tr>
-                                     <tr class="proposition">
-                                        <td>
-                                             <div class="align-box-row">
-                                                <span class="d-block">
-                                                    0-C - Les cocotiers
-                                                    <small class="d-block text-black-50">(Agla Fignonhou)</small>
-                                                </span>
-                                            </div>
-
-                                        </td>
-                                         <td>
-                                             <div class="badge badge-first px-3">F0929203</div>
-                                        </td>
-                                        <td class="owner">
-                                            <div class="align-box-row">
-                                                <div class="pl-2">
-                                                    <span class="d-block">
-                                                        HOUNKKPONOU JONAS
-                                                        <small class="d-block text-black-50">
-                                                            <font-awesome-icon :icon="['fas', 'phone-alt']" /> 98 67 45 90
-                                                        </small>
-                                                        <small class="d-block text-black-50">
-                                                            <font-awesome-icon :icon="['fas', 'envelope']" /> jonas.hounkponou@gmail.com
-                                                        </small>
-                                                    </span>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td >
-                                            01/01/2021
-                                        </td>
-                                        <td class="text-left">
-                                            50000 XOF
-                                        </td>
-                                        <td>
-                                            05/08/2021
-                                        </td>
-                                        <td class="text-center" width="5%">
-                                            <b-dropdown no-caret right variant="link p-0 btn-link-primary" class="text-primary">
-                                                <template slot="button-content">
-                                                    <div class="font-size-xl">
-                                                        <font-awesome-icon icon="ellipsis-h"/>
-                                                    </div>
-                                                </template>
-                                              <b-dropdown-item>Voir détails</b-dropdown-item>
-                                                <b-dropdown-item>Voir règlements</b-dropdown-item>
-                                                <b-dropdown-divider></b-dropdown-divider>
-                                                <b-dropdown-item active>Résilier</b-dropdown-item>
-                                            </b-dropdown>
-                                        </td>
-                                    </tr>
+                                    
                                     </tbody>
                                 </table>
                             </div>
@@ -318,13 +125,14 @@
             </div>
             </div>
              <div class="col-lg-12 col-xl-4">
-                 <contract-detail></contract-detail>
+                 <contract-detail v-if="activeContrat" :contrat="activeContrat" :fa-style="faStyle" :card-border="cardBorder"></contract-detail>
             </div>
         </div>
     </div>
 </template>
 
 <script>
+import { mapActions, mapGetters, mapState } from 'vuex'
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import { fas } from '@fortawesome/free-solid-svg-icons'
@@ -336,24 +144,69 @@ export default {
     'font-awesome-icon': FontAwesomeIcon,
     'contract-detail': ContractDetail,
     'contract-dashboard': ContractDashboard
+  },
+  data: function () {
+    return {
+        activeContrat: null,
+        faStyle: null,
+        cardBorder: null
+    }
+  },
+  props: {
+  },
+  computed: {
+    ...mapGetters({
+      immeubles: 'properties/immeubles',
+      typeAccessoires: 'contrats/typeAccessoireLoyer',
+      contrats: 'contrats/contrats',
+    }),
+    ...mapState({
+      api_errors: (state) => state.contrats.errors
+    })
+  },
+  created () {
+    this.$store.dispatch('contrats/getContrats')
+  },
+  mounted () {
+   
+  },
+  methods: {
+    ...mapActions('contrats', ['createContrat', 'searchTenantsByEmail', 'getFreeAppartment']),
+    statutStyle: function(statut){
+        if(statut=='PROPOSITION'){
+            return {
+                style: 'proposition', 
+                badge: 'badge-first', 
+                faStyle: 'faProposition',
+                border: 'borderProposition'
+            }
+        }
+        if(statut=='EN COURS'){
+            return {
+                style: 'encours', 
+                badge: 'badge-success' , 
+                faStyle: 'faEncours',
+                border: 'borderEncours'
+            }
+        }
+        if(statut=='RESILIE'){
+            return {
+                style: 'resilie', 
+                badge: 'badge-warning', 
+                faStyle: 'faResilie',
+                border: 'borderResilie'
+            }
+        }
+    },
+    setActiveContrat: function(contrat){
+        console.log('setActiveContrat: ', contrat)
+        this.activeContrat = {...contrat}
+        const styleObject = this.statutStyle(contrat.statut)
+        this.faStyle = styleObject.faStyle
+        this.cardBorder = styleObject.border
+        console.log('this.selectedContrat: ', this.activeContrat)
+    }
   }
 }
 </script>
 
-<style scoped>
-.proposition > td:first-child{
-    border-left-style:solid;
-    border-width:1px !important;
-    border-left-color:#4191ff !important
-}
-.encours > td:first-child{
-    border-left-style:solid;
-    border-width:1px !important;
-    border-left-color:#1bc943 !important;
-}
-.resilie > td:first-child{
-    border-left-style:solid;
-    border-width:1px !important;
-    border-left-color:#f4772e !important;
-}
-</style>
