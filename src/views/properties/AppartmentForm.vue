@@ -208,7 +208,7 @@
               <div class="ml-auto">
                 <b-button
                   variant="primary"
-                  @click="add_real_estate_dependency = true"
+                  @click="onLoadRealEstatateDependencyForm()"
                 >
                   <font-awesome-icon icon="plus" class="mr-2" />
                   Créer un nouveau type dépendance
@@ -252,11 +252,11 @@
                           class="m-1"
                           type="submit"
                           variant="primary"
-                          >Valider</b-button
+                          >Enregistrer</b-button
                         >
                       </b-form>
                     </div>
-                    <div v-once class="typo__p d-flex" v-if="loadingAddBank">
+                    <div v-once class="typo__p d-flex" v-if="loadingAddRealEstatateDependency">
                       <div class="spinner sm spinner-primary mt-3"></div>
                     </div>
                   </b-modal>
@@ -337,6 +337,7 @@ export default {
       componentKey: 0,
       filterValue: "",
       selectedDependance: [],
+      loadingAddRealEstatateDependency:false,
       appartement: {
         intitule: null,
         level: null,
@@ -427,6 +428,10 @@ export default {
   watch: {},
   methods: {
     ...mapActions("properties", ["createAppartement", "createNewDependency"]),
+    
+    onLoadRealEstatateDependencyForm() {
+      this.add_real_estate_dependency = true
+    },
     async addRealEstatateDependency() {
       try {
         this.add_real_estate_dependency = true;
