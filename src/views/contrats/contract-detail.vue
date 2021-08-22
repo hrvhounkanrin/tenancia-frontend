@@ -14,15 +14,11 @@
                             </div>-->
                         </div>
                         <div class="row mt-2 mb-2">
-                            <div class="col-md-6 col-lg-12 col-xl-6">
+                            <div class="col-xl-6 col-lg-6 col-md-6  col-sm-12 col">
                                 <div class="d-flex align-items-left flex-column flex-sm-row">
-                                    <div>
-                                        <div class="text-center display-4 d-20 rounded-circle mb-3 mb-sm-2">
-                                            <font-awesome-icon icon="calendar-alt" :class="faStyle"/>
-                                        </div>
-                                    </div>
                                     <div class="pl-0 pl-sm-3">
                                         <div class="d-block text-left text-black-50 opacity-8 d-sm-flex align-items-center">
+                                            <font-awesome-icon icon="calendar-alt" :class="faStyle" class="mr-2"/>
                                             <span class="font-size-md">Date signature</span>
                                         </div>
                                         <p class=" mb-0">
@@ -31,15 +27,11 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-md-6 col-lg-12 col-xl-6">
+                            <div class="col-xl-6 col-lg-6 col-md-6  col-sm-12 col">
                                 <div class="d-flex align-items-left flex-column flex-sm-row">
-                                    <div>
-                                        <div class="text-center display-4 d-20 rounded-circle mb-3 mb-sm-2">
-                                            <font-awesome-icon icon="calendar-alt" :class="faStyle"/>
-                                        </div>
-                                    </div>
                                     <div class="pl-0 pl-sm-3">
                                         <div class="d-block text-left text-black-50 opacity-8 d-sm-flex align-items-center">
+                                            <font-awesome-icon icon="calendar-alt" :class="faStyle" class="mr-2"/>
                                             <span class="font-size-md">Date effet</span>
                                         </div>
                                         <p class=" mb-0">
@@ -50,15 +42,11 @@
                             </div>
                         </div>
                         <div class="row mt-2 mb-2">
-                            <div class="col-md-6 col-lg-12 col-xl-6">
+                            <div class="col-xl-6 col-lg-6 col-md-6  col-sm-12 col">
                                 <div class="d-flex align-items-left flex-column flex-sm-row">
-                                    <div>
-                                        <div class="text-center display-4 d-20 rounded-circle mb-3 mb-sm-2">
-                                            <font-awesome-icon icon="clock" :class="faStyle"/>
-                                        </div>
-                                    </div>
                                     <div class="pl-0 pl-sm-3">
                                         <div class="d-block text-left text-black-50 opacity-8 d-sm-flex align-items-center">
+                                            <font-awesome-icon icon="clock" :class="faStyle" class="mr-2"/>
                                             <span class="font-size-md">Périodicité</span>
                                         </div>
                                         <p class=" mb-0">
@@ -67,15 +55,11 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-md-6 col-lg-12 col-xl-6">
+                            <div class="col-xl-6 col-lg-6 col-md-6  col-sm-12 col">
                                 <div class="d-flex align-items-left flex-column flex-sm-row">
-                                    <div>
-                                        <div class="text-center text-first display-4 d-20 rounded-circle mb-3 mb-sm-2">
-                                            <font-awesome-icon icon="business-time" :class="faStyle"/>
-                                        </div>
-                                    </div>
                                     <div class="pl-0 pl-sm-3">
                                         <div class="d-block text-left text-black-50 opacity-8 d-sm-flex align-items-center">
+                                            <font-awesome-icon icon="business-time" :class="faStyle" class="mr-2"/>
                                             <span class="font-size-md">Durée</span>
                                         </div>
                                         <p class=" mb-0">
@@ -86,15 +70,11 @@
                             </div>
                         </div>
                         <div class="row mt-2 mb-2">
-                        <div class="col-md-6 col-lg-12 col-xl-6">
+                        <div class="col-xl-6 col-lg-6 col-md-6  col-sm-12 col">
                             <div class="d-flex align-items-left flex-column flex-sm-row">
-                                <div>
-                                    <div class="text-center text-first display-4 d-20 rounded-circle mb-3 mb-sm-2">
-                                        <font-awesome-icon icon="fist-raised" :class="faStyle" />
-                                    </div>
-                                </div>
                                 <div class="pl-0 pl-sm-3">
                                     <div class="d-block text-left text-black-50 opacity-8 d-sm-flex align-items-center">
+                                        <font-awesome-icon icon="fist-raised" :class="faStyle" class="mr-2"/>
                                         <span class="font-size-md">Nombre avance</span>
                                     </div>
                                     <p class=" mb-0">
@@ -103,15 +83,11 @@
                                 </div>
                             </div>
                         </div>
-                            <div class="col-md-6 col-lg-12 col-xl-6">
+                            <div class="col-xl-6 col-lg-6 col-md-6  col-sm-12 col">
                                 <div class="d-flex align-items-left flex-column flex-sm-row">
-                                    <div>
-                                        <div class="text-center text-first display-4 d-20 rounded-circle mb-3 mb-sm-2">
-                                            <font-awesome-icon icon="hand-holding-usd" :class="faStyle"/>
-                                        </div>
-                                    </div>
                                     <div class="pl-0 pl-sm-3">
                                         <div class="d-block text-left text-black-50 opacity-8 d-sm-flex align-items-center">
+                                            <font-awesome-icon icon="hand-holding-usd" :class="faStyle" class="mr-2"/>
                                             <span class="font-size-md">Nombre prépayé</span>
                                         </div>
                                         <p class=" mb-0">
@@ -123,15 +99,11 @@
 
                         </div>
                         <div class="row mt-2 mb-2">
-                            <div class="col-md-6 col-lg-12 col-xl-6">
+                            <div class="col-xl-6 col-lg-6 col-md-6  col-sm-12 col">
                                 <div class="d-flex align-items-left flex-column flex-sm-row">
-                                    <div>
-                                        <div class="text-center text-first display-4 d-20 rounded-circle mb-3 mb-sm-2">
-                                            <font-awesome-icon icon="dollar-sign" :class="faStyle"/>
-                                        </div>
-                                    </div>
                                     <div class="pl-0 pl-sm-3">
                                         <div class="d-block text-left text-black-50 opacity-8 d-sm-flex align-items-center">
+                                            <font-awesome-icon icon="dollar-sign" :class="faStyle" class="mr-2"/>
                                             <span class="font-size-md">Montant bail</span>
                                         </div>
                                         <p class=" mb-0">
@@ -140,15 +112,11 @@
                                     </div>
                                 </div>
                             </div>
-                          <div class="col-md-6 col-lg-12 col-xl-6">
+                          <div class="col-xl-6 col-lg-6 col-md-6  col-sm-12 col">
                             <div class="d-flex align-items-left flex-column flex-sm-row">
-                                <div>
-                                    <div class="text-center text-first display-4 d-20 rounded-circle mb-3 mb-sm-2">
-                                        <font-awesome-icon icon="exchange-alt" :class="faStyle" />
-                                    </div>
-                                </div>
                                 <div class="pl-0 pl-sm-3">
                                     <div class="d-block text-left text-black-50 opacity-8 d-sm-flex align-items-center">
+                                        <font-awesome-icon icon="exchange-alt" :class="faStyle" class="mr-2"/>
                                         <span class="font-size-md">Tacite reconduction</span>
                                     </div>
                                     <p class=" mb-0">
@@ -159,15 +127,11 @@
                           </div>
                         </div>
                         <div class="row mt-2 mb-2">
-                          <div class="col-md-6 col-lg-12 col-xl-6">
+                          <div class="col-xl-6 col-lg-6 col-md-6  col-sm-12 col">
                             <div class="d-flex align-items-left flex-column flex-sm-row">
-                                <div>
-                                    <div class="text-center text-first display-4 d-20 rounded-circle mb-3 mb-sm-2">
-                                        <font-awesome-icon icon="balance-scale" :class="faStyle"/>
-                                    </div>
-                                </div>
                                 <div class="pl-0 pl-sm-3">
                                     <div class="d-block text-left text-black-50 opacity-8 d-sm-flex align-items-center">
+                                        <font-awesome-icon icon="balance-scale" :class="faStyle" class="mr-2"/>
                                         <span class="font-size-md">Statut</span>
                                     </div>
                                     <p class=" mb-0">
@@ -176,15 +140,11 @@
                                 </div>
                             </div>
                           </div>
-                          <div class="col-md-6 col-lg-12 col-xl-6">
+                          <div class="col-xl-6 col-lg-6 col-md-6  col-sm-12 col">
                             <div class="d-flex align-items-left flex-column flex-sm-row">
-                                <div>
-                                    <div class="text-center text-first display-4 d-20 mb-3 mb-sm-2">
-                                        <font-awesome-icon icon="comment" :class="faStyle"/>
-                                    </div>
-                                </div>
                                 <div class="pl-0 pl-sm-3">
                                     <div class="d-block text-left text-black-50 opacity-8 d-sm-flex align-items-center">
+                                        <font-awesome-icon icon="comment" :class="faStyle" class="mr-2"/>
                                         <span class="font-size-md">Commentaires</span>
                                     </div>
                                     <p class=" mb-0">
