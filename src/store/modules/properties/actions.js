@@ -111,6 +111,20 @@ export default {
   },
  
   // -----TYPE DEPENDANCES-----
+  async createNewDependency({ commit }, data) {
+    commit(ERROR_REMOVE, 'createNewDependency')
+    let typeDependance = new TypeDependance()
+    return typeDependance.createDependance(data)
+      .then(res => {
+        if (res.status === 200) {
+          let typeDependance = res.data.payload
+          commit(ADD_DEPENDANCE, {...typeDependance,nbre: null, superficie: null})
+        }
+      })
+      .catch(errors => {
+        commit(ERROR_ADD, { key: 'createNewDependency', message: errors.message })
+      })
+  },
   async getTypedependances ({ commit }, data) {
     commit(ERROR_REMOVE, 'getTypedependances')
     let typeDependance = new TypeDependance()

@@ -208,7 +208,7 @@
               <div class="ml-auto">
                 <b-button
                   variant="primary"
-                  @click="add_real_estate_dependency = true"
+                  @click="onLoadRealEstatateDependencyForm()"
                 >
                   <font-awesome-icon icon="plus" class="mr-2" />
                   Créer un nouveau type dépendance
@@ -234,12 +234,7 @@
                                 name="Type de dépendance"
                               >
                               </b-form-input>
-                              <!-- <span
-                                class="invalid-feedback d-block"
-                                v-if="errors.realEstateDependencyMsg"
-                                >{{ errors.realEstateDependencyMsg }}</span
-                              > -->
-                             
+                            
                             </b-form-group></b-col
                           >
                         </b-row>
@@ -257,11 +252,11 @@
                           class="m-1"
                           type="submit"
                           variant="primary"
-                          >Valider</b-button
+                          >Enregistrer</b-button
                         >
                       </b-form>
                     </div>
-                    <div v-once class="typo__p d-flex" v-if="loadingAddBank">
+                    <div v-once class="typo__p d-flex" v-if="loadingAddRealEstatateDependency">
                       <div class="spinner sm spinner-primary mt-3"></div>
                     </div>
                   </b-modal>
@@ -338,10 +333,12 @@ export default {
   },
   data: function () {
     return {
+      real_estate_dependency: null,
       add_real_estate_dependency: false,
       componentKey: 0,
       filterValue: "",
       selectedDependance: [],
+      loadingAddRealEstatateDependency:false,
       appartement: {
         intitule: null,
         level: null,
@@ -431,8 +428,25 @@ export default {
   },
   watch: {},
   methods: {
-    ...mapActions("properties", ["createAppartement"]),
-    addRealEstatateDependency() {},
+    ...mapActions("properties", ["createAppartement", "createNewDependency"]),
+    
+    onLoadRealEstatateDependencyForm() {
+      this.add_real_estate_dependency = true
+    },
+    async addRealEstatateDependency() {
+      try {
+        this.add_real_estate_dependency = true;
+        await this.createNewDependency({
+          libelle:this.real_estate_dependency,
+          utilite:this.real_estate_dependency,
+        }).then((res) => {
+          this.add_real_estate_dependency = false;
+          this.makeToast("Dépendance", "Dépendance ajouté avec succès", "success");
+          this.real_estate_dependency = null;
+        });
+      } catch (error) {}
+
+    },
 
     addDependance: function (typeDependance) {
       console.log("typeDependance:", typeDependance);
@@ -452,6 +466,15 @@ export default {
       this.selectedDependance.splice(index, 1);
       console.log("this.selectedDependance:", this.selectedDependance);
     },
+    makeToast(title, msg, variant) {
+      this.$bvToast.toast(`${msg}`, {
+        title: `${title}`,
+        variant: variant,
+        autoHideDelay: 2000,
+        solid: true,
+      });
+    },
+
     saveAppartment: async function () {
       this.appartement.immeuble_id = this.selectedImmeuble.id;
       console.log("this.selectedImmeuble:", this.selectedImmeuble);

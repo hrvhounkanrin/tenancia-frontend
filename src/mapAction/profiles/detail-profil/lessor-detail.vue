@@ -161,7 +161,7 @@
             title="Save Lessor"
             @click="saveLessor"
           >
-            <span>Sauvegarder</span>
+            <span>{{lessor.id && this.lessor.id > 0? 'Créer' : 'Enregistrer'}}</span>
           </a>
           <a
             href="javascript:void(0);"
