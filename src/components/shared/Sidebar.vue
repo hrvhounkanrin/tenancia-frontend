@@ -81,7 +81,7 @@ export default {
         },
         {
           title: 'Mon portefeuille',
-          href: '/edit-appartment',
+          href: '/my-portfolio',
           icon: {
             element: 'folder-icon'
           }
@@ -94,8 +94,15 @@ export default {
           }
         },
         {
-          title: 'Mes quittances',
-          href: '/edit-contrat',
+          title: 'Mes quittances tenants',
+          href: 'tenant-quittances',
+          icon: {
+            element: 'clipboard-icon'
+          }
+        },
+         {
+          title: 'Mes quittances lessor',
+          href: 'lessor-quittances',
           icon: {
             element: 'clipboard-icon'
           }

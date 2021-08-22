@@ -2,11 +2,11 @@
   <div>
         <PageTitle heading="Contrat de bail"
                    subheading="Configurer votre contrat de bail avec les frais accessoires..."/>
-                   <div class="row">
-                       <div class="col-lg-12 col-md-12 col-sm-8 offset-sm-2 col-xl-8 offset-xl-2">
-                                <alert  variant="warning" v-for="err in api_errors" :msg="err.message" icon="bell" :dismissSecs="15" :dismissible="true" :title="'Oups..'" :key="err.key"></alert>
-                        </div>
-                    </div>
+          <div class="row">
+              <div class="col-lg-12 col-md-12 col-sm-8 offset-sm-2 col-xl-8 offset-xl-2">
+                      <alert  variant="warning" v-for="err in api_errors" :msg="err.message" icon="bell" :dismissSecs="15" :dismissible="true" :title="'Oups..'" :key="err.key"></alert>
+              </div>
+          </div>
        <div class="row">
         <div class="col-md-6">
             <div class="card card-box mb-5">

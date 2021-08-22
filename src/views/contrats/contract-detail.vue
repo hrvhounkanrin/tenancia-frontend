@@ -5,6 +5,13 @@
                     <div class="px-4 px-xl-5 pb-1">
                         <div class="card-header d-block">
                             <span class="text-uppercase py-3 py-xl-4 text-black d-block text-center font-weight-bold">DETAIL CONTRAT N° {{contrat.reference_bail}}</span>
+                            <!--
+                            <div class="text-center">
+                                 <b-button variant="primary">
+                                    <font-awesome-icon icon="money-check-alt" class="mr-2" />
+                                    ACCEPTER CONTRAT N° {{contrat.reference_bail}}
+                                </b-button>
+                            </div>-->
                         </div>
                         <div class="row mt-2 mb-2">
                             <div class="col-md-6 col-lg-12 col-xl-6">
@@ -242,9 +249,9 @@
                         </div>
                         </div>
                         <div class="card-header border-0 d-block">
-                            <span class="text-uppercase pt-2 pb-2 text-black d-block text-center font-weight-bold font-size-sm">Derniers règlements</span>
+                            <span class="text-uppercase pt-2 pb-2 text-black d-block text-center font-weight-bold font-size-sm">Frais accessoires</span>
                         </div>
-                        <div class="row">
+                        <div class="row" v-for="acc in contrat.accessoires" :key="acc.id">
                               <div class="col-lg-12">
                             <div class="card card-box mb-2">
                                 <div class="card-body">
@@ -256,17 +263,20 @@
                                         </div>
                                         <div class="pl-0 pl-sm-4">
                                             <div class="d-flex align-items-center">
-                                                <span class="font-size-sm">Quittance de 50 000 XOF</span>
-                                                <span class="badge badge-neutral-info text-info ml-2">EN ATTENTE</span>
+                                                <span class="font-size-sm">Intitulé:</span> 
+                                                <span class="font-size-sm ml-2">{{acc.accesoireloyer.libelle}}</span>
                                             </div>
                                             <small class="d-block">
-                                                <span class="text-black-50">Période:</span> 01/06/2021 - 30/06/2021
+                                                <span class="font-size-sm">Montant:</span> 
+                                                <span class="font-size-sm ml-2">{{Number(acc.montant).toLocaleString('fr-FR')}} F CFA</span>
                                             </small>
                                             <small class="d-block">
-                                                <span class="text-black-50">Date valeur:</span>  05/05/2021
+                                                <span class="font-size-sm">Statut:</span>
+                                                <span class="font-size-sm ml-2">{{acc.statut}}</span>
                                             </small>
                                             <small class="d-block">
-                                                <span class="text-black-50">Date règlement:</span> : N/A
+                                                <span class="font-size-sm">Mode:</span>
+                                                <span class="font-size-sm ml-2">PONCTUEL</span>
                                             </small>
                                         </div>
                                        <!-- <div class="mt-3 mt-sm-0 ml-sm-auto">
@@ -284,94 +294,13 @@
                             </div>
                         </div>
                         </div>
-                        <div class="row">
-                              <div class="col-lg-12">
-                            <div class="card card-box mb-2">
-                                <div class="card-body">
-                                    <div class="d-flex align-items-center flex-column flex-sm-row">
-                                        <div>
-                                            <div class="bg-deep-blue text-center text-white font-size-xl d-50 rounded-circle mb-3 mb-sm-0">
-                                                <font-awesome-icon icon="file-invoice-dollar"/>
-                                            </div>
-                                        </div>
-                                        <div class="pl-0 pl-sm-4">
-                                            <div class="d-flex align-items-center">
-                                                <span class="font-size-sm">Quittance de 50 000 XOF</span>
-                                                <span class="badge badge-neutral-info text-info ml-2">EN ATTENTE</span>
-                                            </div>
-                                            <small class="d-block">
-                                                <span class="text-black-50">Période:</span> 01/06/2021 - 30/06/2021
-                                            </small>
-                                            <small class="d-block">
-                                                <span class="text-black-50">Date valeur:</span>  05/05/2021
-                                            </small>
-                                            <small class="d-block">
-                                                <span class="text-black-50">Date règlement:</span> : N/A
-                                            </small>
-                                        </div>
-                                       <!-- <div class="mt-3 mt-sm-0 ml-sm-auto">
-                                            <b-button variant="success">
-                                                <span class="btn-wrapper--icon">
-                                                    <font-awesome-icon icon="question-circle"/>
-                                                </span>
-                                                <span class="btn-wrapper--label">
-                                                Contact
-                                            </span>
-                                            </b-button>
-                                        </div>-->
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        </div>
-                        <div class="row">
-                              <div class="col-lg-12">
-                            <div class="card card-box mb-2">
-                                <div class="card-body">
-                                    <div class="d-flex align-items-center flex-column flex-sm-row">
-                                        <div>
-                                            <div class="bg-deep-blue text-center text-white font-size-xl d-50 rounded-circle mb-3 mb-sm-0">
-                                                <font-awesome-icon icon="file-invoice-dollar"/>
-                                            </div>
-                                        </div>
-                                        <div class="pl-0 pl-sm-4">
-                                            <div class="d-flex align-items-center">
-                                                <span class="font-size-sm">Quittance de 50 000 XOF</span>
-                                                <span class="badge badge-neutral-info text-info ml-2">EN ATTENTE</span>
-                                            </div>
-                                            <small class="d-block">
-                                                <span class="text-black-50">Période:</span> 01/06/2021 - 30/06/2021
-                                            </small>
-                                            <small class="d-block">
-                                                <span class="text-black-50">Date valeur:</span>  05/05/2021
-                                            </small>
-                                            <small class="d-block">
-                                                <span class="text-black-50">Date règlement:</span> : N/A
-                                            </small>
-                                        </div>
-                                       <!-- <div class="mt-3 mt-sm-0 ml-sm-auto">
-                                            <b-button variant="success">
-                                                <span class="btn-wrapper--icon">
-                                                    <font-awesome-icon icon="question-circle"/>
-                                                </span>
-                                                <span class="btn-wrapper--label">
-                                                Contact
-                                            </span>
-                                            </b-button>
-                                        </div>-->
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        </div>
-                        <div class="mb-3">
-                            <!--<apexchart type="area" height="120" :options="chartWarning" :series="series"></apexchart>-->
-                        </div>
+               
                     </div>
                     <div class="card-footer d-block text-center">
-                        <a href="javascript:void(0);" class="btn btn-sm btn-success" v-b-tooltip title="Refresh">
-                            <font-awesome-icon spin icon="sync"/>
-                        </a>
+                        <b-button variant="primary">
+                            <font-awesome-icon icon="money-check-alt" class="mr-2" />
+                            PAYER {{Number(totalAPayer).toLocaleString('fr-FR')}} FCFA
+                        </b-button>
                     </div>
         </div>
     </div>
@@ -397,6 +326,12 @@ export default {
     contrat: Object,
     faStyle: String,
     cardBorder: String
+  },
+  computed: {
+      totalAPayer: function(){
+        let montant_bail = parseFloat(this.contrat.montant_bail) 
+        return montant_bail + this.contrat.accessoires.reduce((accumulateur, item) => accumulateur + parseFloat(item.montant) , 0)
+      }
   },
   mounted: function(){
       this.convertPeriodicite(this.contrat.periodicite)

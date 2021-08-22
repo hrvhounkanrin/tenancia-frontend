@@ -1,5 +1,6 @@
 export default {
   contrats: [],
+  clientContrats: [],
   selectedContrat: null,
   typeAccessoireLoyer: [],
   tenants: [],

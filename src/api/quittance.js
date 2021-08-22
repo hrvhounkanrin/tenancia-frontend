@@ -1,0 +1,32 @@
+/* eslint-disable no-console */
+/* eslint-disable no-unused-vars */
+import axios from 'axios'
+import api from '@/api/index'
+import config from '@/config/backend'
+const CancelToken = axios.CancelToken
+
+
+export default class Quittance {
+  $serveur = api(axios, config)
+  async getQuittancesByLessor(bodyParams) {
+    return await this.$serveur.getRequest(
+      {
+        body: bodyParams,
+        link: 'quittance_action/get_quittances'
+      }
+    )
+  }
+
+  async getQuittanceByTenant(bodyParams) {
+    return await this.$serveur.getRequest(
+      {
+        body: bodyParams,
+        link: 'quittance_action/get_client_quittances'
+      }
+    )
+  }
+  
+
+
+  
+ }

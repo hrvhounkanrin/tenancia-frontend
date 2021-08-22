@@ -8,6 +8,9 @@ import Properties from '@/views/properties/Properties.vue'
 import AppartementForm from '@/views/properties/AppartmentForm.vue'
 import ContractList from '@/views/contrats/contract-list.vue'
 import ContratForm from '@/views/contrats/contrat-form.vue'
+import TenantContrats from '@/views/contrats/tenant-contrats.vue'
+import LessorQuittances from '@/views/quittances/lessor-quittances.vue'
+import TenantQuittances from '@/views/quittances/tenant-quittances.vue'
 Vue.use(Router)
 
 
@@ -27,7 +30,6 @@ const router = new Router({
       meta: { auth: true }
 
     },
-
     {
       path: '/register',
       name: 'Register',
@@ -57,7 +59,7 @@ const router = new Router({
       component: Properties
     },
     {
-      path: '/my-contracts',
+      path: '/my-portfolio',
       name: 'MyContracts',
       component: ContractList
     },
@@ -71,6 +73,24 @@ const router = new Router({
       name: 'EditContrat',
       props: true,
       component: ContratForm
+    },
+    {
+      path: '/my-contracts',
+      name: 'TenantContrats',
+      props: true,
+      component: TenantContrats
+    },
+    {
+      path: '/tenant-quittances',
+      name: 'TenantQuittances',
+      props: true,
+      component: TenantQuittances
+    },
+    {
+      path: '/lessor-quittances',
+      name: 'LessorQuittances',
+      props: true,
+      component: LessorQuittances
     },
     {
       path: '/about',

@@ -2,6 +2,9 @@ export default {
   contrats: state => {
     return state.contrats
   },
+  clientContrats: state => {
+    return state.clientContrats
+  },
   retrievedTenants: state => {
     return state.tenants
   },

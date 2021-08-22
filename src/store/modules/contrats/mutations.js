@@ -2,12 +2,19 @@ import {
   ERROR_ADD, ERROR_REMOVE, CONTRAT_LIST, ADD_CONTRAT, UPDATE_CONTRAT,
   AGREE_CONTRAT, ACCESSOIRE_LIST, ADD_ACCESSOIRE, UPDATE_ACCESSOIRE,
   SELECTED_CONTRAT, TENANTS, SEARCHTENANTREQUEST, GETFREEAPPARTMENTREQUEST,
-  GETFREEAPPARTMENT
+  GETFREEAPPARTMENT, CLIENTCONTRAT, UPDATECLIENTCONTRAT
 } from './mutation-types'
 
 export default {
   [CONTRAT_LIST] (state, contrats) {
     state.contrats = contrats
+  },
+  [CLIENTCONTRAT] (state, contrats) {
+    state.clientContrats = contrats
+  },
+  [UPDATECLIENTCONTRAT] (state, contrat) {
+    state.clientContrats = state.clientContrats.findIndex(co => co.id === contrat.id)
+    state.clientContrats.splice(index, 1, contrat)
   },
   [TENANTS] (state, retrievedTenants) {
     state.tenants = retrievedTenants

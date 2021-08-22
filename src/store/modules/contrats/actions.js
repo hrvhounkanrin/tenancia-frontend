@@ -1,7 +1,8 @@
 import {
   ERROR_ADD, ERROR_REMOVE, CONTRAT_LIST, ADD_CONTRAT, UPDATE_CONTRAT,
   AGREE_CONTRAT, ACCESSOIRE_LIST, ADD_ACCESSOIRE, UPDATE_ACCESSOIRE,
-  SELECTED_CONTRAT, TENANTS, SEARCHTENANTREQUEST, GETFREEAPPARTMENTREQUEST
+  SELECTED_CONTRAT, TENANTS, SEARCHTENANTREQUEST, GETFREEAPPARTMENTREQUEST,
+  CLIENTCONTRAT
 } from './mutation-types'
 import { searchTenantRequest, freeAppartmentRequest } from './getters'
 import Contrat from '@/api/contrat'
@@ -25,6 +26,22 @@ export default {
       })
       .catch(errors => {
         commit(ERROR_ADD, { key: 'getContrats', message: errors.message })
+        return errors
+      })
+  },
+  async getClientContrats ({ commit }, data) {
+    commit(ERROR_REMOVE, 'getClientContrats')
+    let contrat = new Contrat()
+    return contrat.getClientContrats(data)
+      .then(res => {
+        if (res.status === 200) {
+          console.log('getClientContrats: ',res)
+          let contrats = res.data.payload
+          commit(CLIENTCONTRAT, contrats)
+        }
+      })
+      .catch(errors => {
+        commit(ERROR_ADD, { key: 'getClientContrats', message: errors.message })
         return errors
       })
   },
@@ -130,5 +147,11 @@ export default {
     } catch (errors) {
       commit(ERROR_ADD, { key: 'getFreeAppartment', message: errors.message })
     }
-  }
+  },
+  async clientAccord ({ commit }, data) {
+    console.log('clientAccord action start ok', data)
+    commit(ERROR_REMOVE, 'clientAccord')
+    let contrat = new Contrat()
+    return  contrat.agreeContrat(data)
+  },
 }

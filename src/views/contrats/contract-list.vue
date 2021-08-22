@@ -1,11 +1,11 @@
 <template>
     <div>
-        <PageTitle heading="Mes contrats de bail" subheading="Advanced interaction controls to your HTML tables the free & easy way"/>
+        <PageTitle heading="Mes contrats de bail" subheading="Liste des contrats dans votre portefeuille"/>
         <div>
             <!--<contract-dashboard></contract-dashboard>-->
         </div>
         <div class="row">
-            <div class="col-lg-12 col-md-8 col-sm-12 col-xl-8">
+            <div :class="mainTableStyle">
                     <div class="card card-box mb-5">
                     <div class="card-header pr-2">
                         <div class="card-header--title">
@@ -90,8 +90,8 @@
                                                         <font-awesome-icon icon="ellipsis-h"/>
                                                     </div>
                                                 </template>
-                                                <b-dropdown-item >Voir détails</b-dropdown-item>
-                                                <b-dropdown-item>Voir règlements</b-dropdown-item>
+                                                <b-dropdown-item >Modifier</b-dropdown-item>
+                                                <b-dropdown-item>Voir quittances</b-dropdown-item>
                                                 <b-dropdown-divider></b-dropdown-divider>
                                                 <b-dropdown-item active>Résilier</b-dropdown-item>
                                             </b-dropdown>
@@ -149,7 +149,8 @@ export default {
     return {
         activeContrat: null,
         faStyle: null,
-        cardBorder: null
+        cardBorder: null,
+        mainTableStyle: 'col-lg-12 col-md-12 col-sm-12 col-xl-12'
     }
   },
   props: {
@@ -176,7 +177,7 @@ export default {
         if(statut=='PROPOSITION'){
             return {
                 style: 'proposition', 
-                badge: 'badge-first', 
+                badge: 'badge-warning', 
                 faStyle: 'faProposition',
                 border: 'borderProposition'
             }
@@ -192,14 +193,34 @@ export default {
         if(statut=='RESILIE'){
             return {
                 style: 'resilie', 
-                badge: 'badge-warning', 
+                badge: 'badge-error', 
                 faStyle: 'faResilie',
                 border: 'borderResilie'
             }
         }
+        if(statut=='CONTRAT ACCEPTE'){
+            return {
+                style: 'accepte', 
+                badge: 'badge-primary', 
+                faStyle: 'faAccepte',
+                border: 'borderAccepte'
+            }
+        }
+        console.log(statut)
+    /*ANNULE
+    
+    TERME = "TERME"
+    */
+        return {
+                style: '', 
+                badge: '', 
+                faStyle: '',
+                border: ''
+            }
     },
     setActiveContrat: function(contrat){
         console.log('setActiveContrat: ', contrat)
+        this.mainTableStyle = 'col-lg-8 col-md-8 col-sm-12 col-xl-8'
         this.activeContrat = {...contrat}
         const styleObject = this.statutStyle(contrat.statut)
         this.faStyle = styleObject.faStyle

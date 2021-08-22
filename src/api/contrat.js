@@ -8,12 +8,19 @@ const CancelToken = axios.CancelToken
 
 export default class Contrat {
   $serveur = api(axios, config)
-
   async getContrats (bodyParams) {
     return await this.$serveur.getRequest(
       {
         body: bodyParams,
         link: 'contrat_action/get_contrat'
+      }
+    )
+  }
+  async getClientContrats (bodyParams) {
+    return await this.$serveur.getRequest(
+      {
+        body: bodyParams,
+        link: 'contrat_action/get_client_contrat'
       }
     )
   }

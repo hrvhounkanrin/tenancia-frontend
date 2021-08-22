@@ -28,7 +28,7 @@
 .proposition > td:first-child{
   border-left-style:solid;
   border-width:1px !important;
-  border-left-color:#4191ff !important;
+  border-left-color:#f4772e/*#4191ff */!important;
 }
 .encours > td:first-child{
   border-left-style:solid;
@@ -38,23 +38,31 @@
 .resilie > td:first-child{
   border-left-style:solid;
   border-width:1px !important;
-  border-left-color:#f4772e !important;
+  border-left-color:#e90707 !important;
+}
+.accepte > td:first-child{
+  border-left-style:solid;
+  border-width:1px !important;
+  border-left-color:#4191ff !important;
 }
 .faProposition {
+  color: #f4772e;
+}
+.faAccepte {
   color: #4191ff;
 }
 .faEncours {
   color: #1bc943;
 }
 .faResilie {
-  color: #f4772e;
+  color: #e90707;
 }
 .borderProposition {
-  border-color: #4191ff;
+  border-color: #f4772e;
 }
 .borderEncours {
   border-color: #1bc943;
 }
 .borderResilie {
-  border-color: #f4772e;
+  border-color: #e90707;
 }

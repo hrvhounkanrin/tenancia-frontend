@@ -61,6 +61,7 @@ export default ($http, $config) => {
         type: 'error',
         errors: [],
       }
+
       const ErrorMessages = {
         400: 'Une erreur est survenue lors du traitement de votre requête', 
         401: 'Non autorisé, You are not Allowed',
@@ -71,10 +72,12 @@ export default ($http, $config) => {
         request: 'There is Some Problem With Our Servers, Please Try again Later',
         other: 'There was some Problem with your Request, Please Try again Later',
       }
+      console.log('orginalErrorMessage:', error.response)
+      const orginalErrorMessage = error.response.data.payload.message 
       if (error && error.response) {
         switch (error.response.status) {
           case 400:
-            errorResponse.message = ErrorMessages['400']
+            errorResponse.message = (orginalErrorMessage) ? orginalErrorMessage: ErrorMessages['400']
             break
           case 401:
             errorResponse.message = ErrorMessages['401']
@@ -126,8 +129,6 @@ export default ($http, $config) => {
           ...params.body
         }
       })
-
-    // .get($config.apiVersion + params.link, params.body)
   }
 
   return {
