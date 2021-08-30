@@ -475,6 +475,7 @@ export default {
     },
 
     saveAppartment: async function () {
+      this.loadingAddRealEstatateDependency = true;
       this.appartement.immeuble_id = this.selectedImmeuble.id;
       console.log("this.selectedImmeuble:", this.selectedImmeuble);
       let structures = [];

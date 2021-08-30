@@ -26,6 +26,10 @@ import Apps from '@/components/shared/appLayout.vue'
 import Layouts from '@/components/shared/layoutsExamples.vue'
 import PageTitle from '@/components/shared/PageTitle'
 
+import VueCountryCode from "vue-country-code";
+
+Vue.use(VueCountryCode);
+
 Vue.component('vue-phone-number-input', VuePhoneNumberInput)
 Vue.component('autocomplete-input', VueSimpleSuggest)
 
