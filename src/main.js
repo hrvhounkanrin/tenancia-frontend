@@ -10,6 +10,8 @@ import 'sweetalert2/dist/sweetalert2.min.css'
 import VuePhoneNumberInput from 'vue-phone-number-input'
 import 'vue-phone-number-input/dist/vue-phone-number-input.css'
 import * as VueGoogleMaps from 'vue2-google-maps'
+import VueSocialSharing from 'vue-social-sharing'
+
 
 // import VueGeolocation from 'vue-browser-geolocation'
 import api from '@/api'
@@ -49,7 +51,7 @@ Vue.use(VueGoogleMaps, {
     libraries: 'places'
   }
 })
-
+Vue.use(VueSocialSharing)
 // Vue.use(VueGeolocation)
 Vue.use(BootstrapVue)
 Vue.prototype.$config = config

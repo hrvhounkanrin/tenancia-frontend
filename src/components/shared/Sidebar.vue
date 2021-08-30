@@ -26,7 +26,7 @@ import { SidebarMenu } from 'vue-sidebar-menu'
 import VuePerfectScrollbar from 'vue-perfect-scrollbar'
 import { SettingsIcon, PlusIcon, FileTextIcon, FolderIcon,
   HomeIcon, UserCheckIcon, CheckCircleIcon, LayoutIcon,
-  PaperclipIcon, LayersIcon, DatabaseIcon, BriefcaseIcon,
+  PaperclipIcon, LayersIcon, ListIcon, BriefcaseIcon,
   MapPinIcon, PieChartIcon, ClipboardIcon } from 'vue-feather-icons'
 
 import { library } from '@fortawesome/fontawesome-svg-core'
@@ -42,7 +42,7 @@ Vue.component('check-circle-icon', CheckCircleIcon)
 Vue.component('layout-icon', LayoutIcon)
 Vue.component('paper-clip-icon', PaperclipIcon)
 Vue.component('layers-icon', LayersIcon)
-Vue.component('database-icon', DatabaseIcon)
+Vue.component('list-icon', ListIcon)
 Vue.component('briefcase-icon', BriefcaseIcon)
 Vue.component('map-pin-icon', MapPinIcon)
 Vue.component('pie-chart-icon', PieChartIcon)
@@ -94,17 +94,17 @@ export default {
           }
         },
         {
-          title: 'Mes quittances tenants',
+          title: 'Mes quittances',
           href: 'tenant-quittances',
           icon: {
             element: 'clipboard-icon'
           }
         },
-         {
-          title: 'Mes quittances lessor',
+        {
+          title: 'Quittances bailleur',
           href: 'lessor-quittances',
           icon: {
-            element: 'clipboard-icon'
+            element: 'list-icon'
           }
         },
         {

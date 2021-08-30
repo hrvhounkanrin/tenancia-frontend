@@ -261,7 +261,6 @@
                     </div>
                   </b-modal>
                 </div>
-                -->
               </div>
             </div>
           </div>

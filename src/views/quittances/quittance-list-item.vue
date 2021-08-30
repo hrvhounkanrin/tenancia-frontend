@@ -2,16 +2,27 @@
      <div class="card card-box mb-2">
                 <div class="card-body">
                     <div class="row">
-                        <div class="col col-sm-12 col-md-2">
+                        <div class="col col-sm-12 col-md-3">
                             <small>
                                 Montant
                             </small>
                             <div class="d-flex align-items-left">
-                                  <input type="checkbox" id="exampleCustomCheckbox1" class="custom-control-input">
-                                <label class="custom-control-label" for="exampleCustomCheckbox1">
-                                    <span class="font-size-lg">{{Number(quittance.montant).toLocaleString('fr-FR')}} F CFA</span>
-                                </label>
+                                
+                               <!--<label class="custom-control-label" :for="quittance.id">
+                                    <span class="font-size-md">{{Number(quittance.montant).toLocaleString('fr-FR')}} F CFA</span>
+                                    <input type="checkbox" :id="quittance.id" class="custom-control-input ml-2">
+                                </label>-->
+                            <b-form-checkbox :id="'chk_'+quittance.reference" unchecked-value="not_accepted">
+                                <span class="font-size-md">{{Number(quittance.montant).toLocaleString('fr-FR')}} F CFA</span>
+                            </b-form-checkbox>
                                 <span class="badge badge-danger ml-2">PENDING</span>
+                            </div>
+                            <div class="d-flex align-items-left mt-2">
+                            <b-button variant="secondary" pill class="col mr-2 mb-1"  @click="$emit('share-quittance')">
+                                <span class="btn-wrapper--icon">
+                                    <font-awesome-icon icon="share-alt" class="mr-2"/> Partager Quittance
+                                </span>
+                            </b-button>
                             </div>
                         </div>
                         <div class="col col-sm-12 col-md-2">
@@ -19,21 +30,21 @@
                                 Appartement
                             </small>
                             <div class="d-flex align-items-left">
-                                <span class="font-size-lg">{{quittance.appartement.intitule}}({{quittance.appartement.immeuble_intitule}})</span>
+                                <span class="font-size-md">{{quittance.appartement.intitule}}({{quittance.appartement.immeuble_intitule}})</span>
                             </div>
                              <div class="d-flex align-items-left">
-                                <span class="font-size-lg">{{quittance.appartement.immeuble_address}}</span>
+                                <span class="font-size-md">{{quittance.appartement.immeuble_address}}</span>
                             </div>
                         </div>
-                        <div class="col col-sm-12 col-md-3">
+                        <div class="col col-sm-12 col-md-2">
                             <small>
                                 Quittance
                             </small>
                             <div class="d-flex align-items-left">
-                                <span class="font-size-lg">{{quittance.reference}}</span>
+                                <span class="font-size-md">{{quittance.reference}}</span>
                             </div>
                              <div class="d-flex align-items-left">
-                                <span class="font-size-lg">{{quittance.nature}}</span>
+                                <span class="font-size-md">{{quittance.nature}}</span>
                             </div>
                         </div>
                         <div class="col col-sm-12 col-md-3">
@@ -41,10 +52,10 @@
                                 Bailleur
                             </small>
                             <div class="d-flex align-items-left">
-                                <span class="font-size-lg">{{quittance.lessor.first_name + ' '+ quittance.lessor.last_name}}</span>
+                                <span class="font-size-md">{{quittance.lessor.first_name + ' '+ quittance.lessor.last_name}}</span>
                             </div>
                              <div class="d-flex align-items-left">
-                                <span class="font-size-lg">{{quittance.lessor.phone_number}}</span>
+                                <span class="font-size-md">{{quittance.lessor.phone_number}}</span>
                             </div>
                         </div>
                         <div class="col col-sm-12 col-md-2">
@@ -64,6 +75,7 @@
                                 Payer
                             </span>
                             </b-button>
+
                         </div>
                     </div>          
                 </div>
@@ -73,7 +85,9 @@
 import { library } from "@fortawesome/fontawesome-svg-core"
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome"
 import { fas } from "@fortawesome/free-solid-svg-icons"
+import { fab } from "@fortawesome/free-brands-svg-icons"
 library.add(fas)
+library.add(fab)
 export default {
     name: "QuittanceListeItem",
     components: {
@@ -81,11 +95,17 @@ export default {
     },
     data: function() {
         return {
-            contrat: null
+            contrat: null,
+            modalOpen: false
         }
     },
     props: {
         quittance: Object
+    },
+    methods: {
+        openModal() {
+            this.modalOpen = !this.modalOpen;
+        }    
     }
 }
 </script>

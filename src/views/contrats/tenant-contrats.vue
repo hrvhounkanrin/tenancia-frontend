@@ -59,7 +59,7 @@
                     <div class="align-box-row">
                         <div class="ml-auto">
                            
-                            <b-button variant="primary"  class="mr-2"> 
+                            <b-button variant="primary"  class="mr-2" @click="showQuittance(co)"> 
                                     <font-awesome-icon icon="file-invoice" class="mr-2" /> Quittances
                             </b-button>
                             <b-button variant="primary" class="mr-2" @click="setActiveContrat(co)">
@@ -94,6 +94,7 @@ import { library } from "@fortawesome/fontawesome-svg-core"
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome"
 import { fas } from "@fortawesome/free-solid-svg-icons"
 // import VuePerfectScrollbar from 'vue-perfect-scrollbar'
+import Hashids from 'hashids'
 import vueSlider from "vue-slider-component"
 import paginate, { alert } from "@/components/shared/"
 import ContractDetailTenant from './contract-detail-tenant.vue'
@@ -237,6 +238,11 @@ export default {
                 console.log(this.$store)
                 this.$store.commit('contrats/ERROR_ADD', {key: 'clientAccord', message: errors.message})
             })
+    },
+    showQuittance: function (contrat){
+        const hashids = new Hashids()
+        console.log('contrat.id:', contrat.id, hashids.encode(contrat.id))
+        this.$router.push({ name: 'TenantQuittances', query: { ref: hashids.encode(contrat.id)} })
     }
   }
 }
