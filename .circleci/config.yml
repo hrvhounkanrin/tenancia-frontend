@@ -1,31 +1,50 @@
 version: 2.1
-jobs:
-  build:
-    docker:
-      - image: circleci/node:12.22-browsers-legacy
+commands:
+  checkout_and_restore_cache:
     steps:
       - checkout
-      - run: 
-          name: Install npm dependencies
-          command: npm install
-      - run: npm build
+      - restore_cache:
+          key: v1-dependencies-{{ checksum "package-lock.json" }}
+
+executors:
+  node:
+    docker:
+      - image: circleci/node:12.22-browsers-legacy
+
+jobs:
+  install:
+    executor: node
+    steps:
+      - checkout_and_restore_cache
+      - run: yarn install
+      - save_cache:
+          key: v1-dependencies-{{ checksum "package-lock.json" }}
+          paths:
+            - ./node_modules
+
+  build:
+    executor: node
+    steps:
+      - checkout_and_restore_cache
+      - run: |
+          npm build
 
   test:
-    docker:
-      - image: circleci/node:12.22-browsers-legacy
+    executor: node
     steps:
-      - checkout
+      - checkout_and_restore_cache
       - run: 
-        name: install npm dependencies
-        command: npm install --production=false
-      - run: 
-        name: test
-        command: npm test
-     
+          name: Run unit test
+          command: |
+            npm test
 
 workflows:
   version: 2
   integration:
     jobs:
-      - test
       - build
+          requires:
+            - install
+      - test
+          requires:
+            - install
