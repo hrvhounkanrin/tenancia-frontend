@@ -282,6 +282,10 @@ export default {
       // End  vue-phone-number-input config
       editingTenant: false,
       errors: {},
+      phone: {
+                country: "",
+        dial_code: "",
+      },
       tenant: {
         id: null,
         profession: null,
@@ -302,7 +306,11 @@ export default {
   },
   methods: {
     ...mapActions('user', ['createUserProfil', 'updateUserProfil']),
-
+ onSelect({name, iso2, dialCode}) {
+    this.phone.country= iso2
+    this.phone.dial_code= dialCode
+     console.log(name, iso2, dialCode);
+   },
     editTenant (e) {
       this.editingTenant = true
       if (this.getProfiles && this.getProfiles.tenant) {

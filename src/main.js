@@ -28,6 +28,10 @@ import PageTitle from '@/components/shared/PageTitle'
 
 import VueCountryCode from "vue-country-code";
 
+
+// Styles: SCSS
+import './assets/scss/main.scss'
+
 Vue.use(VueCountryCode);
 
 Vue.component('vue-phone-number-input', VuePhoneNumberInput)

@@ -308,7 +308,7 @@
                                    <div class="tenancia-country-code">
                                      <vue-country-code
                                 @onSelect="onSelect"
-                                :preferredCountries="['bj', 'bf', 'ci','ne','ng','tg']"
+                                :preferredCountries="onlyCountries"
                               >
                               </vue-country-code>
                                     <input
@@ -509,16 +509,18 @@ export default {
         client_id:
           "185957473371-5fp3ntcah051m746ssq71c7raqsif2fl.apps.googleusercontent.com",
       },
+      phone: {
+                country: "",
+        dial_code: "",
+      },
       user: {
         first_name: "",
         last_name: "",
         email: "",
         password: "",
         phone_number: "",
-        country: "",
-        country_code: "",
-        dial_code: "",
       },
+            onlyCountries: ['BJ', 'TG', 'CI', 'NE', 'NG', 'CM', 'BF', 'ML', 'FR'],
       credential: {
         email: "",
         password: "",
@@ -567,15 +569,14 @@ export default {
       });
     },
     onSelect({name, iso2, dialCode}) {
-     this.user.country = name
-    this.user.country_code= iso2
-    this.user.dial_code= dialCode
+    this.phone.country= iso2
+    this.phone.dial_code= dialCode
      console.log(name, iso2, dialCode);
    },
 
     async localSignup(e) {
       this.submitted = true;
-      await this.register(this.user)
+      await this.register({...this.user, phone_number:`${this.phone.dial_code} ${this.user.phone_number}`, country: this.phone.country})
         .then((res) => {
           console.log("res", res.data);
           this.setUser(res.data);
@@ -642,8 +643,6 @@ export default {
 };
 </script>
 <style lang="scss">
-.tenancia-country-code{
-  display: flex;
-}
+
 @import "@/assets/bamburgh.scss";
 </style>
