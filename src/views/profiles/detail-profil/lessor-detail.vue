@@ -264,7 +264,9 @@ export default {
     editLessor(e) {
       this.editingLessor = true;
       if (this.getProfiles && this.getProfiles.lessor) {
-        this.lessor = {...this.getProfiles.lessor, profile_type: 'lessor',};
+        this.lessor = {...this.getProfiles.lessor,
+        phone_number: this.getProfiles.lessor.phone_number.split(' ')[1],
+         profile_type: 'lessor',};
         this.lessor.banque_id = this.getProfiles.lessor.banque.id;
         console.log(
           "res",
@@ -332,7 +334,7 @@ export default {
           mode_paiement: this.lessor.mode_paiement,
           numcompte: this.lessor.numcompte,
           numero_ifu: this.lessor.numero_ifu,
-          phone_number: this.lessor.phone_number,
+          // phone_number: this.lessor.phone_number,
           pays_residence: this.lessor.pays_residence,
           user_id: this.user.id,
           profile_type:"lessor",

@@ -316,6 +316,7 @@ export default {
       if (this.getProfiles && this.getProfiles.real_estate) {
         this.realEstate = {
           ...this.getProfiles.real_estate,
+          num_telephone: this.getProfiles.real_estate.num_telephone.split(' ')[1],
           profile_type: "real_estate",
         };
       }

@@ -349,7 +349,10 @@ export default {
     editTenant(e) {
       this.editingTenant = true;
       if (this.getProfiles && this.getProfiles.tenant) {
-        this.tenant = { ...this.getProfiles.tenant, profile_type: "tenant" };
+        this.tenant = { ...this.getProfiles.tenant, 
+                phone_number: this.getProfiles.tenant.phone_number.split(' ')[1],
+                ice_number: this.getProfiles.tenant.ice_number.split(' ')[1],
+profile_type: "tenant" };
       }
     },
     onSelectIce({ name, iso2, dialCode }) {
@@ -406,11 +409,16 @@ export default {
       }
 
       if (this.tenant.id && this.tenant.id > 0) {
-        await this.updateUserProfil({ ...this.tenant, profile_type: "tenant" })
+        await this.updateUserProfil({ ...this.tenant,
+                  phone_number:`${this.phone.dial_code} ${this.tenant.phone_number}`, 
+                  ice_number:`${this.ice_phone.dial_code} ${this.tenant.ice_number}`, 
+ profile_type: "tenant" })
           .then((res) => this.onTenantActionSucess(res))
           .catch((err) => this.onTenantActionFailure(err));
       } else {
-        await this.createUserProfil(this.tenant)
+        await this.createUserProfil({...this.tenant,                  phone_number:`${this.phone.dial_code} ${this.tenant.phone_number}`, 
+                  ice_number:`${this.ice_phone.dial_code} ${this.tenant.ice_number}`, 
+})
           .then((res) => this.onTenantActionSucess(res))
           .catch((err) => this.onTenantActionFailure(err));
       }
