@@ -26,6 +26,14 @@ import Layouts from '@/components/shared/layoutsExamples.vue'
 import PageTitle from '@/components/shared/PageTitle'
 import VueMask from 'v-mask'
 
+import VueCountryCode from "vue-country-code";
+
+
+// Styles: SCSS
+import './assets/scss/main.scss'
+
+Vue.use(VueCountryCode);
+
 Vue.component('vue-phone-number-input', VuePhoneNumberInput)
 
 Vue.component('PageTitle', PageTitle)

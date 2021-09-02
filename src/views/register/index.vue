@@ -16,11 +16,15 @@
                           backgroundImage:
                             'url(' +
                             require('@/assets/img/hero-bg/cotonou.jpg') +
-                            ')'
+                            ')',
                         }"
                       ></div>
                       <div
-                        class="bg-composed-wrapper--bg bg-premium-dark opacity-5"
+                        class="
+                          bg-composed-wrapper--bg
+                          bg-premium-dark
+                          opacity-5
+                        "
                       ></div>
                       <div class="bg-composed-wrapper--content p-0">
                         <div class="text-white mt-3" style="text-align: center">
@@ -31,7 +35,15 @@
                             Votre outil de gestion locative
                           </p>
                           <div
-                            class="divider border-2 my-4 border-light opacity-2 rounded w-25"
+                            class="
+                              divider
+                              border-2
+                              my-4
+                              border-light
+                              opacity-2
+                              rounded
+                              w-25
+                            "
                           ></div>
                         </div>
                       </div>
@@ -89,12 +101,17 @@
                 <div class="col-lg-7 d-flex align-items-center">
                   <div class="col-lg-6 mx-auto px-0">
                     <b-tabs pills nav-class="nav-line mx-3 my-5">
-                       <b-tab active title="Sign in" id="signin-tab">
+                      <b-tab active title="Sign in" id="signin-tab">
                         <div slot="title">
                           Se connecter
                           <div class="divider"></div>
                         </div>
-                        <alert v-if="errorOccured" variant="danger" v-bind:msg="errorMsg" icon="bell"></alert>
+                        <alert
+                          v-if="errorOccured"
+                          variant="danger"
+                          v-bind:msg="errorMsg"
+                          icon="bell"
+                        ></alert>
                         <div class="card m-0 shadow-none border-0">
                           <div class="card-header p-3 pt-0 rounded bg-light">
                             <div class="text-black-50 text-center mb-3">
@@ -116,7 +133,6 @@
                                 </span>
                               </button>
                             </div>
-
                           </div>
                           <div class="card-body">
                             <div class="text-center text-black-50 mb-3">
@@ -165,7 +181,13 @@
                                 </div>
                               </div>
                               <div
-                                class="form-group custom-control custom-control-alternative custom-checkbox text-left"
+                                class="
+                                  form-group
+                                  custom-control
+                                  custom-control-alternative
+                                  custom-checkbox
+                                  text-left
+                                "
                               >
                                 <input
                                   class="custom-control-input"
@@ -185,7 +207,8 @@
                               <div class="text-center">
                                 <button
                                   type="submit"
-                                  class="btn btn-primary btn-lg btn-block" id="btn-connect"
+                                  class="btn btn-primary btn-lg btn-block"
+                                  id="btn-connect"
                                 >
                                   Se connecter
                                 </button>
@@ -199,7 +222,12 @@
                           Créer un compte
                           <div class="divider"></div>
                         </div>
-                        <alert v-if="errorOccured" variant="danger" v-bind:msg="errorMsg" icon="bell"></alert>
+                        <alert
+                          v-if="errorOccured"
+                          variant="danger"
+                          v-bind:msg="errorMsg"
+                          icon="bell"
+                        ></alert>
                         <div class="card-header p-3 pt-0 rounded bg-light">
                           <div class="text-black-50 text-center mb-3">
                             <small>S'inscrire avec</small>
@@ -220,128 +248,178 @@
                           </div>
                         </div>
                         <form @submit.prevent="localSignup">
-
                           <div class="px-4 py-2">
-                            <div class="form-group">
-                              <ValidationProvider
-                                rules="required"
-                                name="last_name"
-                                v-slot="{ errors }"
-                              >
-                                <input
-                                  type="text"
-                                  class="form-control"
-                                  placeholder="Nom"
-                                  id="last_name"
-                                  v-model="user.last_name"
-                                  name="last_name"
-                                  :class="{
-                                    'is-invalid': submitted && errors.length > 0
-                                  }"
-                                />
-                              </ValidationProvider>
-                            </div>
-                             <div class="form-group">
-                              <ValidationProvider
-                                rules="required"
-                                name="first_name"
-                                v-slot="{ errors }"
-                              >
-                                <input
-                                  type="text"
-                                  class="form-control"
-                                  placeholder="Prénoms"
-                                  id="first_name"
-                                  v-model="user.first_name"
-                                  name="first_name"
-                                  :class="{
-                                    'is-invalid': submitted && errors.length > 0
-                                  }"
-                                />
-                              </ValidationProvider>
-                            </div>
-                            <div class="form-group">
-                              <ValidationProvider
-                                rules="required|email"
-                                name="Email"
-                                v-slot="{ errors }"
-                              >
-                                <input
-                                  type="email"
-                                  class="form-control"
-                                  placeholder="Email"
-                                  id="registering_email"
-                                  v-model="user.email"
-                                  name="email"
-                                  :class="{
-                                    'is-invalid': submitted && errors.length > 0
-                                  }"
-                                />
-                                <span
-                                  v-if="errors.length > 0"
-                                  class="invalid-feedback d-block"
-                                  >{{ errors[0] }}</span
-                                >
-                              </ValidationProvider>
-                            </div>
-
-                            <ValidationObserver>
-                              <ValidationProvider
-                                rules="required|password:confirmation"
-                                v-slot="{ errors }"
-                                name="password"
-                              >
+                           
+                            <b-row>
+                              <b-col>
                                 <div class="form-group">
-                                  <input
-                                    type="password"
-                                    class="form-control"
-                                    placeholder="Mot de passe"
-                                    id="signupPassword"
-                                    v-model="user.password"
-                                    name="password"
-                                    :class="{
-                                      'is-invalid':
-                                        submitted && errors.length > 0
-                                    }"
-                                  />
-                                  <span
-                                    v-if="errors.length > 0"
-                                    class="invalid-feedback d-block"
-                                    >{{ errors[0] }}</span
+                                  <ValidationProvider
+                                    rules="required"
+                                    name="last_name"
+                                    v-slot="{ errors }"
                                   >
+                                    <input
+                                      type="text"
+                                      class="form-control"
+                                      placeholder="Nom"
+                                      id="last_name"
+                                      v-model="user.last_name"
+                                      name="last_name"
+                                      :class="{
+                                        'is-invalid':
+                                          submitted && errors.length > 0,
+                                      }"
+                                    />
+                                  </ValidationProvider>
                                 </div>
-                              </ValidationProvider>
-
-                              <ValidationProvider
-                                name="confirmation"
-                                rules="required"
-                                v-slot="{ errors }"
-                              >
+                              </b-col>
+                              <b-col>
                                 <div class="form-group">
-                                  <input
-                                    v-model="user.confirm"
-                                    class="form-control"
-                                    id="signupPassConfirmation"
-                                    placeholder="Confirmer mot de passe"
-                                    type="password"
-                                  />
-                                  <span>{{ errors[0] }}</span>
+                                  <ValidationProvider
+                                    rules="required"
+                                    name="first_name"
+                                    v-slot="{ errors }"
+                                  >
+                                    <input
+                                      type="text"
+                                      class="form-control"
+                                      placeholder="Prénoms"
+                                      id="first_name"
+                                      v-model="user.first_name"
+                                      name="first_name"
+                                      :class="{
+                                        'is-invalid':
+                                          submitted && errors.length > 0,
+                                      }"
+                                    />
+                                  </ValidationProvider>
                                 </div>
-                              </ValidationProvider>
-                            </ValidationObserver>
+                              </b-col>
+                            </b-row>
+                            <b-row>
+                              <b-col>
+                               
+                                <div class="form-group">
+                                  <ValidationProvider
+                                    rules="required"
+                                    name="phone_number"
+                                    v-slot="{ errors }"
+                                  >
+                                   <div class="tenancia-country-code">
+                                     <vue-country-code
+                                @onSelect="onSelect"
+                                :preferredCountries="onlyCountries"
+                              >
+                              </vue-country-code>
+                                    <input
+                                      type="text"
+                                      class="form-control"
+                                      placeholder="Téléphone"
+                                      id="phone_number"
+                                      v-model="user.phone_number"
+                                      name="phone_number"
+                                      :class="{
+                                        'is-invalid':
+                                          submitted && errors.length > 0,
+                                      }"
+                                    />
+                                   </div>
+                                  </ValidationProvider>
+                                </div>
+                              </b-col>
+                            </b-row>
+                            <b-row>
+                              <b-col>
+                                <div class="form-group">
+                                  <ValidationProvider
+                                    rules="required|email"
+                                    name="Email"
+                                    v-slot="{ errors }"
+                                  >
+                                    <input
+                                      type="email"
+                                      class="form-control"
+                                      placeholder="Email"
+                                      id="registering_email"
+                                      v-model="user.email"
+                                      name="email"
+                                      :class="{
+                                        'is-invalid':
+                                          submitted && errors.length > 0,
+                                      }"
+                                    />
+                                    <span
+                                      v-if="errors.length > 0"
+                                      class="invalid-feedback d-block"
+                                      >{{ errors[0] }}</span
+                                    >
+                                  </ValidationProvider>
+                                </div>
+                              </b-col>
+                            </b-row>
+
+                            <b-row>
+                              <b-col>
+                                <ValidationObserver>
+                                  <ValidationProvider
+                                    rules="required|password:confirmation"
+                                    v-slot="{ errors }"
+                                    name="password"
+                                  >
+                                    <div class="form-group">
+                                      <input
+                                        type="password"
+                                        class="form-control"
+                                        placeholder="Mot de passe"
+                                        id="signupPassword"
+                                        v-model="user.password"
+                                        name="password"
+                                        :class="{
+                                          'is-invalid':
+                                            submitted && errors.length > 0,
+                                        }"
+                                      />
+                                      <span
+                                        v-if="errors.length > 0"
+                                        class="invalid-feedback d-block"
+                                        >{{ errors[0] }}</span
+                                      >
+                                    </div>
+                                  </ValidationProvider>
+
+                                  <ValidationProvider
+                                    name="confirmation"
+                                    rules="required"
+                                    v-slot="{ errors }"
+                                  >
+                                    <div class="form-group">
+                                      <input
+                                        v-model="user.confirm"
+                                        class="form-control"
+                                        id="signupPassConfirmation"
+                                        placeholder="Confirmer mot de passe"
+                                        type="password"
+                                      />
+                                      <span>{{ errors[0] }}</span>
+                                    </div>
+                                  </ValidationProvider>
+                                </ValidationObserver>
+                              </b-col>
+                            </b-row>
 
                             <div
-                              class="custom-control custom-control-alternative custom-checkbox"
+                              class="
+                                custom-control
+                                custom-control-alternative
+                                custom-checkbox
+                              "
                             >
-                               <input
-                                  class="custom-control-input"
-                                  id="cgu"
-                                  type="checkbox"
-                                />
-                                <label
-                                  class="custom-control-label"
-                                  for="cgu"
-                                >
+                              <input
+                                class="custom-control-input"
+                                id="cgu"
+                                type="checkbox"
+                              />
+                              <label class="custom-control-label" for="cgu">
                                 <span
                                   >En <strong>cochant,</strong> j'accepte les
                                   <a href="#">
@@ -360,7 +438,6 @@
                           </div>
                         </form>
                       </b-tab>
-
                     </b-tabs>
                   </div>
                 </div>
@@ -376,28 +453,32 @@
 
 <script>
 // import GoogleLogin from 'vue-google-login'
-import { mapState, mapGetters, mapActions, mapMutations } from 'vuex'
-import { library } from '@fortawesome/fontawesome-svg-core'
+import { mapState, mapGetters, mapActions, mapMutations } from "vuex";
+import { library } from "@fortawesome/fontawesome-svg-core";
 import {
   faQuestionCircle,
   faArrowLeft,
   faAmbulance,
   faEnvelope,
   faUnlockAlt,
-  faHeadset
-} from '@fortawesome/free-solid-svg-icons'
+  faHeadset,
+} from "@fortawesome/free-solid-svg-icons";
 import {
   faTwitter,
   faGooglePlus,
   faFacebook,
   faInstagram,
-  faGoogle
-} from '@fortawesome/free-brands-svg-icons'
-import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
-import { ValidationObserver, ValidationProvider, setInteractionMode } from 'vee-validate'
-import './register-validation'
-import { alert } from '@/components/shared/'
+  faGoogle,
+} from "@fortawesome/free-brands-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
+import {
+  ValidationObserver,
+  ValidationProvider,
+  setInteractionMode,
+} from "vee-validate";
 
+import { alert } from "@/components/shared/";
+import "./register-validation";
 
 library.add(
   faQuestionCircle,
@@ -411,137 +492,158 @@ library.add(
   faUnlockAlt,
   faGoogle,
   faHeadset
-)
-setInteractionMode('lazy')
+);
+setInteractionMode("lazy");
 export default {
-  name: 'Register',
+  name: "Register",
   components: {
-    'font-awesome-icon': FontAwesomeIcon,
+    "font-awesome-icon": FontAwesomeIcon,
     ValidationObserver,
     ValidationProvider,
     // GoogleLogin,
-    alert
+    alert,
   },
-  data () {
+  data() {
     return {
       params: {
-        client_id: '185957473371-5fp3ntcah051m746ssq71c7raqsif2fl.apps.googleusercontent.com'
+        client_id:
+          "185957473371-5fp3ntcah051m746ssq71c7raqsif2fl.apps.googleusercontent.com",
+      },
+      phone: {
+                country: "",
+        dial_code: "",
       },
       user: {
-        first_name: '',
-        last_name: '',
-        email: '',
-        password: ''
+        first_name: "",
+        last_name: "",
+        email: "",
+        password: "",
+        phone_number: "",
       },
+            onlyCountries: ['BJ', 'TG', 'CI', 'NE', 'NG', 'CM', 'BF', 'ML', 'FR'],
       credential: {
-        email: '',
-        password: ''
+        email: "",
+        password: "",
       },
       submitted: false,
-      selected_tab_name: 'register'
-    }
+      selected_tab_name: "register",
+    };
   },
   
   computed: {
     ...mapState({
-      error: state => state.alert.message,
-      errorOccured: state => state.auth.status.errorOccured,
-      errorMsg: state => state.auth.errors
+      error: (state) => state.alert.message,
+      errorOccured: (state) => state.auth.status.errorOccured,
+      errorMsg: (state) => state.auth.errors,
     }),
-    ...mapGetters('user', ['getProfiles'])
-
+    ...mapGetters("user", ["getProfiles"]),
   },
   created: function () {
     // const actveTab = this.$route.params.c_type
     // this.selected_tab_name = actveTab
   },
   methods: {
-    ...mapActions('auth', [
-      'register',
-      'loginAccount',
-      'activedUserAccount',
-      'googleExchangeToken',
-      'getBackendResponse',
-      'googleLoginFailure'
+    ...mapActions("auth", [
+      "register",
+      "loginAccount",
+      "activedUserAccount",
+      "googleExchangeToken",
+      "getBackendResponse",
+      "googleLoginFailure",
     ]),
-    ...mapActions('user', [
-      'myProfiles'
-    ]),
-    ...mapMutations('auth', {
-      signupError: 'LOCAL_SIGNUP_FAILURE',
-      setUser: 'USER'
+    ...mapActions("user", ["myProfiles"]),
+    ...mapMutations("auth", {
+      signupError: "LOCAL_SIGNUP_FAILURE",
+      setUser: "USER",
     }),
     //   ...mapMutations('user', {
     //   setProfiles: 'PROFILES',
     // }),
-    makeToast (msg, variant) {
+    makeToast(msg, variant) {
       this.$toast.open({
         message: msg,
         type: variant,
         duration: 3000,
         dismissible: true,
         queue: false,
-        position: 'top-right'
-      })
+        position: "top-right",
+      });
     },
+    onSelect({name, iso2, dialCode}) {
+    this.phone.country= iso2
+    this.phone.dial_code= dialCode
+     console.log(name, iso2, dialCode);
+   },
 
-    async localSignup (e) {
-      this.submitted = true
-      await this.register(this.user)
-        .then(res => {
-          console.log('res', res.data)
-          this.setUser(res.data)
-          this.$router.push({ name: 'activation-mail-sent' })
+    async localSignup(e) {
+      this.submitted = true;
+      await this.register({...this.user, phone_number:`${this.phone.dial_code} ${this.user.phone_number}`, country: this.phone.country})
+        .then((res) => {
+          console.log("res", res.data);
+          this.setUser(res.data);
+          this.$router.push({ name: "activation-mail-sent" });
         })
-        .catch(err => {
-          this.signupError('Une erreur est survenue lors de la création de votre compte')
+        .catch((err) => {
+          this.signupError(
+            "Une erreur est survenue lors de la création de votre compte"
+          );
           // this.$store.commit('AUTH/LOCAL_SIGNUP_FAILURE', 'Une erreur est survenue lors de la création de votre compte')
-          console.log('err', err.response)
-        })
+          console.log("err", err.response);
+        });
     },
 
-    async handleLogin (e) {
-      this.submitted = true
+    async handleLogin(e) {
+      this.submitted = true;
       await this.loginAccount(this.credential)
-        .then(res => {
-          this.myProfiles().then(userProfiles => {
-            this.$router.push({ name: 'Home' })
-          }
-          ).catch(error => {
-            console.log(error, 'Une erreur est survenue lors de la récupération de vos profiles')
-          })
+        .then((res) => {
+          this.myProfiles()
+            .then((userProfiles) => {
+              this.$router.push({ name: "Home" });
+            })
+            .catch((error) => {
+              console.log(
+                error,
+                "Une erreur est survenue lors de la récupération de vos profiles"
+              );
+            });
         })
-        .catch(error => {
-          console.log('handleLogin', error)
-          this.makeToast('Une erreur est survenue', 'danger')
-        })
+        .catch((error) => {
+          console.log("handleLogin", error);
+          this.makeToast("Une erreur est survenue", "danger");
+        });
     },
-    googleConnect () {
-      this.getBackendResponse(this)
+    googleConnect() {
+      this.getBackendResponse(this);
     },
-    onSuccess () {
-      console.log('Authentification réussie')
+    onSuccess() {
+      console.log("Authentification réussie");
     },
-    onFailure () {
-      console.log('Authentification échouée')
+    onFailure() {
+      console.log("Authentification échouée");
     },
-    async googleSignIn () {
+    async googleSignIn() {
       try {
-        await this.$gAuth.signIn()
-        const authResponse = this.$gAuth.GoogleAuth.currentUser.get().getAuthResponse()
-        this.isSignIn = this.$gAuth.isAuthorized
-        let googleToken = { access_token: authResponse.access_token, redirectUri: 'http://localhost:8080/register' }
-        await this.googleExchangeToken(googleToken).then(res => {
-          console.log('googleSignIn: ', res)
-          this.$router.push({ name: 'MyProfiles' })
-        })
+        await this.$gAuth.signIn();
+        const authResponse = this.$gAuth.GoogleAuth.currentUser
+          .get()
+          .getAuthResponse();
+        this.isSignIn = this.$gAuth.isAuthorized;
+        let googleToken = {
+          access_token: authResponse.access_token,
+          redirectUri: "http://localhost:8080/register",
+        };
+        await this.googleExchangeToken(googleToken).then((res) => {
+          console.log("googleSignIn: ", res);
+          this.$router.push({ name: "MyProfiles" });
+        });
       } catch (error) {
-        console.log('googleSignIn error:', error)
+        console.log("googleSignIn error:", error);
       }
-    }
-  }
-}
+    },
+  },
+};
 </script>
 <style lang="scss">
-@import "@/assets/bamburgh.scss"
- </style>
+
+@import "@/assets/bamburgh.scss";
+</style>

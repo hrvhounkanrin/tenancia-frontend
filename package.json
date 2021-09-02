@@ -40,6 +40,7 @@
     "vue": "^2.6.10",
     "vue-apexcharts": "^1.4.0",
     "vue-bootstrap-typeahead": "^0.2.6",
+    "vue-country-code": "^1.1.2",
     "vue-country-code-select": "^1.6.7",
     "vue-feather-icons": "^4.22.0",
     "vue-full-calendar": "^2.7.0",

@@ -119,13 +119,27 @@
                   v-if="errors.phone_numberMsg"
                   >{{ errors.phone_numberMsg }}</span
                 >
-                <vue-phone-number-input
+                <!-- <vue-phone-number-input
                   id="phone_number"
                   default-country-code="BJ"
                   :translations="translations"
                   :only-countries="onlyCountries"
                   v-model="realEstate.num_telephone"
-                />
+                /> -->
+                   <div class="tenancia-country-code">
+                  <vue-country-code
+                    @onSelect="onSelect"
+                    :preferredCountries="onlyCountries"
+                  >
+                  </vue-country-code>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="num_telephone"
+                    v-model="realEstate.num_telephone"
+                    name="num_telephone"
+                  />
+                </div>
               </b-form-group>
             </div>
 
@@ -240,6 +254,10 @@ export default {
         phoneNumberLabel: "Numéro de téléphone",
         example: "Exemple :",
       },
+       phone: {
+        country: "",
+        dial_code: "",
+      },
       onlyCountries: ["BJ", "TG", "CI", "NE", "NG", "CM", "BF", "ML", "FR"],
       countries: [],
       //End  vue-phone-number-input config
@@ -283,6 +301,10 @@ export default {
   },
   methods: {
     ...mapActions("user", ["createUserProfil", "updateUserProfil"]),
+    onSelect({ name, iso2, dialCode }) {
+      this.phone.country = iso2;
+      this.phone.dial_code = dialCode;
+    },
     formatDelivranceDate(dte) {
       return moment(dte).format("DD/MM/YYYY").toString();
     },
@@ -294,6 +316,7 @@ export default {
       if (this.getProfiles && this.getProfiles.real_estate) {
         this.realEstate = {
           ...this.getProfiles.real_estate,
+          num_telephone: this.getProfiles.real_estate.num_telephone.split(' ')[1],
           profile_type: "real_estate",
         };
       }
@@ -334,7 +357,7 @@ export default {
           .format("YYYY-MM-DD")
           .toString();
         console.log(this.realEstate, "REAL");
-        await this.updateUserProfil(this.realEstate)
+        await this.updateUserProfil({...this.realEstate,num_telephone:`${this.phone.dial_code} ${this.realEstate.num_telephone}`, country: this.phone.country})
           .then((res) => this.onRealEstateActionSucess(res))
           .catch((err) => this.onRealEstateActionFailure(err));
       } else {
@@ -343,7 +366,7 @@ export default {
         )
           .format("YYYY-MM-DD")
           .toString();
-        await this.createUserProfil(this.realEstate)
+        await this.createUserProfil({...this.realEstate,num_telephone:`${this.phone.dial_code} ${this.realEstate.num_telephone}`, country: this.phone.country})
           .then((res) => this.onRealEstateActionSucess(res))
           .catch((err) => this.onRealEstateActionFailure(err));
       }
