@@ -113,13 +113,27 @@
                   class="invalid-feedback d-block"
                   v-if="errors.ice_numberMsg"
                 >{{errors.ice_numberMsg}}</span>
-                <vue-phone-number-input
+                <!-- <vue-phone-number-input
                   id="ice_number"
                   default-country-code="BJ"
                   :translations="translations"
                   v-model="lessor.phone_number"
                   :only-countries="onlyCountries"
-                />
+                /> -->
+                <div class="tenancia-country-code">
+                  <vue-country-code
+                    @onSelect="onSelect"
+                    :preferredCountries="onlyCountries"
+                  >
+                  </vue-country-code>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="ice_number"
+                    v-model="lessor.phone_number"
+                    name="ice_number"
+                  />
+                </div>
               </b-form-group>
             </div>
 
@@ -216,6 +230,10 @@ export default {
       countries: [],
       //End  vue-phone-number-input config
       editingLessor: false,
+         phone: {
+        country: "",
+        dial_code: "",
+      },
       errors: {},
       lessor: {
         id: null,
@@ -239,11 +257,16 @@ export default {
   },
   methods: {
     ...mapActions('user', ['createUserProfil', 'updateUserProfil']),
-
+    onSelect({ name, iso2, dialCode }) {
+      this.phone.country = iso2;
+      this.phone.dial_code = dialCode;
+    },
     editLessor(e) {
       this.editingLessor = true;
       if (this.getProfiles && this.getProfiles.lessor) {
-        this.lessor = {...this.getProfiles.lessor, profile_type: 'lessor',};
+        this.lessor = {...this.getProfiles.lessor,
+        phone_number: this.getProfiles.lessor.phone_number.split(' ')[1],
+         profile_type: 'lessor',};
         this.lessor.banque_id = this.getProfiles.lessor.banque.id;
         console.log(
           "res",
@@ -300,7 +323,8 @@ export default {
       }
 
       if (this.lessor.id && this.lessor.id > 0) {
-        await this.updateUserProfil({ ...this.lessor, user_id: this.user.id,  profile_type: 'lessor' })
+        await this.updateUserProfil({ ...this.lessor, user_id: this.user.id,  profile_type: 'lessor',phone_number:`${this.phone.dial_code} ${this.lessor.phone_number}`, 
+          country: this.phone.country })
           .then(res => this.onLessorActionSucess(res))
           .catch(err => this.onLessorActionFailure(err));
       } else {
@@ -310,10 +334,12 @@ export default {
           mode_paiement: this.lessor.mode_paiement,
           numcompte: this.lessor.numcompte,
           numero_ifu: this.lessor.numero_ifu,
-          phone_number: this.lessor.phone_number,
+          // phone_number: this.lessor.phone_number,
           pays_residence: this.lessor.pays_residence,
           user_id: this.user.id,
-          profile_type:"lessor"
+          profile_type:"lessor",
+          phone_number:`${this.phone.dial_code} ${this.lessor.phone_number}`, 
+          country: this.phone.country
         })
           .then(res => this.onLessorActionSucess(res))
           .catch(err => this.onLessorActionFailure(err));

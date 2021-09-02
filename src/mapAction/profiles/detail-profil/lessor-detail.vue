@@ -215,6 +215,10 @@ export default {
       countries: [],
       // End  vue-phone-number-input config
       editingLessor: false,
+      phone: {
+        country: "",
+        dial_code: "",
+      },
       errors: {},
       lessor: {
         id: null,
@@ -238,7 +242,11 @@ export default {
   },
   methods: {
     ...mapActions('user', ['createUserProfil', 'updateUserProfil']),
-
+ onSelect({name, iso2, dialCode}) {
+    this.phone.country= iso2
+    this.phone.dial_code= dialCode
+     console.log(name, iso2, dialCode);
+   },
     editLessor (e) {
       this.editingLessor = true
       if (this.getProfiles && this.getProfiles.lessor) {

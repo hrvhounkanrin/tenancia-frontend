@@ -228,6 +228,10 @@ export default {
         { age: 21, first_name: 'Larsen', last_name: 'Shaw' },
         { age: 89, first_name: 'Geneva', last_name: 'Wilson' }
       ],
+      phone: {
+                country: "",
+        dial_code: "",
+      },
       striped: false,
       bordered: true,
       borderless: false,
@@ -261,7 +265,11 @@ export default {
   },
   methods: {
     ...mapActions('user', ['createUserProfil', 'updateUserProfil']),
-
+ onSelect({name, iso2, dialCode}) {
+    this.phone.country= iso2
+    this.phone.dial_code= dialCode
+     console.log(name, iso2, dialCode);
+   },
     customFormatter () {
       return moment(this.realEstate.date_delivrance).format('L').toString()
     },

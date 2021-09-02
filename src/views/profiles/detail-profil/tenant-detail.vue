@@ -24,12 +24,18 @@
           @click="editTenant"
           title="Editer mon profil locataire"
         >
-                   <span>{{(getProfiles && !getProfiles.tenant) ? 'Créer mon profil' : 'Modifier mon profil' }}</span>
-
+          <span>{{
+            getProfiles && !getProfiles.tenant
+              ? "Créer mon profil"
+              : "Modifier mon profil"
+          }}</span>
         </a>
       </div>
     </div>
-    <div class="card card-box mb-5" v-if="getProfiles && getProfiles.tenant && !editingTenant">
+    <div
+      class="card card-box mb-5"
+      v-if="getProfiles && getProfiles.tenant && !editingTenant"
+    >
       <div class="card-indicator bg-success"></div>
       <div class="card-body px-4 py-3">
         <div class="d-flex align-items-left justify-content-start">
@@ -118,13 +124,27 @@
                   v-if="errors.phone_numberMsg"
                   >{{ errors.phone_numberMsg }}</span
                 >
-                <vue-phone-number-input
+                <div class="tenancia-country-code">
+                  <vue-country-code
+                    @onSelect="onSelect"
+                    :preferredCountries="onlyCountries"
+                  >
+                  </vue-country-code>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="ice_number"
+                    v-model="tenant.phone_number"
+                    name="ice_number"
+                  />
+                </div>
+                <!-- <vue-phone-number-input
                   id="phone_number"
                   default-country-code="BJ"
                   :translations="translations"
                   :only-countries="onlyCountries"
                   v-model="tenant.phone_number"
-                />
+                /> -->
               </b-form-group>
             </div>
             <div class="col-md-12 mb-12">
@@ -175,13 +195,27 @@
                   v-if="errors.ice_numberMsg"
                   >{{ errors.ice_numberMsg }}</span
                 >
-                <vue-phone-number-input
+                <!-- <vue-phone-number-input
                   id="ice_number"
                   default-country-code="BJ"
                   :translations="translations"
                   :only-countries="onlyCountries"
                   v-model="tenant.ice_number"
-                />
+                /> -->
+                <div class="tenancia-country-code">
+                  <vue-country-code
+                    @onSelect="onSelectIce"
+                    :preferredCountries="onlyCountries"
+                  >
+                  </vue-country-code>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="ice_number"
+                    v-model="tenant.ice_number"
+                    name="ice_number"
+                  />
+                </div>
               </b-form-group>
             </div>
             <div class="col-md-12 mb-12">
@@ -220,17 +254,16 @@
             </div>
           </div>
 
-           <div style="display:flex; flex-direction:row;"> 
-          
-          <a
-            href="javascript:void(0);"
-            class="btn-block btn btn-danger m-1"
-            title="Save Lessor"
-            @click="editingTenant = false"
-          >
-            <span>Annuler</span>
-          </a>
-           <a
+          <div style="display: flex; flex-direction: row">
+            <a
+              href="javascript:void(0);"
+              class="btn-block btn btn-danger m-1"
+              title="Save Lessor"
+              @click="editingTenant = false"
+            >
+              <span>Annuler</span>
+            </a>
+            <a
               href="javascript:void(0);"
               class="btn-block btn btn-primary m-1"
               title="Save Tenant"
@@ -285,6 +318,14 @@ export default {
       //End  vue-phone-number-input config
       editingTenant: false,
       errors: {},
+      phone: {
+        country: "",
+        dial_code: "",
+      },
+      ice_phone: {
+        country: "",
+        dial_code: "",
+      },
       tenant: {
         id: null,
         profession: null,
@@ -293,7 +334,7 @@ export default {
         ice_relation: null,
         phone_number: null,
         numero_ifu: null,
-        profile_type: 'tenant',
+        profile_type: "tenant",
       },
     };
   },
@@ -308,10 +349,20 @@ export default {
     editTenant(e) {
       this.editingTenant = true;
       if (this.getProfiles && this.getProfiles.tenant) {
-        this.tenant = {...this.getProfiles.tenant, profile_type: 'tenant',};
+        this.tenant = { ...this.getProfiles.tenant, 
+                phone_number: this.getProfiles.tenant.phone_number.split(' ')[1],
+                ice_number: this.getProfiles.tenant.ice_number.split(' ')[1],
+profile_type: "tenant" };
       }
     },
-
+    onSelectIce({ name, iso2, dialCode }) {
+      this.ice_phone.country = iso2;
+      this.ice_phone.dial_code = dialCode;
+    },
+    onSelect({ name, iso2, dialCode }) {
+      this.phone.country = iso2;
+      this.phone.dial_code = dialCode;
+    },
     onTenantActionSucess(res) {
       // let tenant = res.payload;
       // let profiles = {
@@ -322,12 +373,11 @@ export default {
 
       // this.setProfiles(profiles);
       // this.$forceUpdate();
-            this.editingTenant = false;
-
+      this.editingTenant = false;
     },
     onTenantActionFailure(err) {
       this.errors.tenantMsg = err.response.data.message;
-            this.editingTenant = true;
+      this.editingTenant = true;
     },
 
     async saveTenant() {
@@ -359,11 +409,16 @@ export default {
       }
 
       if (this.tenant.id && this.tenant.id > 0) {
-        await this.updateUserProfil({...this.tenant, profile_type: 'tenant'})
+        await this.updateUserProfil({ ...this.tenant,
+                  phone_number:`${this.phone.dial_code} ${this.tenant.phone_number}`, 
+                  ice_number:`${this.ice_phone.dial_code} ${this.tenant.ice_number}`, 
+ profile_type: "tenant" })
           .then((res) => this.onTenantActionSucess(res))
           .catch((err) => this.onTenantActionFailure(err));
       } else {
-        await this.createUserProfil(this.tenant)
+        await this.createUserProfil({...this.tenant,                  phone_number:`${this.phone.dial_code} ${this.tenant.phone_number}`, 
+                  ice_number:`${this.ice_phone.dial_code} ${this.tenant.ice_number}`, 
+})
           .then((res) => this.onTenantActionSucess(res))
           .catch((err) => this.onTenantActionFailure(err));
       }
