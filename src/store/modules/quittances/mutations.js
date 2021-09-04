@@ -5,6 +5,7 @@ import {
 export default {
   [LESSOR_QUITTANCES] (state, quittances) {
     state.lessorQuittances = quittances
+    console.log('LESSOR_QUITTANCES:', state.lessorQuittances)
   },
   [TENANT_QUITTANCES] (state, quittances) {
     state.tenantQuittances = quittances

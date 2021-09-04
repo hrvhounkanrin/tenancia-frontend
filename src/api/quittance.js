@@ -12,7 +12,7 @@ export default class Quittance {
     return await this.$serveur.getRequest(
       {
         body: bodyParams,
-        link: 'quittance_action/get_quittances'
+        link: 'quittance_action/get_lessor_quittances'
       }
     )
   }
@@ -21,7 +21,7 @@ export default class Quittance {
     return await this.$serveur.getRequest(
       {
         body: bodyParams,
-        link: 'quittance_action/get_client_quittances'
+        link: 'quittance_action/get_tenant_quittances'
       }
     )
   }

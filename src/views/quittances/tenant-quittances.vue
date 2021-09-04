@@ -2,7 +2,7 @@
   <div>
     <PageTitle
       heading="Mes quittances"
-      subheading="Liste de vos quittances"
+      subheading="Liste de vos quittances(Vue locataire)"
     />
     <div class="row">
               <div class="col-lg-12 col-md-12 col-sm-8 offset-sm-2 col-xl-8 offset-xl-2">
