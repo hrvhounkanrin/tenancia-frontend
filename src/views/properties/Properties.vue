@@ -189,7 +189,7 @@
             <div class="card-header--actions">
               <b-button variant="primary" @click="addImmeuble">
                 <font-awesome-icon icon="plus" class="mr-2" />
-                Ajouter une entité
+                Ajouter un immeuble
               </b-button>
             </div>
           </div>
@@ -231,7 +231,7 @@
           <div class="card-header bg-light">
             <div class="card-header--title">
               <small>Inventaires</small>
-              <b>Appartements & Chambres</b>
+              <b>Appartements & Chambres {{selectedImmeuble.ref_immeuble != null ?selectedImmeuble.ref_immeuble : '' }} </b>
             </div>
             <div class="card-header--actions">
               <b-button variant="primary" @click="addAppartement">

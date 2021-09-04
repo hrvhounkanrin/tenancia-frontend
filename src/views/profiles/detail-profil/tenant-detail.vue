@@ -253,8 +253,24 @@
               <span class="d-block">ECU: En cas d'urgence</span>
             </div>
           </div>
+  <div class="row">
 
-          <div style="display: flex; flex-direction: row">
+            <b-button class="col mt-2 mb-2 ml-3 mr-3" variant="danger" @click="editingTenant = false">
+              Annuler
+            </b-button>
+            <b-button class="col mt-2 mb-2 ml-2 mr-3" variant="primary" @click="saveTenant">
+              <!-- <font-awesome-icon icon="save" class="mr-2" /> -->
+              {{ tenant.id && tenant.id > 0 ? "Enregistrer" : "Créer" }}
+              <span
+                v-if="loadingSaveTenant"
+                class="spinner-border spinner-border-sm"
+                role="status"
+                aria-hidden="true"
+              ></span>
+            </b-button>
+
+          </div>
+          <!-- <div style="display: flex; flex-direction: row">
             <a
               href="javascript:void(0);"
               class="btn-block btn btn-danger m-1"
@@ -273,7 +289,7 @@
                 tenant.id && tenant.id > 0 ? "Enregistrer" : "Créer"
               }}</span>
             </a>
-          </div>
+          </div> -->
         </form>
       </div>
     </div>
@@ -326,6 +342,7 @@ export default {
         country: "",
         dial_code: "",
       },
+      loadingSaveTenant:false,
       tenant: {
         id: null,
         profession: null,
@@ -381,6 +398,8 @@ profile_type: "tenant" };
     },
 
     async saveTenant() {
+      
+      this.loadingSaveTenant = true;
       this.errors = {};
       this.errors.phone_numberMsg = !this.tenant.phone_number
         ? "Veuillez renseigner votre n° téléphone"
@@ -422,6 +441,8 @@ profile_type: "tenant" };
           .then((res) => this.onTenantActionSucess(res))
           .catch((err) => this.onTenantActionFailure(err));
       }
+                        this.loadingSaveTenant = false;
+
     },
   },
 };

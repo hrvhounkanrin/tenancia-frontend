@@ -19,7 +19,12 @@
             </div>
             <div slot="modal-footer">
                 <b-button variant="warning"  @click="$emit('hide-modal')" class="mr-1">Annuler</b-button>
-                <b-button variant="first" class="ml-auto" @click="$emit('save-data')">Enregistrer</b-button>
+                <b-button variant="first" class="ml-auto" @click="onSave">Enregistrer   <span
+                v-if="loadingSave"
+                class="spinner-border spinner-border-sm"
+                role="status"
+                aria-hidden="true"
+              ></span></b-button>
             </div>
         </b-modal>
 </template>
@@ -46,6 +51,11 @@ export default {
   components: {
     'font-awesome-icon': FontAwesomeIcon
   },
+  data() {
+    return {
+      loadingSave: false
+    }
+  },
   computed: {
     structures: () => {
       return []
@@ -53,6 +63,14 @@ export default {
   },
   mounted () {
     // console.log(this.dependances)
+  },
+  methods: {
+    onSave() {
+      this.loadingSave = true;
+      this.$emit('save-data')
+            this.loadingSave = false;
+
+    }
   },
   props: {
     id: String,
