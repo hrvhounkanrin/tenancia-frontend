@@ -1,9 +1,7 @@
 <template>
     <div>
         <PageTitle heading="Mes contrats de bail" subheading="Liste des contrats dans votre portefeuille"/>
-        <div>
-            <!--<contract-dashboard></contract-dashboard>-->
-        </div>
+        <search-contrat></search-contrat>
         <div class="row">
             <div :class="mainTableStyle">
                     <div class="card card-box mb-5">
@@ -138,12 +136,14 @@ import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import { fas } from '@fortawesome/free-solid-svg-icons'
 import ContractDetail from './contract-detail.vue'
 import ContractDashboard from './contract-dashboard.vue'
+import SearchContrat from './search-contrat.vue'
 library.add(fas)
 export default {
   components: {
     'font-awesome-icon': FontAwesomeIcon,
     'contract-detail': ContractDetail,
-    'contract-dashboard': ContractDashboard
+    'contract-dashboard': ContractDashboard,
+    'search-contrat': SearchContrat,
   },
   data: function () {
     return {
