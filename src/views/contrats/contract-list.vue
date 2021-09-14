@@ -1,7 +1,7 @@
 <template>
     <div>
         <PageTitle heading="Mes contrats de bail" subheading="Liste des contrats dans votre portefeuille"/>
-        <search-contrat></search-contrat>
+        <search-contrat :immeubles="immeubles" @search-contrat="searchContract"></search-contrat>
         <div class="row">
             <div :class="mainTableStyle">
                     <div class="card card-box mb-5">
@@ -137,6 +137,7 @@ import { fas } from '@fortawesome/free-solid-svg-icons'
 import ContractDetail from './contract-detail.vue'
 import ContractDashboard from './contract-dashboard.vue'
 import SearchContrat from './search-contrat.vue'
+import utils from '@/utils/index'
 library.add(fas)
 export default {
   components: {
@@ -169,7 +170,12 @@ export default {
     this.$store.dispatch('contrats/getContrats')
   },
   mounted () {
-   
+      
+  },
+  watch: {
+      immeubles: function(oldVal, newVal){
+          console.log('immeubles:', newVal)
+      }
   },
   methods: {
     ...mapActions('contrats', ['createContrat', 'searchTenantsByEmail', 'getFreeAppartment']),
@@ -226,6 +232,62 @@ export default {
         this.faStyle = styleObject.faStyle
         this.cardBorder = styleObject.border
         console.log('this.selectedContrat: ', this.activeContrat)
+    },
+    prepareQueryModel: function(queryModel){
+        Object.keys(queryModel).forEach(k => (!queryModel[k] && queryModel[k] !== undefined) && delete queryModel[k])
+        if(queryModel['montant_loyer_start']==0){
+            delete queryModel['montant_loyer_start']
+        }
+        if(queryModel['montant_loyer_end']==0){
+            delete queryModel['montant_loyer_end']
+        }
+        if(queryModel['date_effet_start'] && queryModel['date_effet_end']){
+            queryModel['date_effet'] = [queryModel['date_effet_start'], queryModel['date_effet_end']]
+            
+        }
+        if(queryModel['date_effet_start'] && !queryModel['date_effet_end']){
+            queryModel['date_effet'] = [queryModel['date_effet_start']]
+        }
+        if(!queryModel['date_effet_start'] && queryModel['date_effet_end']){
+            queryModel['date_effet'] = [queryModel['date_effet_end']]
+        }
+        
+        if(queryModel['prochaine_echeance_start'] && queryModel['prochaine_echeance_end']){
+            queryModel['prochaine_echeance'] = [queryModel['prochaine_echeance_start'], queryModel['prochaine_echeance_end']]
+            
+        }
+        if(queryModel['prochaine_echeance_start'] && !queryModel['prochaine_echeance_end']){
+            queryModel['prochaine_echeance'] = [queryModel['prochaine_echeance_start']]
+        }
+        if(!queryModel['prochaine_echeance_start'] && queryModel['prochaine_echeance_end']){
+            queryModel['prochaine_echeance'] = [queryModel['prochaine_echeance_end']]
+        }
+
+        if(queryModel['montant_loyer_start'] && queryModel['montant_loyer_end']){
+            queryModel['montant_bail'] = [utils.currencyToNumber(queryModel['montant_loyer_start']),
+             utils.currencyToNumber(queryModel['montant_loyer_end'])]
+            
+        }
+        if(queryModel['montant_loyer_start'] && !queryModel['montant_loyer_start']){
+            queryModel['montant_bail'] = [utils.currencyToNumber(queryModel['montant_loyer_start']) ]
+        }
+        if(!queryModel['montant_loyer_start'] && queryModel['montant_loyer_end']){
+            queryModel['montant_bail'] = [utils.currencyToNumber(queryModel['montant_loyer_end'])]
+        }
+        delete queryModel['date_effet_start']
+        delete queryModel['date_effet_end']
+        delete queryModel['prochaine_echeance_start']
+        delete queryModel['prochaine_echeance_end']
+        delete queryModel['montant_loyer_start']
+        delete queryModel['montant_loyer_end']
+        return queryModel
+    },
+    searchContract: function(queryModel){
+        
+        
+       
+        console.log('queryModel: ', queryModel)
+        this.$store.dispatch('contrats/getContrats', this.prepareQueryModel(queryModel))
     }
   }
 }

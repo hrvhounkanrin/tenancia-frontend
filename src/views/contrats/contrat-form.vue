@@ -37,7 +37,6 @@
                                         @input="searchTenants"
                                         @hit="selectedTenant = $event"
                                       >
-                                      <!-- :disabledValues="(selecteduser ? [selecteduser.login] : [])" -->
                                         <template slot="suggestion" slot-scope="{ data, htmlText }">
                                     
                                           <div class="align-box-row">
@@ -133,7 +132,7 @@
                                                 <span class="pr-1">{{selectedTenant.user.email}}</span>
                                             </div>
                                         </div>
-                                        <div class="ml-auto card-hover-indicator align-self-center" @click="removeAppartment">
+                                        <div class="ml-auto card-hover-indicator align-self-center" @click="removeTenant">
                                             <font-awesome-icon icon="trash" class="font-size-xl danger" style="color: red;"/>
                                         </div>
                                     </div>
@@ -161,7 +160,7 @@
                                                     <span class="pr-1">{{selectedAppartement.proprietaire }}</span>
                                                 </div>
                                             </div>
-                                            <div class="ml-auto card-hover-indicator align-self-center" @click="removeTenant">
+                                            <div class="ml-auto card-hover-indicator align-self-center" @click="removeAppartment">
                                                 <font-awesome-icon icon="trash" class="font-size-xl danger" style="color: red;"/>
                                             </div>
                                         </div>
@@ -290,10 +289,17 @@
 
                         </div>
                         <div class="ml-auto">
-                            <b-button variant="primary"  @click="saveContrat" >
-                                <font-awesome-icon icon="save" class="mr-2"/>
-                                Enregistrer
-                            </b-button>
+                          <router-link :to="{name: 'MyContracts'}">
+                          <b-button variant="warning" class="mr-1">
+                            <font-awesome-icon icon="undo" class="mr-2"/>
+                            ANNULER
+                          </b-button>
+                          </router-link>
+                         
+                          <b-button variant="primary"  @click="saveContrat" >
+                              
+                              ENREGISTRER
+                          </b-button>
                         </div>
                     </div>
                 </div>

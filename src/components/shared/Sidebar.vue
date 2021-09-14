@@ -73,28 +73,28 @@ export default {
           title: 'TENANCIA'
         },
         {
-          title: 'Mes biens',
+          title: 'Biens immobiliers',
           href: '/my-properties',
           icon: {
             element: 'home-icon'
           }
         },
         {
-          title: 'Mon portefeuille',
+          title: 'Portefeuille de contrats',
           href: '/my-portfolio',
           icon: {
             element: 'folder-icon'
           }
         },
         {
-          title: 'Mes contrats',
+          title: 'Contrats de bail',
           href: '/my-contracts',
           icon: {
             element: 'file-text-icon'
           }
         },
         {
-          title: 'Mes quittances',
+          title: 'Quittances de bail',
           href: 'tenant-quittances',
           icon: {
             element: 'clipboard-icon'
@@ -111,7 +111,20 @@ export default {
           title: 'Services plus',
           icon: {
             element: 'plus-icon'
-          }
+          },
+           child: [
+                {
+                    href: '#',
+                    title: 'Réparations locatives',
+                },
+                {
+                    href: '#',
+                    title: 'Déclarations fiscales',
+                    class: 'pr-2',
+                 
+                },
+
+            ]
         },
         {
           title: 'Paramètres',
