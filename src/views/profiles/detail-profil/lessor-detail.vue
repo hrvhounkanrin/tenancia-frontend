@@ -135,8 +135,8 @@
                 :options="countries"
               ></b-form-select>
             </div>
-            <div class="col-md-12 mb-12">
-              <b-form-group label="TELEPHONE " label-for="ice_number">
+            <div class="col-md-12 mb-12 mt-3">
+              <b-form-group label="N° TELEPHONE" label-for="ice_number">
                 <span
                   class="invalid-feedback d-block"
                   v-if="errors.ice_numberMsg"
@@ -179,7 +179,7 @@
                 :options="modePaiementList"
               ></b-form-select>
             </div>
-            <div class="col-md-12 mb-12">
+            <div class="col-md-12 mb-12 mt-3">
               <b-form-group
                 label="BANQUE OU EME"
                 label-for="banque"
@@ -192,7 +192,7 @@
                 :options="banquesList"
               ></b-form-select>
             </div>
-            <div class="col-md-12 mb-12">
+            <div class="col-md-12 mb-12 mt-3">
               <b-form-group label="N° COMPTE" label-for="numero_compte">
                 <b-form-input
                   id="numero_compte"
@@ -305,6 +305,8 @@ export default {
     };
   },
   created: function () {
+    // console.log("user", this.getProfiles)
+    this.lessor.phone_number = this.getProfiles.phone_number.split(" ")[1]
     this.countries = mixin.methods.getAllCountry(this.onlyCountries);
   },
   computed: {

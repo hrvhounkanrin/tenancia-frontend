@@ -360,6 +360,10 @@ export default {
     ...mapGetters("auth", ["user"]),
     ...mapGetters("general", ["iceRelation"]),
   },
+    created: function () {
+    // console.log("user", this.getProfiles)
+    this.tenant.phone_number = this.getProfiles.phone_number.split(" ")[1]
+  },
   methods: {
     ...mapActions("user", ["createUserProfil", "updateUserProfil"]),
 

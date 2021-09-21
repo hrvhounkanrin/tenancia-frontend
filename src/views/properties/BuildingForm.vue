@@ -17,15 +17,23 @@
                     <slot name="left-img"><img src="@/assets/img/stock-photos/stock-1.jpg" class="rounded-rigth img-fit-container" alt="..."></slot>
                 </div>
             </div>
-            <div slot="modal-footer">
-                <b-button variant="warning"  @click="$emit('hide-modal')" class="mr-1">Annuler</b-button>
-                <b-button variant="first" class="ml-auto" @click="onSave">Enregistrer   <span
-                v-if="loadingSave"
+            <div class="row" slot="modal-footer">
+
+            <b-button class="col mt-2 mb-2 ml-3 mr-3" variant="warning" @click="$emit('hide-modal')">
+              Annuler
+            </b-button>
+            <b-button class="col mt-2 mb-2 ml-2 mr-3" variant="primary" @click="onSave">
+              <!-- <font-awesome-icon icon="save" class="mr-2" /> -->
+              Enregistrer
+              <span
+                v-if="loadingSaveBuilding"
                 class="spinner-border spinner-border-sm"
                 role="status"
                 aria-hidden="true"
-              ></span></b-button>
-            </div>
+              ></span>
+            </b-button>
+
+          </div>
         </b-modal>
 </template>
 
@@ -53,7 +61,8 @@ export default {
   },
   data() {
     return {
-      loadingSave: false
+      loadingSave: false,
+      loadingSaveBuilding: false
     }
   },
   computed: {
@@ -66,9 +75,11 @@ export default {
   },
   methods: {
     onSave() {
+      this.loadingSaveBuilding = true;
       this.loadingSave = true;
       this.$emit('save-data')
             this.loadingSave = false;
+            this.loadingSaveBuilding = false;
 
     }
   },

@@ -309,6 +309,7 @@ export default {
     };
   },
   created: function () {
+    this.realEstate.num_telephone = this.getProfiles.phone_number.split(" ")[1]
     this.countries = mixin.methods.getAllCountry(this.onlyCountries);
   },
   computed: {

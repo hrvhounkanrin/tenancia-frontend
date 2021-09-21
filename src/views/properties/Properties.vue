@@ -226,7 +226,8 @@
           </div>
         </div>
       </div>
-      <div class="col-lg-12 col-md-6 col-sm-12 col-xl-6">
+      <div                     v-if="immeubles.length > 0"
+ class="col-lg-12 col-md-6 col-sm-12 col-xl-6">
         <div class="card card-box mb-5">
           <div class="card-header bg-light">
             <div class="card-header--title">
