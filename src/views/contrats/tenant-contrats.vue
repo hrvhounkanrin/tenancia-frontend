@@ -132,10 +132,18 @@ export default {
       api_errors: (state) => state.contrats.errors
     }),
   },
+  created () {
+      
+  },
   mounted: function(){
-      this.$store.dispatch('contrats/getClientContrats')
+      this.fetchData()
   },
   watch: { 
+    contrats: function(newContrats, oldContrats){
+        if(newContrats ===null && newContrats.length>0){
+            this.selectedContrats(newContrats[0])
+        }
+    },
     contrat: function(newContrat, oldContrat) { 
         this.convertPeriodicite(newContrat.periodicite)
         console.log('faStyle:',this.cardBorder)
@@ -144,6 +152,10 @@ export default {
   },
   methods: {
     ...mapActions('contrats', ['clientAccord',]),
+    fetchData: async function(){
+        await this.$store.dispatch('contrats/getClientContrats')
+        if(this.contrats.length>0) this.setActiveContrat(this.contrats[0])
+    },
     statutStyle: function(statut){
         if(statut=='PROPOSITION'){
             return {

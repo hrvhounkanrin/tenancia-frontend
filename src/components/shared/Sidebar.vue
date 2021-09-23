@@ -95,14 +95,14 @@ export default {
         },
         {
           title: 'Quittances de bail',
-          href: 'tenant-quittances',
+          href: '/tenant-quittances',
           icon: {
             element: 'clipboard-icon'
           }
         },
         {
           title: 'Quittances bailleur',
-          href: 'lessor-quittances',
+          href: '/lessor-quittances',
           icon: {
             element: 'list-icon'
           }

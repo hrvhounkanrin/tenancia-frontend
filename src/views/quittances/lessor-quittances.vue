@@ -8,7 +8,7 @@
         <div class="col-lg-12 col-md-12 col-sm-8 offset-sm-2 col-xl-8 offset-xl-2">
             <alert  variant="warning" v-for="err in api_errors" :msg="err.message" icon="bell" :dismissSecs="15" :dismissible="true" :title="'Oups..'" :key="err.key"></alert>
         </div>  
-        <div class="col-lg-12 col-md-12 col-sm-8 offset-sm-2 col-xl-8 offset-xl-2">
+        <div class="col-lg-12 col-md-12 col-sm-10 offset-sm-1 col-xl-10 offset-xl-1">
             <div class="card card-box mb-5 ">
                 <div class="card-header pr-2">
                         <div class="card-header--title">
@@ -79,7 +79,7 @@
                                     <td></td>
                                     <td class="status">
                                         <div class="text-center">
-                                            <span class="badge badge-warning">{{quittance.statut}}</span>
+                                            <span :class="getStatusClass(quittance)"  class="badge badge-pill ">{{quittance.statut}}</span>
                                         </div>
                                     </td>
                                 </tr>
@@ -212,7 +212,15 @@ export default {
                 this.strPeriodicite = 'ANNUELLE'
             }
     },
-   
+    getStatusClass: function(quittance){
+        if (quittance['statut']==='PENDING'){
+            return 'badge-warning'
+        }
+        if (quittance['statut']==='PAID'){
+            return 'badge-success'
+        }
+        return 'badge-danger'
+    }
   }
 }
 </script>

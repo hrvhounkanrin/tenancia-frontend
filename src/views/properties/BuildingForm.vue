@@ -1,5 +1,5 @@
 <template>
-        <b-modal :id="id" body-class="p-0" :hide-footer="hideFooter" :hide-header="hideHeader" :size="size" centered>
+        <b-modal id="theForm" body-class="p-0" size="lg" centered>
             <div slot="modal-header">
                 <h3>Edition Immeuble</h3>
             </div>
