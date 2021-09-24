@@ -50,10 +50,29 @@ const periodiciteToString = function(periodicite){
   }
   return strPeridicite
 }
+const getQuittanceClass = function(quittance){
+  if (quittance['statut']==='PENDING'){
+      return 'badge-warning'
+  }
+  if (quittance['statut']==='PAID'){
+      return 'badge-success'
+  }
+  return 'badge-danger'
+}   
 
-
+const getAppartmentStatutClass = function(statutAppartment){
+  if (statutAppartment==='RESERVE'){
+      return 'badge-warning'
+  }
+  if (statutAppartment==='LIBRE'){
+      return 'badge-success'
+  }
+  return 'badge-danger'
+}
 export default {
   toggleFullScreen,
   currencyToNumber,
-  periodiciteToString
+  periodiciteToString,
+  getQuittanceClass,
+  getAppartmentStatutClass
 }

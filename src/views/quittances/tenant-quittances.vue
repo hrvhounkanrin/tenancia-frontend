@@ -11,9 +11,9 @@
     </div>
     <div class="row">
       <div class="col-xl-8 col-lg-8 col-md-8 col-sm-12">
-           <quittance-list-item v-for="quittance in quittances" 
-           :key="quittance.reference" 
-           :quittance="quittance" 
+           <quittance-list-item v-for="quittance in quittances"
+           :key="quittance.reference"
+           :quittance="quittance"
            @select-quittance="selectQuittance(quittance)"
            @share-quittance="triggerShareQuittance(quittance)"
            ></quittance-list-item>
@@ -40,10 +40,10 @@
           </a>
 
       </div>
-        <div class="form-group row pl-4 pr-3"> 
+        <div class="form-group row pl-4 pr-3">
               <label>Lien de partage <span class="message"></span></label>
                   <div class="input-group">
-                      <input class="form-control" type="url" placeholder="https://tenancia.com/acodyseyy" id="myInput" aria-describedby="inputGroup-sizing-default" readonly> 
+                      <input class="form-control" type="url" placeholder="https://tenancia.com/acodyseyy" id="myInput" aria-describedby="inputGroup-sizing-default" readonly>
                       <div class="input-group-append">
                           <b-button
                           variant="primary"
@@ -56,22 +56,20 @@
                   </div>
           </div>
       <div slot="modal-footer">
-          
+
       </div>
     </b-modal>
-                            
+
   </div>
 </template>
 
 <script>
-import { mapGetters, mapState } from "vuex"
-import { library } from "@fortawesome/fontawesome-svg-core"
-import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome"
-import { fas } from "@fortawesome/free-solid-svg-icons"
-import { fab } from "@fortawesome/free-brands-svg-icons"
-import vueSlider from "vue-slider-component"
-import paginate, { alert } from "@/components/shared/"
-import utils from '@/utils/index'
+import { mapGetters, mapState } from 'vuex'
+import { library } from '@fortawesome/fontawesome-svg-core'
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
+import { fas } from '@fortawesome/free-solid-svg-icons'
+import { fab } from '@fortawesome/free-brands-svg-icons'
+import { alert } from '@/components/shared/'
 import Hashids from 'hashids'
 import QuittanceListeItem from './quittance-list-item.vue'
 import QuittanceDetailItem from './quittance-detail-item.vue'
@@ -81,58 +79,59 @@ library.add(fab)
 export default {
   name: 'TenantQuittance',
   components: {
-    vueSlider,
-    "font-awesome-icon": FontAwesomeIcon,
-    "t-pagination": paginate,
+    'font-awesome-icon': FontAwesomeIcon,
     alert: alert,
-    "quittance-list-item": QuittanceListeItem,
-    "quittance-detail-item": QuittanceDetailItem,
+    'quittance-list-item': QuittanceListeItem,
+    'quittance-detail-item': QuittanceDetailItem
   },
- data: function(){
-      return {
-          activeQuittance: null,
-          sharedQuittance: {
-            reference: ''
-          },
-          faStyle: null,
-      }
+  data: function () {
+    return {
+      activeQuittance: null,
+      sharedQuittance: {
+        reference: ''
+      },
+      faStyle: null
+    }
   },
   props: {
 
   },
   computed: {
     ...mapGetters({
-      quittances: 'quittances/tenantQuittances',
+      quittances: 'quittances/tenantQuittances'
     }),
     ...mapState({
       api_errors: (state) => state.contrats.errors
-    }),
+    })
   },
-  mounted: function(){
-      const contratId= this.$route.query.ref
-      const hashids = new Hashids()
-      console.log('contrat.id:', contratId, hashids.decode(contratId))
-      if(contratId){
-        const query = {'contrat_id': hashids.decode(contratId) }
-        this.$store.dispatch('quittances/getQuittanceByTenant', query)
-      }
-      else{
-        this.$store.dispatch('quittances/getQuittanceByTenant')
-      }
-      
+  mounted: function () {
+    this.fetchData()
   },
-  watch: { 
-   
+  watch: {
+
   },
   methods: {
-      selectQuittance: function(quittance){
-          console.log('selectQuittance:', quittance)
-          this.activeQuittance=quittance
-      },
-      triggerShareQuittance(quittance){
-        this.sharedQuittance=quittance
-        this.$bvModal.show('modal-share-quittance')
+    fetchData: async function () {
+      const contratId = this.$route.query.ref
+      const hashids = new Hashids()
+      if (contratId) {
+        const query = { 'contrat_id': hashids.decode(contratId) }
+        await this.$store.dispatch('quittances/getQuittanceByTenant', query)
+      } else {
+        await this.$store.dispatch('quittances/getQuittanceByTenant')
       }
+      if (this.quittances.length > 0) {
+        this.selectQuittance(this.quittances[0])
+      }
+    },
+    selectQuittance: function (quittance) {
+      console.log('selectQuittance:', quittance)
+      this.activeQuittance = quittance
+    },
+    triggerShareQuittance (quittance) {
+      this.sharedQuittance = quittance
+      this.$bvModal.show('modal-share-quittance')
+    }
   }
 }
 </script>

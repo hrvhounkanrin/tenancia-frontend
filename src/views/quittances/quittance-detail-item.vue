@@ -4,7 +4,7 @@
                     <div class="card-header d-block">
                         <span class="text-uppercase py-3 py-xl-4 text-black d-block text-center font-weight-bold">
                             QUITTANCE N° {{quittance.reference}}
-                            <span class="badge badge-danger ml-2">PENDING</span>
+                            <span :class="getStatusClass(quittance)"  class="badge badge-pill ml-2">{{quittance.statut}}</span>
                         </span>
                         
                     </div>
@@ -128,6 +128,17 @@ export default {
     },
     props: {
         quittance: Object
+    },
+    methods: {
+        getStatusClass: function(quittance){
+            if (quittance['statut']==='PENDING'){
+                return 'badge-warning'
+            }
+            if (quittance['statut']==='PAID'){
+                return 'badge-success'
+            }
+            return 'badge-danger'
+        }
     }
 }
 </script>

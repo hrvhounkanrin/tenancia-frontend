@@ -15,7 +15,7 @@
                             <b-form-checkbox :id="'chk_'+quittance.reference" unchecked-value="not_accepted">
                                 <span class="font-size-md">{{Number(quittance.montant).toLocaleString('fr-FR')}} F CFA</span>
                             </b-form-checkbox>
-                                <span class="badge badge-danger ml-2">PENDING</span>
+                                <span :class="getStatusClass(quittance)"  class="badge badge-pill ml-2">{{quittance.statut}}</span>
                             </div>
                             <div class="d-flex align-items-left mt-2">
                             <b-button variant="secondary" pill class="col mr-2 mb-1"  @click="$emit('share-quittance')">
@@ -105,7 +105,16 @@ export default {
     methods: {
         openModal() {
             this.modalOpen = !this.modalOpen;
-        }    
+        },
+        getStatusClass: function(quittance){
+            if (quittance['statut']==='PENDING'){
+                return 'badge-warning'
+            }
+            if (quittance['statut']==='PAID'){
+                return 'badge-success'
+            }
+            return 'badge-danger'
+        }   
     }
 }
 </script>
