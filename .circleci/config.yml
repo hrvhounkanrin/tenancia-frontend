@@ -42,9 +42,10 @@ workflows:
   version: 2
   integration:
     jobs:
-      - build
-          requires:
-            - install
-      - test
-          requires:
-            - install
+      - install
+      - build:
+          requires: 
+              - install
+      - test:
+          requires: 
+              - install

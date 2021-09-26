@@ -120,6 +120,12 @@
             <div class="align-box-row mt-3">
               <div class="align-items-center"></div>
               <div class="ml-auto">
+                 <router-link :to="{name: 'Myproperties'}">
+                  <b-button variant="warning" class="mr-1">
+                    <font-awesome-icon icon="undo" class="mr-2"/>
+                    ANNULER
+                  </b-button>
+                </router-link>
                 <b-button variant="primary" @click="saveAppartment">
                   <font-awesome-icon icon="save" class="mr-2" />
                   Enregistrer

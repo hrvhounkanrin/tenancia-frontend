@@ -26,9 +26,6 @@
                     />
                   </div>
                   <div class="mt-3 line-height-sm">
-                    <b class="font-size-lg text-black pr-1">{{
-                      componentKey
-                    }}</b>
                     <span class="text-black-50">Maisons & Immeubles</span>
                   </div>
                 </div>
@@ -183,13 +180,14 @@
         <div class="card card-box mb-5">
           <div class="card-header">
             <div class="card-header--title">
-              <small>Inventaire</small>
+              
               <b>Immeubles & Maisons</b>
+              <small>Liste de vos immeubles & maisons</small>
             </div>
             <div class="card-header--actions">
               <b-button variant="primary" @click="addImmeuble">
                 <font-awesome-icon icon="plus" class="mr-2" />
-                Ajouter un immeuble
+                Ajouter un immeuble / une maison
               </b-button>
             </div>
           </div>
@@ -231,8 +229,8 @@
         <div class="card card-box mb-5">
           <div class="card-header bg-light">
             <div class="card-header--title">
-              <small>Inventaires</small>
               <b>Appartements & Chambres {{selectedImmeuble.ref_immeuble != null ?selectedImmeuble.ref_immeuble : '' }} </b>
+              <small>Liste des appartements/chambres</small>
             </div>
             <div class="card-header--actions">
               <b-button variant="primary" @click="addAppartement">
@@ -274,148 +272,213 @@
       </div>
     </div>
 
-    <bulding-form
-      :id="'buildingForm'"
-      :hide-footer="false"
-      :hide-header="false"
-      :size="'lg'"
-      @hide-modal="$bvModal.hide('buildingForm')"
-      @save-data="saveImmeuble"
-    >
-      <template #left-img>
-        <GmapMap
-          v-bind="$attrs"
-          :center="{ lat: immeuble.latitude, lng: immeuble.longitude }"
-          :zoom="7"
-          style="width: 100% height: 100%"
-        >
-        </GmapMap>
-      </template>
-      <template #modal-content>
-        <form v-if="immeuble">
-          <div class="form-row">
-            <div class="form-group col-md-12">
-              <label for="intitule"
-                >Jour émission facture:
-                <b>
-                  <span v-if="immeuble.jour_emission_facture < 9">0</span
-                  >{{ immeuble.jour_emission_facture }}
-                  <small>du mois. </small></b
-                ></label
+    <b-modal id="clonerAppartment" title="Cloner appartement" centered>
+      <div class="w-100 mb-4">
+        <div class="d-flex flex-wrap justify-content-between mb-2">
+          <small class="line-height-xs text-uppercase text-muted"
+            ><h5 class="pt-1 pb-1">
+              <a href="javascript:void(0)" v-if="selectedImmeuble"
+                >#{{selectedAppartement.intitule }}/{{ selectedImmeuble.intitule }}</a
               >
-              <vue-slider
-                ref="slider"
-                v-model="immeuble.jour_emission_facture"
-                :value="immeuble.jour_emission_facture"
-                :min="1"
-                :max="30"
-              ></vue-slider>
-            </div>
-            <div class="form-group col-md-12">
-              <label for="intitule"
-                >Jour valeur facture:
-                <b>
-                  <span v-if="immeuble.jour_valeur_facture < 9">0</span
-                  >{{ immeuble.jour_valeur_facture }}
-                  <small>du mois. </small></b
-                ></label
+            </h5></small
+          >
+        </div>
+        <div class="row">
+          <div class="col-md-12">
+            <ul class="list-unstyled card-columns" v-if="selectedAppartement">
+              <li v-for="dep in selectedAppartement.structures" :key="dep.id">
+                <font-awesome-icon icon="check-square" class="mr-2" />0{{
+                  dep.nbre
+                }}
+                {{ dep.typedependence.libelle }}
+              </li>
+            </ul>
+            <p>
+              <font-awesome-icon icon="comments" /><span class="ml-2"
+                >{{ selectedAppartement.autre_description }}...</span
               >
-              <vue-slider
-                ref="slider"
-                v-model="immeuble.jour_valeur_facture"
-                :value="immeuble.jour_valeur_facture"
-                :min="1"
-                :max="30"
-              ></vue-slider>
-            </div>
-            <div class="form-group col-md-12"></div>
-            <div class="form-group col-md-12">
-              <label for="intitule">Référence municipale</label>
+            </p>
+          </div>
+        </div>
+        <div class="divider mt-3 blue-divider mb-3"></div>
+        <div class="row">
+          <div class="col-md-12">
+            <div class="form-group">
               <input
-                type="text"
+                type="number"
                 class="form-control"
-                id="ref_immeuble"
-                placeholder="Référence municipale"
-                trim
-                v-model="immeuble.ref_immeuble"
+                id="nbAppartmentToClone"
+                placeholder="Nombre à cloner"
+                min="1"
+                max="10"
+                v-model="nbAppartmentToClone"
               />
-              <label for="intitule">Nom</label>
-              <input
-                type="text"
-                class="form-control"
-                id="intitule"
-                placeholder="Nom"
-                trim
-                v-model="immeuble.intitule"
-              />
-              <label for="adresse"
-                >Adresse <span class="required">*</span></label
-              >
-              <input
-                type="text"
-                class="form-control"
-                id="adresse"
-                placeholder="Quartier & maison de préférence"
-                trim
-                v-model="immeuble.adresse"
-              />
-              <span class="invalid-feedback d-block" v-if="errors.adresseMsg">{{
-                errors.adresseMsg
-              }}</span>
-
-              <!-- <label for="pays">Pays <span class="required">*</span></label>
-                                    <input type="text" class="form-control" id="pays" placeholder="Pays" trim v-model="immeuble.pays">
-                                    <span  class="invalid-feedback d-block" v-if="errors.paysMsg" >{{errors.paysMsg}}</span > -->
-
-              <label for="pays">Pays <span class="required">*</span></label>
-
-              <b-form-select
-                v-model="immeuble.pays"
-                id="pays"
-                text-field="label"
-                value-field="id"
-                :options="countries"
-              ></b-form-select>
-              <span class="invalid-feedback d-block" v-if="errors.paysMsg">{{
-                errors.paysMsg
-              }}</span>
-              <label for="ville">Ville <span class="required">*</span></label>
-              <input
-                type="text"
-                class="form-control"
-                id="ville"
-                placeholder="Ville"
-                trim
-                v-model="immeuble.ville"
-              />
-              <span class="invalid-feedback d-block" v-if="errors.villeMsg">{{
-                errors.villeMsg
-              }}</span>
-
-              <label for="ville">Latitude</label>
-              <input
-                type="text"
-                class="form-control"
-                id="lat"
-                placeholder="Latitude"
-                v-model="immeuble.latitude"
-              />
-              <label for="quartier">Longitude</label>
-              <input
-                type="text"
-                class="form-control"
-                id="lng"
-                placeholder="Longitude"
-                v-model="immeuble.longitude"
-              />
-        
             </div>
           </div>
-        </form>
-      </template>
-    </bulding-form>
+          <div class="col-md-12">
+            <div class="form-group">
+              <input
+                type="number"
+                class="form-control"
+                id="nbEtageDest"
+                placeholder="N° Etage"
+                min="0"
+                max="99"
+                v-model="nbEtageDest"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+      <div slot="modal-footer">
+        <b-button
+          variant="warning" 
+          class="btn-link-dark mr-1"
+          @click="$bvModal.hide('clonerAppartment')"
+          >
+          <font-awesome-icon icon="undo" class="mr-2" />
+          Annuler</b-button
+        >
+        <b-button variant="primary" @click="clonerAppartment"><font-awesome-icon icon="clone" class="mr-2" />Cloner</b-button>
+      </div>
+    </b-modal>
 
-    <b-modal id="clonerAppartment" title="Cloner appartement" centered>
+ 
+    <b-modal id="modalImmeuble" body-class="p-0" size="lg" centered>
+            <div slot="modal-header">
+                <h3>Edition Immeuble</h3>
+            </div>
+            <div class="row no-gutters">
+
+                <div class="col-lg-7">
+                    <div class="p-5">
+                      <form v-if="immeuble">
+                        <div class="form-row">
+                          <div class="form-group col-md-12">
+                            <label for="intitule"
+                              >Jour émission facture:
+                              <b>
+                                <span v-if="immeuble.jour_emission_facture < 9">0</span
+                                >{{ immeuble.jour_emission_facture }}
+                                <small>du mois. </small></b
+                              ></label
+                            >
+                            <vue-slider
+                              ref="slider"
+                              v-model="immeuble.jour_emission_facture"
+                              :value="immeuble.jour_emission_facture"
+                              :min="1"
+                              :max="30"
+                            ></vue-slider>
+                          </div>
+                          <div class="form-group col-md-12">
+                            <label for="intitule"
+                              >Jour valeur facture:
+                              <b>
+                                <span v-if="immeuble.jour_valeur_facture < 9">0</span
+                                >{{ immeuble.jour_valeur_facture }}
+                                <small>du mois. </small></b
+                              ></label
+                            >
+                            <vue-slider
+                              ref="slider"
+                              v-model="immeuble.jour_valeur_facture"
+                              :value="immeuble.jour_valeur_facture"
+                              :min="1"
+                              :max="30"
+                            ></vue-slider>
+                          </div>
+                          <div class="form-group col-md-12"></div>
+                          <div class="form-group col-md-12">
+                            <label for="intitule">Référence municipale</label>
+                            <input
+                              type="text"
+                              class="form-control"
+                              id="ref_immeuble"
+                              placeholder="Référence municipale"
+                              trim
+                              v-model="immeuble.ref_immeuble"
+                            />
+                            <label for="intitule">Nom</label>
+                            <input
+                              type="text"
+                              class="form-control"
+                              id="intitule"
+                              placeholder="Nom"
+                              trim
+                              v-model="immeuble.intitule"
+                            />
+                            <label for="adresse"
+                              >Adresse <span class="required">*</span></label
+                            >
+                            <input
+                              type="text"
+                              class="form-control"
+                              id="adresse"
+                              placeholder="Quartier & maison de préférence"
+                              trim
+                              v-model="immeuble.adresse"
+                            />
+                            <span class="invalid-feedback d-block" v-if="errors.adresseMsg">{{
+                              errors.adresseMsg
+                            }}</span>
+
+                            <label for="pays">Pays <span class="required">*</span></label>
+
+                            <b-form-select
+                              v-model="immeuble.pays"
+                              id="pays"
+                              text-field="label"
+                              value-field="id"
+                              :options="countries"
+                            ></b-form-select>
+                            <span class="invalid-feedback d-block" v-if="errors.paysMsg">{{
+                              errors.paysMsg
+                            }}</span>
+
+                            <!-- <label for="pays">Pays <span class="required">*</span></label>
+                                                  <input type="text" class="form-control" id="pays" placeholder="Pays" trim v-model="immeuble.pays">
+                                                  <span  class="invalid-feedback d-block" v-if="errors.paysMsg" >{{errors.paysMsg}}</span > -->
+                            <label for="ville">Ville <span class="required">*</span></label>
+                            <input
+                              type="text"
+                              class="form-control"
+                              id="ville"
+                              placeholder="Ville"
+                              trim
+                              v-model="immeuble.ville"
+                            />
+                            <span class="invalid-feedback d-block" v-if="errors.villeMsg">{{
+                              errors.villeMsg
+                            }}</span>
+
+                            <!--  <label for="ville">Latitude</label>
+                                                  <input type="text" class="form-control" id="lat" placeholder="Latitude" v-model="immeuble.latitude">
+                                                  <label for="quartier">Longitude</label>
+                                                  <input type="text" class="form-control" id="lng" placeholder="Longitude" v-model="immeuble.longitude">
+                                                  <GmapAutocomplete @place_changed='setPlace'  class="form-control" />-->
+                          </div>
+                        </div>
+                      </form>
+                    </div>
+                </div>
+                <div class="col-lg-5">
+                    <GmapMap
+                      v-bind="$attrs"
+                      :center="center"
+                      :zoom="12"
+                      style="width: 100% height: 100%"
+                    >
+                    </GmapMap>
+                </div>
+            </div>
+            <div slot="modal-footer">
+                <b-button variant="warning"  @click="$bvModal.hide('modalImmeuble')" class="mr-1">Annuler</b-button>
+                <b-button variant="first" class="ml-auto" @click="saveImmeuble">Enregistrer</b-button>
+            </div>
+    </b-modal>
+
+    <!--<b-modal id="clonerAppartment" title="Cloner appartement" centered>
       <div class="w-100 mb-4">
         <div class="d-flex flex-wrap justify-content-between mb-2">
           <small class="line-height-xs text-uppercase text-muted"
@@ -482,205 +545,7 @@
         >
         <b-button variant="primary" @click="clonerAppartment">Cloner</b-button>
       </div>
-    </b-modal>
-
-    <bulding-form
-      :id="'buildingForm'"
-      :hide-footer="false"
-      :hide-header="false"
-      :size="'lg'"
-      @hide-modal="$bvModal.hide('buildingForm')"
-      @save-data="saveImmeuble"
-    >
-      <template #left-img>
-        <GmapMap
-          v-bind="$attrs"
-          :center="center"
-          :zoom="12"
-          style="width: 100% height: 100%"
-        >
-        </GmapMap>
-      </template>
-      <template #modal-content>
-        <form v-if="immeuble">
-          <div class="form-row">
-            <div class="form-group col-md-12">
-              <label for="intitule"
-                >Jour émission facture:
-                <b>
-                  <span v-if="immeuble.jour_emission_facture < 9">0</span
-                  >{{ immeuble.jour_emission_facture }}
-                  <small>du mois. </small></b
-                ></label
-              >
-              <vue-slider
-                ref="slider"
-                v-model="immeuble.jour_emission_facture"
-                :value="immeuble.jour_emission_facture"
-                :min="1"
-                :max="30"
-              ></vue-slider>
-            </div>
-            <div class="form-group col-md-12">
-              <label for="intitule"
-                >Jour valeur facture:
-                <b>
-                  <span v-if="immeuble.jour_valeur_facture < 9">0</span
-                  >{{ immeuble.jour_valeur_facture }}
-                  <small>du mois. </small></b
-                ></label
-              >
-              <vue-slider
-                ref="slider"
-                v-model="immeuble.jour_valeur_facture"
-                :value="immeuble.jour_valeur_facture"
-                :min="1"
-                :max="30"
-              ></vue-slider>
-            </div>
-            <div class="form-group col-md-12"></div>
-            <div class="form-group col-md-12">
-              <label for="intitule">Référence municipale</label>
-              <input
-                type="text"
-                class="form-control"
-                id="ref_immeuble"
-                placeholder="Référence municipale"
-                trim
-                v-model="immeuble.ref_immeuble"
-              />
-              <label for="intitule">Nom</label>
-              <input
-                type="text"
-                class="form-control"
-                id="intitule"
-                placeholder="Nom"
-                trim
-                v-model="immeuble.intitule"
-              />
-              <label for="adresse"
-                >Adresse <span class="required">*</span></label
-              >
-              <input
-                type="text"
-                class="form-control"
-                id="adresse"
-                placeholder="Quartier & maison de préférence"
-                trim
-                v-model="immeuble.adresse"
-              />
-              <span class="invalid-feedback d-block" v-if="errors.adresseMsg">{{
-                errors.adresseMsg
-              }}</span>
-
-              <label for="pays">Pays <span class="required">*</span></label>
-
-              <b-form-select
-                v-model="immeuble.pays"
-                id="pays"
-                text-field="label"
-                value-field="id"
-                :options="countries"
-              ></b-form-select>
-              <span class="invalid-feedback d-block" v-if="errors.paysMsg">{{
-                errors.paysMsg
-              }}</span>
-
-              <!-- <label for="pays">Pays <span class="required">*</span></label>
-                                    <input type="text" class="form-control" id="pays" placeholder="Pays" trim v-model="immeuble.pays">
-                                    <span  class="invalid-feedback d-block" v-if="errors.paysMsg" >{{errors.paysMsg}}</span > -->
-              <label for="ville">Ville <span class="required">*</span></label>
-              <input
-                type="text"
-                class="form-control"
-                id="ville"
-                placeholder="Ville"
-                trim
-                v-model="immeuble.ville"
-              />
-              <span class="invalid-feedback d-block" v-if="errors.villeMsg">{{
-                errors.villeMsg
-              }}</span>
-
-              <!--  <label for="ville">Latitude</label>
-                                    <input type="text" class="form-control" id="lat" placeholder="Latitude" v-model="immeuble.latitude">
-                                    <label for="quartier">Longitude</label>
-                                    <input type="text" class="form-control" id="lng" placeholder="Longitude" v-model="immeuble.longitude">
-                                    <GmapAutocomplete @place_changed='setPlace'  class="form-control" />-->
-            </div>
-          </div>
-        </form>
-      </template>
-    </bulding-form>
-
-    <b-modal id="clonerAppartment" title="Cloner appartement" centered>
-      <div class="w-100 mb-4">
-        <div class="d-flex flex-wrap justify-content-between mb-2">
-          <small class="line-height-xs text-uppercase text-muted"
-            ><h5 class="pt-1 pb-1">
-              <a href="javascript:void(0)" v-if="selectedImmeuble"
-                >#{{ selectedImmeuble.intitule }}</a
-              >
-            </h5></small
-          >
-        </div>
-        <div class="row">
-          <div class="col-md-12">
-            <ul class="list-unstyled card-columns" v-if="selectedAppartement">
-              <li v-for="dep in selectedAppartement.structures" :key="dep.id">
-                <font-awesome-icon icon="check-square" class="mr-2" />0{{
-                  dep.nbre
-                }}
-                {{ dep.typedependence.libelle }}
-              </li>
-            </ul>
-            <p>
-              <font-awesome-icon icon="comments" /><span class="ml-2"
-                >{{ selectedAppartement.autre_description }}...</span
-              >
-            </p>
-          </div>
-        </div>
-        <div class="divider mt-3 blue-divider mb-3"></div>
-        <div class="row">
-          <div class="col-md-12">
-            <div class="form-group">
-              <input
-                type="number"
-                class="form-control"
-                id="nbAppartmentToClone"
-                placeholder="Nombre à cloner"
-                min="1"
-                max="10"
-                v-model="nbAppartmentToClone"
-              />
-            </div>
-          </div>
-          <div class="col-md-12">
-            <div class="form-group">
-              <input
-                type="number"
-                class="form-control"
-                id="nbEtageDest"
-                placeholder="N° Etage"
-                min="0"
-                max="99"
-                v-model="nbEtageDest"
-              />
-            </div>
-          </div>
-        </div>
-      </div>
-      <div slot="modal-footer">
-        <b-button
-          variant="link"
-          class="btn-link-dark"
-          @click="$bvModal.hide('clonerAppartment')"
-          >Annuler</b-button
-        >
-        <b-button variant="primary" @click="clonerAppartment">Cloner</b-button>
-      </div>
-    </b-modal>
+    </b-modal>-->
   </div>
 </template>
 
@@ -718,7 +583,7 @@ export default {
       perPage: 4,
       paginationLength: 3,
       selectedPage: 1,
-      buildingApparts: [],
+      //buildingApparts: [],
       immeuble: {
         immeuble_id: null,
         title: null,
@@ -751,7 +616,8 @@ export default {
       "realEstateProfile",
     ]),
     ...mapGetters({
-      immeubles: "properties/immeubles",
+      immeubles: ["properties/immeubles"],
+      buildingApparts: ["properties/currentAppartments"],
       typedependances: "properties/immeubles",
     }),
     ...mapState({
@@ -763,71 +629,73 @@ export default {
   created() {
     if (this.immeubles.length === 0) {
       this.countries = mixin.methods.getAllCountry(this.onlyCountries)
-
       this.$store.dispatch("properties/getImmeubles")
     }
     console.log("getProfiles", this.getProfiles.lessor)
   },
   mounted() {
-
     this.locateMe()
-    console.log('this.center: ', this.center)
-    this.$store.commit("properties/SELECTED_IMMEUBLE", {})
-    this.$store.commit("properties/SELECTED_IMMEUBLE", this.immeuble)
-    this.$forceUpdate()
+    this.paginate(1)
   },
   watch: {
     selectedImmeuble: function (newImmeuble, oldImmeuble) {
       if (newImmeuble === undefined || this.immeubles.length === 0) {
         return
       }
-      let index = this.immeubles.findIndex((im) => im.id === newImmeuble.id)
-      this.immeuble = newImmeuble
-      this.buildingApparts = []
-
-      this.selectBuilding(this.immeuble, index)
-      this.$forceUpdate()
+      this.paginate(1)
+      /*const index = this.immeubles.findIndex((im) => im.id === newImmeuble.id)
+      this.selectBuilding(newImmeuble, index)
+      this.$forceUpdate()*/
     },
     center: function (newCenter, oldCenter) {
       this.$store.dispatch("properties/reverseGeocoding", newCenter)
-    }
+    },
   },
   methods: {
-    ...mapActions("properties", ["createImmeuble", "updateImmeuble", "reverseGeocoding"]),
-      async getLocation() {
-        
-        return new Promise((resolve, reject) => {
-
-          if(!("geolocation" in navigator)) {
-            reject(new Error("La géolocalisation n'est pas disponible dans votre navigator."))
-          }
-
-          navigator.geolocation.getCurrentPosition(pos => {
+    ...mapActions("properties", [
+      "createImmeuble",
+      "updateImmeuble",
+      "reverseGeocoding",
+    ]),
+    async getLocation() {
+      return new Promise((resolve, reject) => {
+        if (!("geolocation" in navigator)) {
+          reject(
+            new Error(
+              "La géolocalisation n'est pas disponible dans votre navigator."
+            )
+          )
+        }
+        navigator.geolocation.getCurrentPosition(
+          (pos) => {
             resolve(pos)
-          }, err => {
+          },
+          (err) => {
             reject(err)
-          })
-
-        })
-      },
-      async locateMe() {
-          this.gettingLocation = true
-          try {
-            this.gettingLocation = false
-            const location = await this.getLocation()
-            this.center = {lat: location.coords.latitude, lng: location.coords.longitude}
-            
-          } catch(e) {
-            this.gettingLocation = false
-            this.$toast.open({
-              message: e.message,
-              type: 'error',
-              duration: 3000,
-              pauseOnHover: true
-            })
           }
-      },
-     /**
+        )
+      })
+    },
+    async locateMe() {
+      this.gettingLocation = true
+      try {
+        this.gettingLocation = false
+        const location = await this.getLocation()
+        this.center = {
+          lat: location.coords.latitude,
+          lng: location.coords.longitude,
+        }
+      } catch (e) {
+        this.gettingLocation = false
+        this.$toast.open({
+          message: e.message,
+          type: "error",
+          duration: 3000,
+          pauseOnHover: true,
+        })
+      }
+    },
+    /**
      * Retourne la surface totale habitable d'un appartement
      */
     surfaceTotale: function (appartement) {
@@ -881,10 +749,8 @@ export default {
       }
       this.immeuble = item
       this.immeubles.forEach((el) => (el.isActive = false))
-
       this.immeubles[index].isActive = true
-
-      this.buildingApparts = item.appartements
+      //this.buildingApparts = item.appartements
       this.$store.commit("properties/SELECTED_IMMEUBLE", item)
 
       this.paginate(1)
@@ -903,7 +769,7 @@ export default {
         latitude: item.latitude,
         longitude: item.longitude,
       }
-      this.$bvModal.show("buildingForm")
+      this.$bvModal.show("modalImmeuble")
     },
     addImmeuble: function () {
       this.immeuble = {
@@ -917,10 +783,10 @@ export default {
         latitude: 0,
         longitude: 0,
       }
-      this.$bvModal.show("buildingForm")
+      this.$bvModal.show("modalImmeuble")
     },
     addAppartement: function () {
-      this.$router.push({ name: 'EditAppartment'})
+      this.$router.push({ name: "EditAppartment" })
     },
     saveImmeuble: async function () {
       this.errors = {}
@@ -969,6 +835,15 @@ export default {
       this.$bvModal.show("clonerAppartment")
     },
     clonerAppartment: function () {
+      if(this.nbAppartmentToClone===null || this.nbAppartmentToClone ===0) {
+        this.$toast.open({
+          message: 'Vous devez indiquer un nombre à cloner.',
+          type: "error",
+          duration: 3000,
+          pauseOnHover: true,
+        })
+        return
+      }
       let params = {
         nbre: this.nbAppartmentToClone,
         appartement_id: this.selectedAppartement.id,
@@ -995,7 +870,7 @@ export default {
           }
         })
         .catch((errors) => {
-          console.log('Cloner app')
+          console.log("Cloner app")
           this.$store.commit("properties/ERROR_ADD", {
             key: "clonerAppartement",
             message: errors.message,

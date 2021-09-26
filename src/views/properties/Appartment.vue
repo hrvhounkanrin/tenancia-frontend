@@ -2,7 +2,7 @@
    <div class="w-100 mb-4">
         <div class="d-flex flex-wrap justify-content-between mb-2">
             <small class="line-height-xs text-uppercase text-muted"><h5 class="pt-1 pb-1"><a href="javascript:void(0);">#{{index+1}} - {{intitule}}</a></h5></small>
-            <small class="line-height-xs text-uppercase"><a href="javascript:void(0);" class="badge badge-pill badge-danger pl-3 pr-3">{{statut}}</a></small>
+            <small class="line-height-xs text-uppercase"><a href="javascript:void(0);" class="badge badge-pill pl-3 pr-3" :class="getAppartmentStatutClass(statut)">{{statut}}</a></small>
         </div>
         <div class="row">
             <div class="col-md-2">
@@ -49,7 +49,7 @@
 <script>
 
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
-
+import utils from '@/utils/index'
 export default {
   name: 'Appartment',
   components: {
@@ -79,6 +79,15 @@ export default {
           inputPlaceholder: 'Saisir le nombre',
           showCloseButton: true,
         })
+    },
+    getAppartmentStatutClass: function(statutAppartment){
+        if (statutAppartment==='RESERVE'){
+            return 'badge-warning'
+        }
+        if (statutAppartment==='LIBRE'){
+            return 'badge-success'
+        }
+        return 'badge-danger'
     }
   }
 

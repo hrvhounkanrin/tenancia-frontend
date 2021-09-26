@@ -19,5 +19,10 @@ export default {
   },
   errorMessage: state => {
     return state.errorMessage
+  },
+  currentAppartments: state => {
+    const appartements = (state.selectedImmeuble===null) ? []: state.selectedImmeuble.appartements
+    console.log('Selected appartments:', appartements)
+    return appartements
   }
 }

@@ -17,10 +17,13 @@ export default {
       .then(res => {
         if (res.status === 200) {
           let immeubles = res.data.payload
-          commit(IMMEUBLE_LIST, immeubles)
+          immeubles = immeubles.map(obj=> ({ ...obj, isActive: false }))
           if (immeubles.length > 0) {
+            immeubles[0].isActive=true
             commit(SELECTED_IMMEUBLE, immeubles[0])
           }
+          commit(IMMEUBLE_LIST, immeubles)
+         
         }
       })
       .catch(errors => {
@@ -103,7 +106,6 @@ export default {
       })
   },
   async clonerAppartement ({ commit }, data) {
-    console.log('clonerAppartement data: ', data)
     commit(ERROR_REMOVE, 'clonerAppartement')
     let appartement = new Appartement()
     return appartement.clonerAppartement(data)

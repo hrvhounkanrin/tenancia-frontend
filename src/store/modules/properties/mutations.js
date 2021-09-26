@@ -24,7 +24,6 @@ export default {
     state.reverseGeocodingResponse = data
   },
   [ADD_APPARTEMENT] (state, appartement) {
-    console.log('ADD_APPARTEMENT:', appartement)
     if(Array.isArray(appartement)){
       state.selectedImmeuble.appartements.push(...appartement)
     }
