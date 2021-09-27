@@ -789,6 +789,7 @@ export default {
       this.$router.push({ name: "EditAppartment" })
     },
     saveImmeuble: async function () {
+
       this.errors = {}
       this.errors.paysMsg = !this.immeuble.pays
         ? "Veuillez renseigner le pays"
@@ -815,8 +816,8 @@ export default {
         await this.createImmeuble(this.immeuble)
       }
       this.$bvModal.hide("buildingForm")
-      this.$store.dispatch("properties/getImmeubles")
-      this.$forceUpdate()
+      /*this.$store.dispatch("properties/getImmeubles")
+      this.$forceUpdate()*/
     },
     forceRerender() {
       this.componentKey = this.componentKey + 1

@@ -1,7 +1,7 @@
 import jsPDF from 'jspdf'
 import 'jspdf-autotable'
 import moment from '@/helpers/moment'
-import countries from "i18n-iso-countries";
+import countries from 'i18n-iso-countries'
 
 export const mixin = {
 
@@ -23,26 +23,24 @@ export const mixin = {
       return result
     },
 
-    getAllCountry(filter) {
-      countries.registerLocale(require("i18n-iso-countries/langs/fr.json"));
-      let countriesArray = [];
+    getAllCountry (filter) {
+      countries.registerLocale(require('i18n-iso-countries/langs/fr.json'))
+      let countriesArray = []
       if (
-        Object.keys(countries.getNames("fr")).length ===
-        Object.values(countries.getNames("fr")).length
+        Object.keys(countries.getNames('fr')).length ===
+        Object.values(countries.getNames('fr')).length
       ) {
-        Object.keys(countries.getNames("fr")).forEach((value, index) => {
-          if (filter.find(data =>  data === Object.keys(countries.getNames("fr"))[index])) {
-            let tempJson = {};
-          tempJson.id = Object.keys(countries.getNames("fr"))[index];
-          tempJson.label = Object.values(countries.getNames("fr"))[index];
-          countriesArray.push({ ...tempJson });
+        Object.keys(countries.getNames('fr')).forEach((value, index) => {
+          if (filter.find(data => data === Object.keys(countries.getNames('fr'))[index])) {
+            let tempJson = {}
+            tempJson.id = Object.keys(countries.getNames('fr'))[index]
+            tempJson.label = Object.values(countries.getNames('fr'))[index]
+            countriesArray.push({ ...tempJson })
           }
-          
-        });
+        })
       }
-      return countriesArray;
+      return countriesArray
     },
-
 
     formatDate (dataString) {
       if (dataString != undefined) {

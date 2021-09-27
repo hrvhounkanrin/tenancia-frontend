@@ -1,6 +1,7 @@
 export default {
   admin_list: [],
-  profiles:{
+  profilesList: [],
+  profiles: {
     tenant: null,
     lessor: null,
     realEstate: null

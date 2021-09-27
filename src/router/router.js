@@ -11,11 +11,8 @@ import ContratForm from '@/views/contrats/contrat-form.vue'
 import TenantContrats from '@/views/contrats/tenant-contrats.vue'
 import LessorQuittances from '@/views/quittances/lessor-quittances.vue'
 import TenantQuittances from '@/views/quittances/tenant-quittances.vue'
+
 Vue.use(Router)
-
-
-
-
 
 const router = new Router({
   mode: 'history',
@@ -27,70 +24,78 @@ const router = new Router({
       path: '/',
       name: 'Home',
       component: Home,
-      meta: { auth: true }
+      meta: { auth: true, authorizedProfiles: ['LESSOR', 'TENANT', 'REALESTATE'] }
 
     },
     {
       path: '/register',
       name: 'Register',
-      meta: {layout: 'examples'},
+      meta: { layout: 'examples' },
       component: Register
     },
     {
       path: '/activation-mail-sent',
       name: 'activation-mail-sent',
-      meta: {layout: 'examples'},
+      meta: { layout: 'examples' },
       component: () => import('@/views/register/activation-mail-sent.vue')
     },
     {
       path: '/verify-email',
       name: 'activation-mail',
-      meta: {layout: 'examples'},
+      meta: { layout: 'examples' },
       component: () => import('@/views/register/activation-mail.vue')
     },
     {
       path: '/my-profiles',
       name: 'MyProfiles',
-      component: Profile
+      component: Profile,
+      meta: { auth: true, authorizedProfiles: ['LESSOR', 'TENANT', 'REALESTATE'] }
     },
     {
       path: '/my-properties',
       name: 'Myproperties',
-      component: Properties
+      component: Properties,
+      meta: { auth: true, authorizedProfiles: ['LESSOR', 'REALESTATE'] }
     },
     {
       path: '/my-portfolio',
       name: 'MyContracts',
-      component: ContractList
+      component: ContractList,
+      meta: { auth: true, authorizedProfiles: ['LESSOR', 'REALESTATE'] }
     },
     {
       path: '/edit-appartment',
       name: 'EditAppartment',
-      component: AppartementForm
+      component: AppartementForm,
+      meta: { auth: true, authorizedProfiles: ['LESSOR', 'REALESTATE'] }
     },
     {
       path: '/edit-contrat',
       name: 'EditContrat',
       props: true,
-      component: ContratForm
+      component: ContratForm,
+      meta: { auth: true, authorizedProfiles: ['LESSOR', 'REALESTATE'] }
     },
     {
       path: '/my-contracts',
       name: 'TenantContrats',
       props: true,
-      component: TenantContrats
+      component: TenantContrats,
+      meta: { auth: true, authorizedProfiles: ['TENANT'] }
     },
     {
       path: '/tenant-quittances',
       name: 'TenantQuittances',
       props: true,
-      component: TenantQuittances
+      component: TenantQuittances,
+      meta: { auth: true, authorizedProfiles: ['TENANT', 'REALESTATE'] }
     },
     {
       path: '/lessor-quittances',
       name: 'LessorQuittances',
       props: true,
-      component: LessorQuittances
+      component: LessorQuittances,
+      meta: { auth: true, authorizedProfiles: ['LESSOR', 'REALESTATE'] }
     },
     {
       path: '/about',
@@ -108,23 +113,22 @@ router.beforeEach(
   authGuard
 )
 
-
- /**
+/**
  * Do not throw an exception if push is rejected by redirection from navigation guard
  */
- const originalPush = router.push
- router.push = function push(location, onResolve, onReject) {
-     if (onResolve || onReject) {
-         return originalPush.call(this, location, onResolve, onReject)
-     }
-     // if Redirected when going from <path> to another <path> error
-     return originalPush.call(this, location).catch((err) => {
-         if(Router.isNavigationFailure(err, Router.NavigationFailureType.redirected)) {
-             return Promise.resolve(false)
-         }
-         // Otherwise throw error
-         return Promise.reject(err)
-     })
- }
+const originalPush = router.push
+router.push = function push (location, onResolve, onReject) {
+  if (onResolve || onReject) {
+    return originalPush.call(this, location, onResolve, onReject)
+  }
+  // if Redirected when going from <path> to another <path> error
+  return originalPush.call(this, location).catch((err) => {
+    if (Router.isNavigationFailure(err, Router.NavigationFailureType.redirected)) {
+      return Promise.resolve(false)
+    }
+    // Otherwise throw error
+    return Promise.reject(err)
+  })
+}
 
 export default router

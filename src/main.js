@@ -12,7 +12,6 @@ import 'vue-phone-number-input/dist/vue-phone-number-input.css'
 import * as VueGoogleMaps from 'vue2-google-maps'
 import VueSocialSharing from 'vue-social-sharing'
 
-
 // import VueGeolocation from 'vue-browser-geolocation'
 import api from '@/api'
 import config from '@/config/backend'
@@ -28,13 +27,12 @@ import Layouts from '@/components/shared/layoutsExamples.vue'
 import PageTitle from '@/components/shared/PageTitle'
 import VueMask from 'v-mask'
 
-import VueCountryCode from "vue-country-code";
-
+import VueCountryCode from 'vue-country-code'
 
 // Styles: SCSS
 import './assets/scss/main.scss'
 
-Vue.use(VueCountryCode);
+Vue.use(VueCountryCode)
 
 Vue.component('vue-phone-number-input', VuePhoneNumberInput)
 

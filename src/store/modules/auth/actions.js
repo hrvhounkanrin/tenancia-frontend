@@ -23,7 +23,6 @@ const loginAccount = async ({ commit }, userData) => {
   return await user
     .login(userData)
     .then(res => {
-      
       if (res.status == 200) {
         let userData = res.data
         commit(USER, userData.user)
@@ -41,12 +40,12 @@ const loginAccount = async ({ commit }, userData) => {
       return errors
     })
 }
-const refreshToken = async ({ commit }) =>{
+const refreshToken = async ({ commit }) => {
   console.log('Start refreshToken Ok: ', sessionStorage.getItem(AUTH_TOKEN_KEY))
   console.log('Start refreshToken  tokenDuration: ', tokenDuration)
   let user = new User()
   await user
-    .refreshToken({'token':sessionStorage.getItem(AUTH_TOKEN_KEY)})
+    .refreshToken({ 'token': sessionStorage.getItem(AUTH_TOKEN_KEY) })
     .then(res => {
       if (res.status === 200) {
         let userData = res.data

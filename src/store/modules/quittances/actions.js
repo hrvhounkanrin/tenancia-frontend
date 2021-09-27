@@ -34,5 +34,5 @@ export default {
         commit(ERROR_ADD, { key: 'getQuittanceByLessor', message: errors.message })
         return errors
       })
-  },
+  }
 }

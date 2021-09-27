@@ -21,7 +21,7 @@ export default {
     return state.errorMessage
   },
   currentAppartments: state => {
-    const appartements = (state.selectedImmeuble===null) ? []: state.selectedImmeuble.appartements
+    const appartements = (state.selectedImmeuble === null) ? [] : state.selectedImmeuble.appartements
     console.log('Selected appartments:', appartements)
     return appartements
   }

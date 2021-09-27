@@ -10,7 +10,6 @@ import shared from './modules/shared'
 import contrats from './modules/contrats'
 import quittances from './modules/quittances'
 
-
 // import { main } from '@/app/shared/store/main-store'
 
 Vue.use(Vuex)

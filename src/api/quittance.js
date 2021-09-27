@@ -5,11 +5,10 @@ import api from '@/api/index'
 import config from '@/config/backend'
 const CancelToken = axios.CancelToken
 
-
 export default class Quittance {
   $serveur = api(axios, config)
-  async getQuittancesByLessor(bodyParams) {
-    return await this.$serveur.getRequest(
+  async getQuittancesByLessor (bodyParams) {
+    return this.$serveur.getRequest(
       {
         body: bodyParams,
         link: 'quittance_action/get_lessor_quittances'
@@ -17,16 +16,12 @@ export default class Quittance {
     )
   }
 
-  async getQuittanceByTenant(bodyParams) {
-    return await this.$serveur.getRequest(
+  async getQuittanceByTenant (bodyParams) {
+    return this.$serveur.getRequest(
       {
         body: bodyParams,
         link: 'quittance_action/get_tenant_quittances'
       }
     )
   }
-  
-
-
-  
- }
+}

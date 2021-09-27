@@ -51,94 +51,29 @@ export default {
   async myProfiles ({ commit }) {
     let user = new User()
     let res = await user.getProfiles()
-    console.log('res userprofiles: ', res)
     commit(PROFILES, res.data.payload)
-
   },
 
-    /**
+  /**
    * Create any pr
    * @returns {} Commit any profil.
    */
 
-  
-     async createUserProfil ({ commit }, data) {
-      let user = new User()
-      let newProfile = await user.createProfile(data);
-      commit(PROFILES, newProfile.data.payload)
+  async createUserProfil ({ commit }, data) {
+    let user = new User()
+    let newProfile = await user.createProfile(data)
+    commit(PROFILES, newProfile.data.payload)
+  },
 
-    },
-
-        /**
+  /**
    * Update any profil$$
    * @returns {} Commit any profil.
    */
 
-  
-    async updateUserProfil ({ commit }, data) {
+  async updateUserProfil ({ commit }, data) {
     let user = new User()
-    let newProfile = await user.updateProfile(data);
-    console.log("newProfile", newProfile)
+    let newProfile = await user.updateProfile(data)
+    console.log('newProfile', newProfile)
     commit(PROFILES, newProfile.data.payload)
-
-  },
-
-
-//   /**
-//    * Create tenant profil
-//    * @returns {} Returns tenant profil.
-//    */
-
-  
-//   async createTenant ({ commit }, data) {
-//     let user = new User()
-//     let tenantProfile = await user.createTenant(data)
-//     return tenantProfile
-//   },
-//   /**
-//    * Update existing tenant profile
-//    * @returns {} Returns tenant profil.
-//    */
-//   async updateTenant ({ commit }, data) {
-//     let user = new User()
-//     let tenantProfile = await user.updateTenant(data)
-//     return tenantProfile
-//   },
-
-//   /**
-//    * Create tenant profil
-//    * @returns {} Returns lessor profil.
-//    */
-//   async createLessor ({ commit }, data) {
-//     let user = new User()
-//     let lessorProfile = await user.createLessor(data)
-//     return lessorProfile
-//   },
-//   /**
-//    * Update existing lessor profile
-//    * @returns {} Returns lessor profil.
-//    */
-//   async updateLessor ({ commit }, data) {
-//     let user = new User()
-//     let lessorProfile = await user.updateLessor(data)
-//     return lessorProfile
-//   },
-//   /**
-//    * Create realEstate profil
-//    * @returns {} Returns real estate profil.
-//    */
-//   async createRealEstate ({ commit }, data) {
-//     let user = new User()
-//     let lessorProfile = await user.createRealEstate(data)
-//     return lessorProfile
-//   },
-//   /**
-//  * Update existing lessor profile
-//  * @returns {} Returns real estate profil.
-//  */
-//   async updateRealEstate ({ commit }, data) {
-//     let user = new User()
-//     let lessorProfile = await user.updateRealEstate(data)
-//     return lessorProfile
-//   }
+  }
 }

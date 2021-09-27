@@ -8,7 +8,7 @@ import axios from 'axios'
 export default class AccessoireLoyer {
   $serveur = api(axios, config)
   async getAccessoireLoyer (bodyParams) {
-    return await this.$serveur.getRequest(
+    return this.$serveur.getRequest(
       {
         body: bodyParams,
         link: 'accessoire_action/get_accessoire'
@@ -16,7 +16,7 @@ export default class AccessoireLoyer {
     )
   }
   async createAccessoireLoyer (bodyParams) {
-    return await this.$serveur.postRequest(
+    return this.$serveur.postRequest(
       {
         body: bodyParams,
         link: 'accessoire_action/create_accessoire'
@@ -24,11 +24,11 @@ export default class AccessoireLoyer {
     )
   }
   async updateAccessoireLoyer (bodyParams) {
-    return await this.$serveur.postRequest(
+    return this.$serveur.postRequest(
       {
         body: bodyParams,
         link: 'accessoire_action/update_accessoire'
       }
     )
   }
- }
+}

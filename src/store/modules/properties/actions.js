@@ -17,13 +17,12 @@ export default {
       .then(res => {
         if (res.status === 200) {
           let immeubles = res.data.payload
-          immeubles = immeubles.map(obj=> ({ ...obj, isActive: false }))
+          immeubles = immeubles.map(obj => ({ ...obj, isActive: false }))
           if (immeubles.length > 0) {
-            immeubles[0].isActive=true
+            immeubles[0].isActive = true
             commit(SELECTED_IMMEUBLE, immeubles[0])
           }
           commit(IMMEUBLE_LIST, immeubles)
-         
         }
       })
       .catch(errors => {
@@ -109,18 +108,17 @@ export default {
     commit(ERROR_REMOVE, 'clonerAppartement')
     let appartement = new Appartement()
     return appartement.clonerAppartement(data)
-  
   },
- 
+
   // -----TYPE DEPENDANCES-----
-  async createNewDependency({ commit }, data) {
+  async createNewDependency ({ commit }, data) {
     commit(ERROR_REMOVE, 'createNewDependency')
     let typeDependance = new TypeDependance()
     return typeDependance.createDependance(data)
       .then(res => {
         if (res.status === 200) {
           let typeDependance = res.data.payload
-          commit(ADD_DEPENDANCE, {...typeDependance,nbre: null, superficie: null})
+          commit(ADD_DEPENDANCE, { ...typeDependance, nbre: null, superficie: null })
         }
       })
       .catch(errors => {
@@ -161,7 +159,7 @@ export default {
         return false
       })
   },
-  async reverseGeocoding({commit}, data){
+  async reverseGeocoding ({ commit }, data) {
     commit(ERROR_REMOVE, 'reverseGeocoding')
     let immeuble = new Immeuble()
     return immeuble.reverseGeocoding(data)

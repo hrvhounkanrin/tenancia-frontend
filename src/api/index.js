@@ -7,31 +7,27 @@ import store from '../store'
 import router from '../router/router'
 
 export default ($http, $config) => {
-
-  
   const $api = $http.create({
     baseURL: $config.serverURL,
     headers: { 'Content-Type': 'application/json' }
   })
 
   $api.interceptors.request.use(
-   
+
     config => {
-      
       const authToken = sessionStorage.getItem(AUTH_TOKEN_KEY)
       if (authToken) {
-        //check if token is about to expire and refresh it
-        /*let tokenExpireAt = sessionStorage.getItem(TOKEN_EXPIRE_AT_KEY)
+        // check if token is about to expire and refresh it
+        /* let tokenExpireAt = sessionStorage.getItem(TOKEN_EXPIRE_AT_KEY)
         let nbMinBeforeTokenExpire = moment(tokenExpireAt).diff(moment(), 'minutes')
         let isAlreadyFetchingAccessToken = false
-        console.log(nbMinBeforeTokenExpire) 
+        console.log(nbMinBeforeTokenExpire)
         if(nbMinBeforeTokenExpire > 0 && nbMinBeforeTokenExpire<=18 && !isAlreadyFetchingAccessToken){
           console.log('Refreshing token:', store)
           store.dispatch('auth/refreshToken')
           isAlreadyFetchingAccessToken = true
-        }*/
-       
-        
+        } */
+
         config.headers['Authorization'] = `Bearer ${authToken}`
       }
       return config
@@ -41,43 +37,43 @@ export default ($http, $config) => {
       return Promise.reject(error)
     }
   )
-  
+
   $api.interceptors.response.use(
     (response) => {
-      return response;
+      return response
     },
     (error) => {
-      //Check if token has expired and deconnect user
+      // Check if token has expired and deconnect user
       const tokenExpireAt = sessionStorage.getItem(TOKEN_EXPIRE_AT_KEY)
       let nbMinBeforeTokenExpire = moment(tokenExpireAt).diff(moment(), 'minutes')
-      if(nbMinBeforeTokenExpire <=0 && error.response.status===401){
+      if (nbMinBeforeTokenExpire <= 0 && error.response.status === 401) {
         store.dispatch('auth/logout')
         router.push({ name: 'Register' })
       }
-      
+
       const errorResponse = {
         isValidationError: false,
         message: 'Network Error.',
         type: 'error',
-        errors: [],
+        errors: []
       }
 
       const ErrorMessages = {
-        400: 'Une erreur est survenue lors du traitement de votre requête', 
+        400: 'Une erreur est survenue lors du traitement de votre requête',
         401: 'Non autorisé, You are not Allowed',
         403: 'Sorry, You are not allowed for This Action',
         404: 'La ressource que vous demandez n\'existe pas.',
         405: 'API Route Method Not Allowed',
         500: 'Server Error, please try again later',
         request: 'There is Some Problem With Our Servers, Please Try again Later',
-        other: 'There was some Problem with your Request, Please Try again Later',
+        other: 'There was some Problem with your Request, Please Try again Later'
       }
       console.log('orginalErrorMessage:', error.response)
-      const orginalErrorMessage = error.response.data.payload.message 
+      const orginalErrorMessage = error.response.data.payload.message
       if (error && error.response) {
         switch (error.response.status) {
           case 400:
-            errorResponse.message = (orginalErrorMessage) ? orginalErrorMessage: ErrorMessages['400']
+            errorResponse.message = (orginalErrorMessage) || ErrorMessages['400']
             break
           case 401:
             errorResponse.message = ErrorMessages['401']
@@ -90,13 +86,12 @@ export default ($http, $config) => {
             break
           case 405:
             errorResponse.message = ErrorMessages['405']
-            break;
+            break
           case 500:
             errorResponse.message = ErrorMessages['500']
             break
         }
-      }
-      else if (error && error.request) {
+      } else if (error && error.request) {
         errorResponse.message = ErrorMessages['request']
         // client never received a response, or request never left
       } else if (error instanceof Error) {
@@ -138,6 +133,3 @@ export default ($http, $config) => {
     deleteRequest
   }
 }
-
-
-

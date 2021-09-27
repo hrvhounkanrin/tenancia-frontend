@@ -6,7 +6,6 @@ import Register from '../../src/views/register/index.vue'
 
 const localVue = createLocalVue()
 
-
 localVue.use(BootstrapVue)
 
 describe('index.vue Test', () => {
@@ -14,7 +13,7 @@ describe('index.vue Test', () => {
   let store
   beforeEach(() => {
     localVue.use(Vuex)
-    route  = {c_type: 'login'}
+    route = { c_type: 'login' }
     store = new Vuex.Store({
       state: {
         user: null,
@@ -25,7 +24,7 @@ describe('index.vue Test', () => {
         errors: null,
         connectedUser: null,
         token: null
-        }
+      }
     })
   })
   const wrapper = shallowMount(Register, {
@@ -40,7 +39,6 @@ describe('index.vue Test', () => {
       $store: store
     }
   })
-
 
   it('check signin-tab render', () => {
     const singinTab = wrapper.find('#signin-tab')
@@ -84,5 +82,5 @@ describe('index.vue Test', () => {
   it('check signupPassConfirmation render', () => {
     const signupPassConfirmation = wrapper.find('#signupPassConfirmation')
     expect(signupPassConfirmation.exists()).toBe(false)
-  })*/
+  }) */
 })

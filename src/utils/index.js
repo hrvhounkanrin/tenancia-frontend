@@ -24,48 +24,48 @@ const toggleFullScreen = () => {
     cancelFullScreen.call(doc)
   }
 }
-const currencyToNumber = function(currency){
-    console.log('currencyToNumber:', currency)
-    const convertedNumber = currency
-    try {
-      const stringValue = currency.replaceAll(/\s/g,'').replace(/[^\d.-]/g, '')
-      return parseInt(stringValue)
-    } catch(err) {
-      return convertedNumber
-    }
+const currencyToNumber = function (currency) {
+  console.log('currencyToNumber:', currency)
+  const convertedNumber = currency
+  try {
+    const stringValue = currency.replaceAll(/\s/g, '').replace(/[^\d.-]/g, '')
+    return parseInt(stringValue)
+  } catch (err) {
+    return convertedNumber
+  }
 }
-const periodiciteToString = function(periodicite){
-  strPeridicite =''
-  if(periodicite===12){
+const periodiciteToString = function (periodicite) {
+  strPeridicite = ''
+  if (periodicite === 12) {
     periodicite = 'MENSUELLE'
   }
-  if(periodicite===4){
+  if (periodicite === 4) {
     periodicite = 'TRIMESTRIELLE'
   }
-  if(periodicite===2){
+  if (periodicite === 2) {
     periodicite = 'SEMESNTRIELLE'
   }
-  if(periodicite===2){
+  if (periodicite === 2) {
     periodicite = 'ANNUELLE'
   }
   return strPeridicite
 }
-const getQuittanceClass = function(quittance){
-  if (quittance['statut']==='PENDING'){
-      return 'badge-warning'
+const getQuittanceClass = function (quittance) {
+  if (quittance['statut'] === 'PENDING') {
+    return 'badge-warning'
   }
-  if (quittance['statut']==='PAID'){
-      return 'badge-success'
+  if (quittance['statut'] === 'PAID') {
+    return 'badge-success'
   }
   return 'badge-danger'
-}   
+}
 
-const getAppartmentStatutClass = function(statutAppartment){
-  if (statutAppartment==='RESERVE'){
-      return 'badge-warning'
+const getAppartmentStatutClass = function (statutAppartment) {
+  if (statutAppartment === 'RESERVE') {
+    return 'badge-warning'
   }
-  if (statutAppartment==='LIBRE'){
-      return 'badge-success'
+  if (statutAppartment === 'LIBRE') {
+    return 'badge-success'
   }
   return 'badge-danger'
 }

@@ -9,7 +9,7 @@ export default class Immeuble {
   $serveur = api(axios, config)
 
   async getImmeubles (bodyParams) {
-    return await this.$serveur.getRequest(
+    return this.$serveur.getRequest(
       {
         body: bodyParams,
         link: 'immeuble_action/get_immeuble'
@@ -17,7 +17,7 @@ export default class Immeuble {
     )
   }
   async createImmeuble (bodyParams) {
-    return await this.$serveur.postRequest(
+    return this.$serveur.postRequest(
       {
         body: bodyParams,
         link: 'immeuble_action/create_immeuble'
@@ -25,7 +25,7 @@ export default class Immeuble {
     )
   }
   async updateImmeuble (bodyParams) {
-    return await this.$serveur.postRequest(
+    return this.$serveur.postRequest(
       {
         body: bodyParams,
         link: 'immeuble_action/update_immeuble'
@@ -33,12 +33,11 @@ export default class Immeuble {
     )
   }
   async reverseGeocoding (bodyParams) {
-    return await this.$serveur.postRequest(
+    return this.$serveur.postRequest(
       {
         body: bodyParams,
         link: 'immeuble_action/reverse_geocoding'
       }
     )
   }
-  
- }
+}

@@ -9,7 +9,7 @@ export default class Appartement {
   $serveur = api(axios, config)
 
   async getAppartements (bodyParams) {
-    return await this.$serveur.getRequest(
+    return this.$serveur.getRequest(
       {
         body: bodyParams,
         link: 'logement_action/get_logement'
@@ -17,7 +17,7 @@ export default class Appartement {
     )
   }
   async createAppartement (bodyParams) {
-    return await this.$serveur.postRequest(
+    return this.$serveur.postRequest(
       {
         body: bodyParams,
         link: 'logement_action/create_logement'
@@ -25,7 +25,7 @@ export default class Appartement {
     )
   }
   async updateAppartement (bodyParams) {
-    return await this.$serveur.postRequest(
+    return this.$serveur.postRequest(
       {
         body: bodyParams,
         link: 'logement_action/update_logement'
@@ -33,13 +33,11 @@ export default class Appartement {
     )
   }
   async clonerAppartement (bodyParams) {
-    return await this.$serveur.postRequest(
+    return this.$serveur.postRequest(
       {
         body: bodyParams,
         link: 'logement_action/cloner_logement'
       }
     )
   }
- }
-
- 
+}

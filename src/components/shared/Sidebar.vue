@@ -21,7 +21,7 @@
 <script>
 
 import Vue from 'vue'
-
+import { mapState } from 'vuex'
 import { SidebarMenu } from 'vue-sidebar-menu'
 import VuePerfectScrollbar from 'vue-perfect-scrollbar'
 import { SettingsIcon, PlusIcon, FileTextIcon, FolderIcon,
@@ -62,81 +62,11 @@ export default {
     VuePerfectScrollbar,
     'font-awesome-icon': FontAwesomeIcon
   },
-  props: {
-    sidebarbg: String
-  },
-  data () {
-    return {
-      menu: [
-        {
-          header: true,
-          title: 'TENANCIA'
-        },
-        {
-          title: 'Biens immobiliers',
-          href: '/my-properties',
-          icon: {
-            element: 'home-icon'
-          }
-        },
-        {
-          title: 'Portefeuille de contrats',
-          href: '/my-portfolio',
-          icon: {
-            element: 'folder-icon'
-          }
-        },
-        {
-          title: 'Contrats de bail',
-          href: '/my-contracts',
-          icon: {
-            element: 'file-text-icon'
-          }
-        },
-        {
-          title: 'Quittances de bail',
-          href: '/tenant-quittances',
-          icon: {
-            element: 'clipboard-icon'
-          }
-        },
-        {
-          title: 'Quittances bailleur',
-          href: '/lessor-quittances',
-          icon: {
-            element: 'list-icon'
-          }
-        },
-        {
-          title: 'Services plus',
-          icon: {
-            element: 'plus-icon'
-          },
-           child: [
-                {
-                    href: '#',
-                    title: 'Réparations locatives',
-                },
-                {
-                    href: '#',
-                    title: 'Déclarations fiscales',
-                    class: 'pr-2',
-                 
-                },
-
-            ]
-        },
-        {
-          title: 'Paramètres',
-          icon: {
-            element: 'settings-icon'
-          }
-        }
-      ],
-      collapsed: true
-    }
-  },
-  computed: {
+   computed: {
+    ...mapState({
+      api_errors: (state) => state.contrats.errors,
+      userProfiles: (state) => state.user.profilesList
+    }),
     sidebarCollapsed: {
       get () {
         return this.$store.state.shared.sidebarCollapsed
@@ -145,6 +75,102 @@ export default {
         this.$store.commit('shared/SET_SIDEBAR_COLLAPSED', value)
       }
     }
+  },
+  props: {
+    sidebarbg: String, 
+  },
+  data () {
+    return {
+      initalMenu:[
+         {
+          header: true,
+          title: 'TENANCIA',
+          authorizedProfiles: ['TENANT', 'LESSOR', 'REALESTATE'] 
+          },
+          {
+              title: 'Biens immobiliers',
+              href: '/my-properties',
+              icon: {
+                element: 'home-icon'
+              },
+              authorizedProfiles: ['LESSOR', 'REALESTATE'] 
+          },
+          {
+            title: 'Portefeuille de contrats',
+            href: '/my-portfolio',
+            icon: {
+              element: 'folder-icon'
+            },
+            authorizedProfiles: ['LESSOR', 'REALESTATE']
+          },
+          {
+            title: 'Contrats de bail',
+            href: '/my-contracts',
+            icon: {
+              element: 'file-text-icon'
+            },
+            authorizedProfiles: ['TENANT']
+          },
+          {
+            title: 'Quittances de bail',
+            href: '/tenant-quittances',
+            icon: {
+              element: 'clipboard-icon'
+            },
+            authorizedProfiles: ['TENANT', 'LESSOR', 'REALESTATE']
+          },
+          {
+            title: 'Quittances bailleur',
+            href: '/lessor-quittances',
+            authorizedProfiles: ['LESSOR', 'REALESTATE'],
+            icon: {
+              element: 'list-icon'
+            }
+          },
+          {
+            title: 'Services plus',
+            icon: {
+              element: 'plus-icon'
+            },
+            authorizedProfiles: ['LESSOR', 'REALESTATE', 'TENANT'] ,
+            child: [
+                  {
+                      href: '#',
+                      title: 'Réparations locatives',
+                      authorizedProfiles: ['LESSOR', 'REALESTATE', 'TENANT'] ,
+                  },
+                  {
+                      href: '#',
+                      title: 'Déclarations fiscales',
+                      class: 'pr-2',
+                      authorizedProfiles: ['LESSOR', 'REALESTATE', 'TENANT'] ,
+                  
+                  },
+
+              ]
+          },
+          {
+            title: 'Paramètres',
+            authorizedProfiles: ['TENANT', 'LESSOR', 'REALESTATE'],
+            icon: {
+              element: 'settings-icon'
+            }
+          }
+      ],
+      menu: [],
+      collapsed: true
+    }
+  },
+  mounted() {
+      const that = this
+      console.log('this.userProfiles:',this.userProfiles)
+      this.initalMenu.forEach((item)=>{
+          console.log('item:',typeof(item.authorizedProfiles) )
+          if(item.authorizedProfiles && item.authorizedProfiles.some(p=>that.userProfiles.includes(p))){
+              that.menu.push(item)
+          }
+      })
+      //this.menu.push(this.initalMenu.authorizedProfiles.some(p=>userProfiles.includes(p)))
   },
   methods: {
     toggleSidebar () {

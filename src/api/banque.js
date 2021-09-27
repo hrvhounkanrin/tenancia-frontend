@@ -9,12 +9,11 @@ export default class Banque {
   $serveur = api(axios, config)
 
   async getBanques (bodyParams) {
-    return await this.$serveur.getRequest(
+    return this.$serveur.getRequest(
       {
         body: bodyParams,
         link: 'banque_action/get_banque'
       }
     )
   }
-
- }
+}
