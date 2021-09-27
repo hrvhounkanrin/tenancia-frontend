@@ -596,16 +596,7 @@ export default {
       this.submitted = true;
       await this.loginAccount(this.credential)
         .then((res) => {
-          this.myProfiles()
-            .then((userProfiles) => {
-              this.$router.push({ name: "Home" });
-            })
-            .catch((error) => {
-              console.log(
-                error,
-                "Une erreur est survenue lors de la récupération de vos profiles"
-              );
-            });
+           this.$router.push({ name: "Home" });
         })
         .catch((error) => {
           console.log("handleLogin", error);

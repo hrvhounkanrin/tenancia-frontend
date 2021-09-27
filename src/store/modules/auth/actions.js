@@ -31,6 +31,7 @@ const loginAccount = async ({ commit }, userData) => {
         commit(TOKEN_EXPIRE_AT, userData.expire_in)
         commit(AUTHENTICATED, true)
         commit(LOCAL_LOGIN_SUCCESS)
+        commit('user/PROFILES', userData.profiles, { root: true })
         sessionStorage.setItem(USER_KEY, JSON.stringify(userData.user))
       }
       return res

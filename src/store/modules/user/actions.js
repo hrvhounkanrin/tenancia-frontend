@@ -1,3 +1,4 @@
+
 import {
   ADMIN_LIST,
   UPDATE_ADMIN,
@@ -50,19 +51,7 @@ export default {
   async myProfiles ({ commit }) {
     let user = new User()
     let res = await user.getProfiles()
-
-    // if (res.data.payload.lessor) {
-    //   localStorage.setItem('lessor', JSON.stringify(res.data.payload.lessor))
-    // }
-
-    // if (res.data.payload.tenant) {
-    //   localStorage.setItem('tenant', JSON.stringify(res.data.payload.tenant))
-    // }
-
-    // if (res.data.payload.realEstate) {
-    //   localStorage.setItem('realEstate', JSON.stringify(res.data.payload.realEstate))
-    // }
-
+    console.log('res userprofiles: ', res)
     commit(PROFILES, res.data.payload)
 
   },
