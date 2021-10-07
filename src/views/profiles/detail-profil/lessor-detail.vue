@@ -239,7 +239,7 @@
             title="Save Lessor"
             @click="saveLessor"
           >
-          
+
             <span>{{lessor.id && lessor.id > 0? 'Enregistrer' : 'Créer'}}</span>
           </a> -->
           </div>
@@ -250,45 +250,29 @@
 </template>
 
 <script>
-import { mapState, mapActions, mapMutations, mapGetters } from "vuex";
-import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
-import { alert } from "@/components/shared/";
-import { library } from "@fortawesome/fontawesome-svg-core";
-import Datepicker from "vuejs-datepicker";
-import { mixin } from "@/mixin/mixin";
-import moment from "moment";
-import {
-  faArrowRight,
-  faArrowUp,
-  faBinoculars,
-  faTrashAlt,
-  faQuestionCircle,
-} from "@fortawesome/free-solid-svg-icons";
+import { mapActions, mapGetters } from 'vuex'
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
+import { mixin } from '@/mixin/mixin'
 
 export default {
-  name: "lessor-detail",
-  // props: { tenant: Object },
+  name: 'lessor-detail',
   components: {
-    "font-awesome-icon": FontAwesomeIcon,
-    alert,
-    Datepicker,
+    'font-awesome-icon': FontAwesomeIcon
   },
-  data() {
+  data () {
     return {
-      //Start  vue-phone-number-input config
       translations: {
-        countrySelectorLabel: "Code pays",
-        countrySelectorError: "Choisir un pays",
-        phoneNumberLabel: "Numéro de téléphone",
-        example: "Exemple :",
+        countrySelectorLabel: 'Code pays',
+        countrySelectorError: 'Choisir un pays',
+        phoneNumberLabel: 'Numéro de téléphone',
+        example: 'Exemple :'
       },
-      onlyCountries: ["BJ", "TG", "CI", "NE", "NG", "CM", "BF", "ML", "FR"],
+      onlyCountries: ['BJ', 'TG', 'CI', 'NE', 'NG', 'CM', 'BF', 'ML', 'FR'],
       countries: [],
-      //End  vue-phone-number-input config
       editingLessor: false,
       phone: {
-        country: "",
-        dial_code: "",
+        country: '',
+        dial_code: ''
       },
       errors: {},
       loadingSaveLessor: false,
@@ -300,100 +284,92 @@ export default {
         numcompte: null,
         numero_ifu: null,
         mode_paiement: null,
-        profile_type: "lessor",
-      },
-    };
+        profile_type: 'lessor'
+      }
+    }
   },
   created: function () {
-    // console.log("user", this.getProfiles)
-    this.lessor.phone_number = this.getProfiles.phone_number.split(" ")[1]
-    this.countries = mixin.methods.getAllCountry(this.onlyCountries);
+    this.lessor.phone_number = this.getProfiles.phone_number.split(' ')[1]
+    this.countries = mixin.methods.getAllCountry(this.onlyCountries)
   },
   computed: {
-    ...mapGetters("user", ["getProfiles"]),
-    ...mapGetters("banque", ["banquesList", "modePaiementList"]),
-    ...mapGetters("auth", ["user"]),
+    ...mapGetters('user', ['getProfiles']),
+    ...mapGetters('banque', ['banquesList', 'modePaiementList']),
+    ...mapGetters('auth', ['user'])
   },
   methods: {
-    ...mapActions("user", ["createUserProfil", "updateUserProfil"]),
-    onSelect({ name, iso2, dialCode }) {
-      this.phone.country = iso2;
-      this.phone.dial_code = dialCode;
+    ...mapActions('user', ['createUserProfil', 'updateUserProfil']),
+    onSelect ({ name, iso2, dialCode }) {
+      this.phone.country = iso2
+      this.phone.dial_code = dialCode
     },
-    editLessor(e) {
-      this.editingLessor = true;
+    editLessor (e) {
+      this.editingLessor = true
       if (this.getProfiles && this.getProfiles.lessor) {
         this.lessor = {
           ...this.getProfiles.lessor,
-          phone_number: this.getProfiles.lessor.phone_number.split(" ")[1],
-          profile_type: "lessor",
-        };
-        this.lessor.banque_id = this.getProfiles.lessor.banque.id;
+          phone_number: this.getProfiles.lessor.phone_number.split(' ')[1],
+          profile_type: 'lessor'
+        }
+        this.lessor.banque_id = this.getProfiles.lessor.banque.id
         console.log(
-          "res",
+          'res',
           this.banquesList.find(
-            (x) => x.libbanque == this.lessor.banque.libbanque
+            (x) => x.libbanque === this.lessor.banque.libbanque
           )
-        );
+        )
         // this.$forceUpdate();
       }
     },
-    onLessorActionSucess(res) {
-      // let lessor = res.payload;
-      // let profiles = {
-      //   lessor: lessor,
-      //   tenant: this.tenantProfile,
-      //   real_estate: this.realEstateProfile
-      // };
-      // this.setProfiles(profiles);
-      this.editingLessor = false;
+    onLessorActionSucess (res) {
+      this.editingLessor = false
       // this.$forceUpdate();
     },
-    onLessorActionFailure(err) {
-      this.errors.lessorMsg = err.response.data.message;
-      this.editingLessor = true;
+    onLessorActionFailure (err) {
+      this.errors.lessorMsg = err.response.data.message
+      this.editingLessor = true
       // this.$forceUpdate();
     },
-    async saveLessor() {
-      this.loadingSaveLessor = true;
-      this.errors = {};
+    async saveLessor () {
+      this.loadingSaveLessor = true
+      this.errors = {}
       this.errors.phone_numberMsg = !this.lessor.phone_number
-        ? "Veuillez renseigner votre n° téléphone"
-        : null;
+        ? 'Veuillez renseigner votre n° téléphone'
+        : null
       this.errors.pays_residenceMsg = !this.lessor.pays_residence
-        ? "Veuillez choisir votre pays de résidence"
-        : null;
+        ? 'Veuillez choisir votre pays de résidence'
+        : null
       this.errors.banque_idMsg = !this.lessor.banque_id
-        ? "Veuillez choisir une banque"
-        : null;
+        ? 'Veuillez choisir une banque'
+        : null
       this.errors.mode_paiementMsg = !this.lessor.mode_paiement
-        ? "Veuillez choisir un mode de paiement"
-        : null;
+        ? 'Veuillez choisir un mode de paiement'
+        : null
       this.errors.numcompteMsg = !this.lessor.numcompte
-        ? "Veuillez renseigner votre numéro de compte"
-        : null;
+        ? 'Veuillez renseigner votre numéro de compte'
+        : null
 
       this.errors.numifuMsg = !this.lessor.numero_ifu
-        ? "Veuillez renseigner votre numéro IFU"
-        : null;
+        ? 'Veuillez renseigner votre numéro IFU'
+        : null
 
-      //return if any error property is not null
+      // return if any error property is not null
       if (!Object.values(this.errors).some((x) => x === null)) {
-        vm.editingLessor = true;
+        this.editingLessor = true
         // this.$forceUpdate();
-        return;
+        return
       }
 
       if (this.lessor.id && this.lessor.id > 0) {
         await this.updateUserProfil({
           ...this.lessor,
           user_id: this.user.id,
-          profile_type: "lessor",
+          profile_type: 'lessor',
           phone_number: `${this.phone.dial_code} ${this.lessor.phone_number}`,
-          country: this.phone.country,
+          country: this.phone.country
         })
           .then((res) => this.onLessorActionSucess(res))
-          .catch((err) => this.onLessorActionFailure(err));
+          .catch((err) => this.onLessorActionFailure(err))
       } else {
         await this.createUserProfil({
           banque_id: this.lessor.banque_id,
@@ -404,19 +380,18 @@ export default {
           // phone_number: this.lessor.phone_number,
           pays_residence: this.lessor.pays_residence,
           user_id: this.user.id,
-          profile_type: "lessor",
+          profile_type: 'lessor',
           phone_number: `${this.phone.dial_code} ${this.lessor.phone_number}`,
-          country: this.phone.country,
+          country: this.phone.country
         })
           .then((res) => this.onLessorActionSucess(res))
-          .catch((err) => this.onLessorActionFailure(err));
+          .catch((err) => this.onLessorActionFailure(err))
       }
 
-            this.loadingSaveLessor = false;
-
-    },
-  },
-};
+      this.loadingSaveLessor = false
+    }
+  }
+}
 </script>
 
 <style>

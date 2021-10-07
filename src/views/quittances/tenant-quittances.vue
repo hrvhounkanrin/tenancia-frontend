@@ -5,17 +5,20 @@
       subheading="Liste de vos quittances(Vue locataire)"
     />
     <div class="row">
-              <div class="col-lg-12 col-md-12 col-sm-8 offset-sm-2 col-xl-8 offset-xl-2">
-                      <alert  variant="warning" v-for="err in api_errors" :msg="err.message" icon="bell" :dismissSecs="15" :dismissible="true" :title="'Oups..'" :key="err.key"></alert>
-              </div>
+      <payment-card :montant="montantAPayer"></payment-card><payment-card-interface/>
+      <div class="col-lg-12 col-md-12 col-sm-8 offset-sm-2 col-xl-8 offset-xl-2">
+              <alert  variant="warning" v-for="err in api_errors" :msg="err.message" icon="bell" :dismissSecs="15" :dismissible="true" :title="'Oups..'" :key="err.key"></alert>
+      </div>
     </div>
     <div class="row">
+
       <div class="col-xl-8 col-lg-8 col-md-8 col-sm-12">
            <quittance-list-item v-for="quittance in quittances"
            :key="quittance.reference"
            :quittance="quittance"
            @select-quittance="selectQuittance(quittance)"
            @share-quittance="triggerShareQuittance(quittance)"
+           @payer-quittance="togglePaymentCard(quittance)"
            ></quittance-list-item>
       </div>
       <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 ">
@@ -73,24 +76,30 @@ import { alert } from '@/components/shared/'
 import Hashids from 'hashids'
 import QuittanceListeItem from './quittance-list-item.vue'
 import QuittanceDetailItem from './quittance-detail-item.vue'
+import PaymentCard from '@/components/shared/payment-card.vue'
+import PaymentCardInterface from '@/components/shared/payment-card-interface.vue'
+
 library.add(fas)
 library.add(fab)
-
 export default {
   name: 'TenantQuittance',
   components: {
     'font-awesome-icon': FontAwesomeIcon,
     alert: alert,
     'quittance-list-item': QuittanceListeItem,
-    'quittance-detail-item': QuittanceDetailItem
+    'quittance-detail-item': QuittanceDetailItem,
+    'payment-card': PaymentCard,
+    'payment-card-interface': PaymentCardInterface
   },
   data: function () {
     return {
+      isShowPaymentCard: true,
       activeQuittance: null,
       sharedQuittance: {
         reference: ''
       },
-      faStyle: null
+      faStyle: null,
+      montantAPayer: 35000
     }
   },
   props: {
@@ -111,6 +120,11 @@ export default {
 
   },
   methods: {
+    togglePaymentCard (montantAPayer) {
+      console.log('togglePaymentCard ok: ', this.isShowPaymentCard)
+      this.montantAPayer = montantAPayer
+      this.isShowPaymentCard = !this.isShowPaymentCard
+    },
     fetchData: async function () {
       const contratId = this.$route.query.ref
       const hashids = new Hashids()

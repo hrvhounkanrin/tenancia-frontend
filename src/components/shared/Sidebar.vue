@@ -163,19 +163,23 @@ export default {
   },
   mounted() {
       const that = this
-      console.log('this.userProfiles:',this.userProfiles)
-      this.initalMenu.forEach((item)=>{
-          console.log('item:',typeof(item.authorizedProfiles) )
-          if(item.authorizedProfiles && item.authorizedProfiles.some(p=>that.userProfiles.includes(p))){
-              that.menu.push(item)
-          }
-      })
-      //this.menu.push(this.initalMenu.authorizedProfiles.some(p=>userProfiles.includes(p)))
+      if(this.userProfiles){
+          this.initalMenu.forEach((item)=>{
+              if(item.authorizedProfiles && item.authorizedProfiles.some(p=>that.userProfiles.includes(p))){
+                  that.menu.push(item)
+              }
+          })
+      }
   },
   methods: {
     toggleSidebar () {
       this.sidebarCollapsed = !this.sidebarCollapsed
+    },
+    checkUserMenu: async function(){
+      
+
     }
   }
+  
 }
 </script>

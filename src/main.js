@@ -26,9 +26,13 @@ import Apps from '@/components/shared/appLayout.vue'
 import Layouts from '@/components/shared/layoutsExamples.vue'
 import PageTitle from '@/components/shared/PageTitle'
 import VueMask from 'v-mask'
+import PortalVue from 'portal-vue'
 
 import VueCountryCode from 'vue-country-code'
+import VueTelInput from 'vue-tel-input'
+import 'vue-tel-input/dist/vue-tel-input.css'
 
+  
 // Styles: SCSS
 import './assets/scss/main.scss'
 
@@ -41,12 +45,13 @@ Vue.component('default-layout', Default)
 Vue.component('pages-layout', Pages)
 Vue.component('apps-layout', Apps)
 Vue.component('examples-layout', Layouts)
+Vue.use(PortalVue)
 const gauthOption = {
   clientId: `${process.env.VUE_APP_GOOGLE_CLIENT_ID}.apps.googleusercontent.com`,
   scope: 'profile email',
   prompt: 'select_account'
 }
-
+Vue.use(VueTelInput)
 Vue.use(VueToast)
 Vue.use(VueSweetalert2)
 Vue.use(VueMask)
@@ -62,6 +67,8 @@ Vue.use(VueSocialSharing)
 Vue.use(BootstrapVue)
 Vue.prototype.$config = config
 Vue.prototype.$api = api(axios, config)
+
+
 
 store.dispatch('auth/verified')
 Vue.config.productionTip = false

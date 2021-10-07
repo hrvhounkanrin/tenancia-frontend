@@ -104,7 +104,7 @@
                     </div>
                 </div>
                 <div class="card-footer d-block text-center">
-                    <b-button variant="success">
+                    <b-button variant="success" v-b-modal="'modal-bbb4'">
                         <font-awesome-icon icon="money-check-alt" class="mr-2" />
                         PAYER 
                     </b-button>

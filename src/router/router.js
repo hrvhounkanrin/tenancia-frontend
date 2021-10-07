@@ -11,7 +11,7 @@ import ContratForm from '@/views/contrats/contrat-form.vue'
 import TenantContrats from '@/views/contrats/tenant-contrats.vue'
 import LessorQuittances from '@/views/quittances/lessor-quittances.vue'
 import TenantQuittances from '@/views/quittances/tenant-quittances.vue'
-
+import { LS_ROUTE } from '@/constants'
 Vue.use(Router)
 
 const router = new Router({
@@ -113,6 +113,12 @@ router.beforeEach(
   authGuard
 )
 
+router.afterEach(
+  (to, from) => {
+    if(to.name !== 'Register')
+      sessionStorage.setItem(LS_ROUTE, to.name)
+  }
+)
 /**
  * Do not throw an exception if push is rejected by redirection from navigation guard
  */
