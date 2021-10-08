@@ -11,17 +11,6 @@
                     <span class="hamburger-inner"></span>
                 </span>
             </button>
-            <!--<div class="search-link">
-                <div class="d-none d-lg-flex align-items-center">
-                    <font-awesome-icon icon="search" class="search-icon w-auto" />
-                    <input type="text" placeholder="Click here to search...">
-                </div>
-                <div class="d-none d-sm-flex d-lg-none">
-                    <b-button variant="outline-primary" size="sm" class="px-3" v-b-modal.search-modal>
-                        <font-awesome-icon icon="search" />
-                    </b-button>
-                </div>
-            </div>-->
         </div>
         <div class="d-flex align-items-center">
             <Dots/>

@@ -308,95 +308,96 @@
                 </div>
             </div>
         </b-modal>
-
-        <button class="btn bg-neutral-danger text-danger font-size-lg mr-2 p-0 d-inline-block shadow-none text-center d-44 rounded position-relative" type="button" id="popoverIntegrExample4">
-            <span class="badge badge-circle badge-danger badge-header-alt">Online</span>
-            <font-awesome-icon :icon="['far', 'comment']" />
-        </button>
-        <b-popover triggers="click blur" placement="bottom" @show="showPopoverIntegrations" ref="popoverIntegrations4" target="popoverIntegrExample4">
-            <ul class="list-group list-group-flush text-left bg-transparent">
-                <li class="list-group-item rounded-top">
-                    <div class="align-box-row">
-                        <div>
-                            <div class="avatar-icon-wrapper avatar-icon-md">
-                                <div class="avatar-icon rounded-circle"><img
-                                        src="@/assets/img/avatars/avatar2.jpg"
-                                        alt=""></div>
+        <!--
+            <button class="btn bg-neutral-danger text-danger font-size-lg mr-2 p-0 d-inline-block shadow-none text-center d-44 rounded position-relative" type="button" id="popoverIntegrExample4">
+                <span class="badge badge-circle badge-danger badge-header-alt">Online</span>
+                <font-awesome-icon :icon="['far', 'comment']" />
+            </button>
+            <b-popover triggers="click blur" placement="bottom" @show="showPopoverIntegrations" ref="popoverIntegrations4" target="popoverIntegrExample4">
+                <ul class="list-group list-group-flush text-left bg-transparent">
+                    <li class="list-group-item rounded-top">
+                        <div class="align-box-row">
+                            <div>
+                                <div class="avatar-icon-wrapper avatar-icon-md">
+                                    <div class="avatar-icon rounded-circle"><img
+                                            src="@/assets/img/avatars/avatar2.jpg"
+                                            alt=""></div>
+                                </div>
+                            </div>
+                            <div class="pl-2">
+                                <span class="pb-1 d-block">John Doe</span>
+                                <small class="pb-1 text-black-50 d-block">John's bio description here...</small>
+                                <div class="divider my-2"></div>
+                                <small class="text-black-50">
+                                    Deadline: <b class="text-danger">12 July 2029</b>
+                                </small>
                             </div>
                         </div>
-                        <div class="pl-2">
-                            <span class="pb-1 d-block">John Doe</span>
-                            <small class="pb-1 text-black-50 d-block">John's bio description here...</small>
-                            <div class="divider my-2"></div>
-                            <small class="text-black-50">
-                                Deadline: <b class="text-danger">12 July 2029</b>
-                            </small>
-                        </div>
-                    </div>
-                </li>
-                <li class="list-group-item bg-transparent py-2">
-                    <div class="align-box-row mb-1">
-                        <div>
-                            <small class="font-weight-bold">Orders</small>
-                        </div>
-                        <div class="ml-auto">
-                            <div class="font-weight-bold text-success">
-                                348
+                    </li>
+                    <li class="list-group-item bg-transparent py-2">
+                        <div class="align-box-row mb-1">
+                            <div>
+                                <small class="font-weight-bold">Orders</small>
+                            </div>
+                            <div class="ml-auto">
+                                <div class="font-weight-bold text-success">
+                                    348
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="progress-bar-sm progress-bar-animated-alt progress w-100">
-                        <div class="progress-bar bg-success w-43" role="progressbar" aria-valuenow="43" aria-valuemin="0" aria-valuemax="100"></div>
-                    </div>
-                    <div class="align-box-row progress-bar--label mt-1 text-muted">
-                        <small class="text-dark">0</small>
-                        <small class="ml-auto">100%</small>
-                    </div>
-                </li>
-            </ul>
-            <div class="card-footer bg-white p-3 text-center d-block">
-                <b-button variant="success" size="sm" class="mr-1">
-                    <font-awesome-icon icon="sync" spin class="mr-1"/>
-                    Refresh
-                </b-button>
-                <b-button variant="danger" size="sm" class="ml-1">
-                    <font-awesome-icon icon="sync" class="mr-1"/>
-                    Remove
-                </b-button>
-            </div>
-        </b-popover>
+                        <div class="progress-bar-sm progress-bar-animated-alt progress w-100">
+                            <div class="progress-bar bg-success w-43" role="progressbar" aria-valuenow="43" aria-valuemin="0" aria-valuemax="100"></div>
+                        </div>
+                        <div class="align-box-row progress-bar--label mt-1 text-muted">
+                            <small class="text-dark">0</small>
+                            <small class="ml-auto">100%</small>
+                        </div>
+                    </li>
+                </ul>
+                <div class="card-footer bg-white p-3 text-center d-block">
+                    <b-button variant="success" size="sm" class="mr-1">
+                        <font-awesome-icon icon="sync" spin class="mr-1"/>
+                        Refresh
+                    </b-button>
+                    <b-button variant="danger" size="sm" class="ml-1">
+                        <font-awesome-icon icon="sync" class="mr-1"/>
+                        Remove
+                    </b-button>
+                </div>
+            </b-popover>
 
-        <button type="button" class="btn bg-neutral-first text-first font-size-lg mr-2 p-0 d-inline-block shadow-none text-center d-44 rounded" id="popoverIntegrExample3">
-            <font-awesome-icon icon="th" />
-        </button>
-        <b-popover triggers="click blur" placement="bottom" @show="showPopoverIntegrations" ref="popoverIntegrations3" target="popoverIntegrExample3">
-            <div class="px-3 pt-3 pb-3 text-center">
-                <div class="m-3 d-inline-block text-center">
-                    <a href="javascript:void(0);" class="btn btn-link p-0 bg-ripe-malin d-inline-block text-center text-white font-size-xl d-50 rounded border-0 mb-2">
-                        <font-awesome-icon icon="drafting-compass" />
-                    </a>
-                    <div class="d-block text-white-50">Tasks</div>
+            <button type="button" class="btn bg-neutral-first text-first font-size-lg mr-2 p-0 d-inline-block shadow-none text-center d-44 rounded" id="popoverIntegrExample3">
+                <font-awesome-icon icon="th" />
+            </button>
+            <b-popover triggers="click blur" placement="bottom" @show="showPopoverIntegrations" ref="popoverIntegrations3" target="popoverIntegrExample3">
+                <div class="px-3 pt-3 pb-3 text-center">
+                    <div class="m-3 d-inline-block text-center">
+                        <a href="javascript:void(0);" class="btn btn-link p-0 bg-ripe-malin d-inline-block text-center text-white font-size-xl d-50 rounded border-0 mb-2">
+                            <font-awesome-icon icon="drafting-compass" />
+                        </a>
+                        <div class="d-block text-white-50">Tasks</div>
+                    </div>
+                    <div class="m-3 d-inline-block text-center">
+                        <a href="javascript:void(0);" class="btn btn-link p-0 bg-grow-early d-inline-block text-center text-white font-size-xl d-50 rounded border-0 mb-2">
+                            <font-awesome-icon icon="dungeon" />
+                        </a>
+                        <div class="d-block text-white-50">Reports</div>
+                    </div>
+                    <div class="m-3 d-inline-block text-center">
+                        <a href="javascript:void(0);" class="btn btn-link p-0 bg-arielle-smile d-inline-block text-center text-white font-size-xl d-50 rounded border-0 mb-2">
+                            <font-awesome-icon icon="football-ball" />
+                        </a>
+                        <div class="d-block text-white-50">Stats</div>
+                    </div>
                 </div>
-                <div class="m-3 d-inline-block text-center">
-                    <a href="javascript:void(0);" class="btn btn-link p-0 bg-grow-early d-inline-block text-center text-white font-size-xl d-50 rounded border-0 mb-2">
-                        <font-awesome-icon icon="dungeon" />
+                <div class="divider opacity-2 bg-white mb-1"></div>
+                <div class="text-center">
+                    <a href="javascript:void(0);" class="btn btn-link-light text-white">
+                        View more items
                     </a>
-                    <div class="d-block text-white-50">Reports</div>
                 </div>
-                <div class="m-3 d-inline-block text-center">
-                    <a href="javascript:void(0);" class="btn btn-link p-0 bg-arielle-smile d-inline-block text-center text-white font-size-xl d-50 rounded border-0 mb-2">
-                        <font-awesome-icon icon="football-ball" />
-                    </a>
-                    <div class="d-block text-white-50">Stats</div>
-                </div>
-            </div>
-            <div class="divider opacity-2 bg-white mb-1"></div>
-            <div class="text-center">
-                <a href="javascript:void(0);" class="btn btn-link-light text-white">
-                    View more items
-                </a>
-            </div>
-        </b-popover>
+            </b-popover>
+        -->
 
     </span>
 </template>

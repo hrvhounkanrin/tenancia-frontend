@@ -249,7 +249,7 @@
                         </div>
                         <form @submit.prevent="localSignup">
                           <div class="px-4 py-2">
-                           
+
                             <b-row>
                               <b-col>
                                 <div class="form-group">
@@ -298,7 +298,7 @@
                             </b-row>
                             <b-row>
                               <b-col>
-                               
+
                                 <div class="form-group">
                                   <ValidationProvider
                                     rules="required"
@@ -453,32 +453,32 @@
 
 <script>
 // import GoogleLogin from 'vue-google-login'
-import { mapState, mapGetters, mapActions, mapMutations } from "vuex";
-import { library } from "@fortawesome/fontawesome-svg-core";
+import { mapState, mapGetters, mapActions, mapMutations } from 'vuex'
+import { library } from '@fortawesome/fontawesome-svg-core'
 import {
   faQuestionCircle,
   faArrowLeft,
   faAmbulance,
   faEnvelope,
   faUnlockAlt,
-  faHeadset,
-} from "@fortawesome/free-solid-svg-icons";
+  faHeadset
+} from '@fortawesome/free-solid-svg-icons'
 import {
   faTwitter,
   faGooglePlus,
   faFacebook,
   faInstagram,
-  faGoogle,
-} from "@fortawesome/free-brands-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
+  faGoogle
+} from '@fortawesome/free-brands-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import {
   ValidationObserver,
   ValidationProvider,
-  setInteractionMode,
-} from "vee-validate";
+  setInteractionMode
+} from 'vee-validate'
 
-import { alert } from "@/components/shared/";
-import "./register-validation";
+import { alert } from '@/components/shared/'
+import './register-validation'
 import { LS_ROUTE } from '@/constants'
 library.add(
   faQuestionCircle,
@@ -492,150 +492,149 @@ library.add(
   faUnlockAlt,
   faGoogle,
   faHeadset
-);
-setInteractionMode("lazy");
+)
+setInteractionMode('lazy')
 export default {
-  name: "Register",
+  name: 'Register',
   components: {
-    "font-awesome-icon": FontAwesomeIcon,
+    'font-awesome-icon': FontAwesomeIcon,
     ValidationObserver,
     ValidationProvider,
     // GoogleLogin,
-    alert,
+    alert
   },
-  data() {
+  data () {
     return {
       params: {
         client_id:
-          "185957473371-5fp3ntcah051m746ssq71c7raqsif2fl.apps.googleusercontent.com",
+          '185957473371-5fp3ntcah051m746ssq71c7raqsif2fl.apps.googleusercontent.com'
       },
       phone: {
-                country: "",
-        dial_code: "",
+        country: '',
+        dial_code: ''
       },
       user: {
-        first_name: "",
-        last_name: "",
-        email: "",
-        password: "",
-        phone_number: "",
+        first_name: '',
+        last_name: '',
+        email: '',
+        password: '',
+        phone_number: ''
       },
-            onlyCountries: ['BJ', 'TG', 'CI', 'NE', 'NG', 'CM', 'BF', 'ML', 'FR'],
+      onlyCountries: ['BJ', 'TG', 'CI', 'NE', 'NG', 'CM', 'BF', 'ML', 'FR'],
       credential: {
-        email: "",
-        password: "",
+        email: '',
+        password: ''
       },
       submitted: false,
-      selected_tab_name: "register",
-    };
+      selected_tab_name: 'register'
+    }
   },
-  
+
   computed: {
     ...mapState({
       error: (state) => state.alert.message,
       errorOccured: (state) => state.auth.status.errorOccured,
-      errorMsg: (state) => state.auth.errors,
+      errorMsg: (state) => state.auth.errors
     }),
-    ...mapGetters("user", ["getProfiles"]),
+    ...mapGetters('user', ['getProfiles'])
   },
-  mounted: function(){
+  mounted: function () {
 
   },
   methods: {
-    ...mapActions("auth", [
-      "register",
-      "loginAccount",
-      "activedUserAccount",
-      "googleExchangeToken",
-      "getBackendResponse",
-      "googleLoginFailure",
+    ...mapActions('auth', [
+      'register',
+      'loginAccount',
+      'activedUserAccount',
+      'googleExchangeToken',
+      'getBackendResponse',
+      'googleLoginFailure'
     ]),
-    ...mapActions("user", ["myProfiles"]),
-    ...mapMutations("auth", {
-      signupError: "LOCAL_SIGNUP_FAILURE",
-      setUser: "USER",
+    ...mapActions('user', ['myProfiles']),
+    ...mapMutations('auth', {
+      signupError: 'LOCAL_SIGNUP_FAILURE',
+      setUser: 'USER'
     }),
     //   ...mapMutations('user', {
     //   setProfiles: 'PROFILES',
     // }),
-    makeToast(msg, variant) {
+    makeToast (msg, variant) {
       this.$toast.open({
         message: msg,
         type: variant,
         duration: 3000,
         dismissible: true,
         queue: false,
-        position: "top-right",
-      });
+        position: 'top-right'
+      })
     },
-    onSelect({name, iso2, dialCode}) {
-    this.phone.country= iso2
-    this.phone.dial_code= dialCode
-     console.log(name, iso2, dialCode);
-   },
+    onSelect ({ name, iso2, dialCode }) {
+      this.phone.country = iso2
+      this.phone.dial_code = dialCode
+      console.log(name, iso2, dialCode)
+    },
 
-    async localSignup(e) {
-      this.submitted = true;
-      await this.register({...this.user, phone_number:`${this.phone.dial_code} ${this.user.phone_number}`, country: this.phone.country})
+    async localSignup (e) {
+      this.submitted = true
+      await this.register({ ...this.user, phone_number: `${this.phone.dial_code} ${this.user.phone_number}`, country: this.phone.country })
         .then((res) => {
-          console.log("res", res.data);
-          this.setUser(res.data);
-          this.$router.push({ name: "activation-mail-sent" });
+          console.log('res', res.data)
+          this.setUser(res.data)
+          this.$router.push({ name: 'activation-mail-sent' })
         })
         .catch((err) => {
           this.signupError(
-            "Une erreur est survenue lors de la création de votre compte"
-          );
+            'Une erreur est survenue lors de la création de votre compte'
+          )
           // this.$store.commit('AUTH/LOCAL_SIGNUP_FAILURE', 'Une erreur est survenue lors de la création de votre compte')
-          console.log("err", err.response);
-        });
+          console.log('err', err.response)
+        })
     },
 
-    async handleLogin(e) {
+    async handleLogin (e) {
       this.submitted = true
       await this.loginAccount(this.credential)
         .then((res) => {
-           const lastRouteName = sessionStorage.getItem(LS_ROUTE)
-           console.log('lastRouteName:', lastRouteName)
-           if(lastRouteName && lastRouteName!=='Register')
-              this.$router.push({ name: lastRouteName})
-           else
-              this.$router.push({ name: "Home" })
+          const lastRouteName = sessionStorage.getItem(LS_ROUTE)
+          console.log('lastRouteName:', lastRouteName)
+          if (lastRouteName && lastRouteName !== 'Register') { this.$router.push({ name: lastRouteName }) } else { this.$router.push({ name: 'Home' }) }
         })
         .catch((error) => {
-          this.makeToast("Une erreur est survenue", "danger");
-        });
+          if (error) {
+            this.makeToast('Une erreur est survenue', 'danger')
+          }
+        })
     },
-    googleConnect() {
-      this.getBackendResponse(this);
+    googleConnect () {
+      this.getBackendResponse(this)
     },
-    onSuccess() {
-      console.log("Authentification réussie");
+    onSuccess () {
+      console.log('Authentification réussie')
     },
-    onFailure() {
-      console.log("Authentification échouée");
+    onFailure () {
+      console.log('Authentification échouée')
     },
-    async googleSignIn() {
+    async googleSignIn () {
       try {
-        await this.$gAuth.signIn();
+        await this.$gAuth.signIn()
         const authResponse = this.$gAuth.GoogleAuth.currentUser
           .get()
-          .getAuthResponse();
-        this.isSignIn = this.$gAuth.isAuthorized;
+          .getAuthResponse()
+        this.isSignIn = this.$gAuth.isAuthorized
         let googleToken = {
           access_token: authResponse.access_token,
-          redirectUri: "http://localhost:8080/register",
-        };
+          redirectUri: 'http://localhost:8080/register'
+        }
         await this.googleExchangeToken(googleToken).then((res) => {
-          console.log("googleSignIn: ", res);
-          this.$router.push({ name: "MyProfiles" });
-        });
+          console.log('googleSignIn: ', res)
+          this.$router.push({ name: 'MyProfiles' })
+        })
       } catch (error) {
-        console.log("googleSignIn error:", error);
+        console.log('googleSignIn error:', error)
       }
-    },
-  },
-};
+    }
+  }
+}
 </script>
 <style lang="scss">
 

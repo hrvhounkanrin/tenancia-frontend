@@ -19,7 +19,7 @@
           Nous vous aidons à faire un meilleur suivi de vos contrats de bails...
         </p>
         <a
-          href="javascript:void(0);"
+          href="javascript:void(0)"
           class="btn-block btn btn-primary mt-1"
           @click="editTenant"
           title="Editer mon profil locataire"
@@ -219,21 +219,9 @@
               </b-form-group>
             </div>
             <div class="col-md-12 mb-12">
-              <b-form-group
-                label="LIEN DE PARENTE ECU"
-                label-for="ice_relation"
-              >
-                <span
-                  class="invalid-feedback d-block"
-                  v-if="errors.ice_relationMsg"
-                  >{{ errors.ice_relationMsg }}</span
-                >
-                <autocomplete-input
-                  class="form-input"
-                  v-model="tenant.ice_relation"
-                  :list="iceRelation"
-                  :filter-by-query="true"
-                ></autocomplete-input>
+              <b-form-group label="LIEN DE PARENTE ECU" label-for="ice_relation">
+                <span class="invalid-feedback d-block" v-if="errors.ice_relationMsg">{{ errors.ice_relationMsg }}</span>
+                <b-form-select  v-model="tenant.ice_relation" :options="iceRelation"></b-form-select>
               </b-form-group>
             </div>
             <div class="col-md-12 mb-12">
@@ -270,9 +258,9 @@
             </b-button>
 
           </div>
-          <!-- <div style="display: flex; flex-direction: row">
+          <!-- <div style="display: flex flex-direction: row">
             <a
-              href="javascript:void(0);"
+              href="javascript:void(0)"
               class="btn-block btn btn-danger m-1"
               title="Save Lessor"
               @click="editingTenant = false"
@@ -280,7 +268,7 @@
               <span>Annuler</span>
             </a>
             <a
-              href="javascript:void(0);"
+              href="javascript:void(0)"
               class="btn-block btn btn-primary m-1"
               title="Save Tenant"
               @click="saveTenant"
@@ -297,24 +285,14 @@
 </template>
 
 <script>
-import { mapState, mapActions, mapMutations, mapGetters } from "vuex";
-import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
-import { alert } from "@/components/shared/";
-import { library } from "@fortawesome/fontawesome-svg-core";
-import Datepicker from "vuejs-datepicker";
-import { mixin } from "@/mixin/mixin";
-import moment from "moment";
-import {
-  faArrowRight,
-  faArrowUp,
-  faBinoculars,
-  faTrashAlt,
-  faQuestionCircle,
-} from "@fortawesome/free-solid-svg-icons";
+import { mapActions, mapGetters } from "vuex"
+import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome"
+import { alert } from "@/components/shared/"
+import Datepicker from "vuejs-datepicker"
+
 
 export default {
   name: "tenant-detail",
-  // props: { tenant: Object },
   components: {
     "font-awesome-icon": FontAwesomeIcon,
     alert,
@@ -353,7 +331,7 @@ export default {
         numero_ifu: null,
         profile_type: "tenant",
       },
-    };
+    }
   },
   computed: {
     ...mapGetters("user", ["getProfiles"]),
@@ -361,95 +339,91 @@ export default {
     ...mapGetters("general", ["iceRelation"]),
   },
     created: function () {
-    // console.log("user", this.getProfiles)
     this.tenant.phone_number = this.getProfiles.phone_number.split(" ")[1]
   },
   methods: {
     ...mapActions("user", ["createUserProfil", "updateUserProfil"]),
 
     editTenant(e) {
-      this.editingTenant = true;
+      this.editingTenant = true
       if (this.getProfiles && this.getProfiles.tenant) {
         this.tenant = { ...this.getProfiles.tenant, 
                 phone_number: this.getProfiles.tenant.phone_number.split(' ')[1],
                 ice_number: this.getProfiles.tenant.ice_number.split(' ')[1],
-profile_type: "tenant" };
+profile_type: "tenant" }
       }
     },
     onSelectIce({ name, iso2, dialCode }) {
-      this.ice_phone.country = iso2;
-      this.ice_phone.dial_code = dialCode;
+      this.ice_phone.country = iso2
+      this.ice_phone.dial_code = dialCode
     },
     onSelect({ name, iso2, dialCode }) {
-      this.phone.country = iso2;
-      this.phone.dial_code = dialCode;
+      this.phone.country = iso2
+      this.phone.dial_code = dialCode
     },
     onTenantActionSucess(res) {
-      // let tenant = res.payload;
-      // let profiles = {
-      //   tenant: tenant,
-      //   lessor: this.lessorProfile,
-      //   real_estate: this.realEstateProfile,
-      // };
-
-      // this.setProfiles(profiles);
-      // this.$forceUpdate();
-      this.editingTenant = false;
+      this.editingTenant = false
     },
     onTenantActionFailure(err) {
-      this.errors.tenantMsg = err.response.data.message;
-      this.editingTenant = true;
+      this.errors.tenantMsg = err.response.data.message
+      this.editingTenant = true
     },
 
     async saveTenant() {
       
-      this.loadingSaveTenant = true;
-      this.errors = {};
+      this.loadingSaveTenant = true
+      this.errors = {}
       this.errors.phone_numberMsg = !this.tenant.phone_number
         ? "Veuillez renseigner votre n° téléphone"
-        : null;
+        : null
       this.errors.professionMsg = !this.tenant.profession
         ? "Veuillez renseigner votre profession"
-        : null;
+        : null
       this.errors.ice_contactMsg = !this.tenant.ice_contact
         ? "Veuillez renseigner une personne à contacter ECU"
-        : null;
+        : null
       this.errors.ice_numberMsg = !this.tenant.ice_number
         ? "Veuillez renseigner le numéro de la personne à contacter ECU"
-        : null;
+        : null
       this.errors.ice_relationMsg = !this.tenant.ice_relation
         ? "Veuillez renseigner votre lien de parenté"
-        : null;
+        : null
       this.errors.numero_ifuMsg = !this.tenant.numero_ifu
         ? "Veuillez renseigner votre N° IFU"
-        : null;
+        : null
 
-      //return if any error property is not null
       if (!Object.values(this.errors).some((x) => x === null)) {
-        console.log(this.errors);
-        vm.editingTenant = true;
-        return;
+        console.log(this.errors)
+        vm.editingTenant = true
+        return
       }
 
       if (this.tenant.id && this.tenant.id > 0) {
-        await this.updateUserProfil({ ...this.tenant,
-                  phone_number:`${this.phone.dial_code} ${this.tenant.phone_number}`, 
-                  ice_number:`${this.ice_phone.dial_code} ${this.tenant.ice_number}`, 
- profile_type: "tenant" })
+        const profileToUpdate = { 
+          ...this.tenant,
+          phone_number:`${this.phone.dial_code} ${this.tenant.phone_number}`, 
+          ice_number:`${this.ice_phone.dial_code} ${this.tenant.ice_number}`, 
+          profile_type: "tenant" 
+        }
+        await this.updateUserProfil(profileToUpdate)
           .then((res) => this.onTenantActionSucess(res))
-          .catch((err) => this.onTenantActionFailure(err));
-      } else {
-        await this.createUserProfil({...this.tenant,                  phone_number:`${this.phone.dial_code} ${this.tenant.phone_number}`, 
-                  ice_number:`${this.ice_phone.dial_code} ${this.tenant.ice_number}`, 
-})
-          .then((res) => this.onTenantActionSucess(res))
-          .catch((err) => this.onTenantActionFailure(err));
+          .catch((err) => this.onTenantActionFailure(err))
+      } 
+      const profileToCreate = {
+        ...this.tenant,
+        phone_number:`${this.phone.dial_code} ${this.tenant.phone_number}`, 
+        ice_number:`${this.ice_phone.dial_code} ${this.tenant.ice_number}`,
+        profile_type: "tenant" 
       }
-                        this.loadingSaveTenant = false;
+      await this.createUserProfil(profileToCreate)
+        .then((res) => this.onTenantActionSucess(res))
+        .catch((err) => this.onTenantActionFailure(err))
+  
+      this.loadingSaveTenant = false
 
     },
   },
-};
+}
 </script>
 
 <style>
