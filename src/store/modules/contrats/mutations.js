@@ -41,7 +41,7 @@ export default {
   [AGREE_CONTRAT] (state, contrat) {
     state.selectedContrat = contrat
   },
-  [ACCESSOIRE_LIST] (state, accessoires){
+  [ACCESSOIRE_LIST] (state, accessoires) {
     state.typeAccessoireLoyer = accessoires
   },
   [ADD_ACCESSOIRE] (state, accessoire) {

@@ -8,7 +8,7 @@ import axios from 'axios'
 export default class TypeDependance {
   $serveur = api(axios, config)
   // async createNewDependencyType (bodyParams) {
-  //   return await this.$serveur.postRequest(
+  //   return  this.$serveur.postRequest(
   //     {
   //       body: bodyParams,
   //       link: 'dependency_action/create_dependency'
@@ -16,7 +16,7 @@ export default class TypeDependance {
   //   )
   // }
   async getDependance (bodyParams) {
-    return await this.$serveur.getRequest(
+    return this.$serveur.getRequest(
       {
         body: bodyParams,
         link: 'dependency_action/get_dependancies'
@@ -24,7 +24,7 @@ export default class TypeDependance {
     )
   }
   async createDependance (bodyParams) {
-    return await this.$serveur.postRequest(
+    return this.$serveur.postRequest(
       {
         body: bodyParams,
         link: 'dependency_action/create_dependancy'
@@ -32,13 +32,11 @@ export default class TypeDependance {
     )
   }
   async updateDependance (bodyParams) {
-    return await this.$serveur.getRequest(
+    return this.$serveur.getRequest(
       {
         body: bodyParams,
         link: 'dependency_action/update_dependancy'
       }
     )
   }
- }
-
- 
+}

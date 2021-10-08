@@ -3,11 +3,9 @@
                 <div class="card-body">
                     <div class="row">
                         <div class="col col-sm-12 col-md-3">
-                            <small>
-                                Montant
-                            </small>
+                           <small><b>Montant</b></small>
                             <div class="d-flex align-items-left">
-                                
+
                                <!--<label class="custom-control-label" :for="quittance.id">
                                     <span class="font-size-md">{{Number(quittance.montant).toLocaleString('fr-FR')}} F CFA</span>
                                     <input type="checkbox" :id="quittance.id" class="custom-control-input ml-2">
@@ -26,9 +24,7 @@
                             </div>
                         </div>
                         <div class="col col-sm-12 col-md-2">
-                            <small>
-                                Appartement
-                            </small>
+                            <small><b>Appartement</b></small>
                             <div class="d-flex align-items-left">
                                 <span class="font-size-md">{{quittance.appartement.intitule}}({{quittance.appartement.immeuble_intitule}})</span>
                             </div>
@@ -37,9 +33,7 @@
                             </div>
                         </div>
                         <div class="col col-sm-12 col-md-2">
-                            <small>
-                                Quittance
-                            </small>
+                            <small><b>Quittance</b></small>
                             <div class="d-flex align-items-left">
                                 <span class="font-size-md">{{quittance.reference}}</span>
                             </div>
@@ -48,9 +42,7 @@
                             </div>
                         </div>
                         <div class="col col-sm-12 col-md-3">
-                            <small>
-                                Bailleur
-                            </small>
+                            <small><b>Bailleur</b></small>
                             <div class="d-flex align-items-left">
                                 <span class="font-size-md">{{quittance.lessor.first_name + ' '+ quittance.lessor.last_name}}</span>
                             </div>
@@ -67,7 +59,7 @@
                                 Détails
                             </span>
                             </b-button>
-                            <b-button variant="success" class="col mb-1">
+                            <b-button variant="success" class="col mb-1"  v-b-modal="'modal-bbb4'">
                                 <span class="btn-wrapper--icon">
                                     <font-awesome-icon icon="money-check-alt"/>
                                 </span>
@@ -77,44 +69,44 @@
                             </b-button>
 
                         </div>
-                    </div>          
+                    </div>
                 </div>
             </div>
 </template>
 <script>
-import { library } from "@fortawesome/fontawesome-svg-core"
-import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome"
-import { fas } from "@fortawesome/free-solid-svg-icons"
-import { fab } from "@fortawesome/free-brands-svg-icons"
+import { library } from '@fortawesome/fontawesome-svg-core'
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
+import { fas } from '@fortawesome/free-solid-svg-icons'
+import { fab } from '@fortawesome/free-brands-svg-icons'
 library.add(fas)
 library.add(fab)
 export default {
-    name: "QuittanceListeItem",
-    components: {
-        "font-awesome-icon": FontAwesomeIcon,
-    },
-    data: function() {
-        return {
-            contrat: null,
-            modalOpen: false
-        }
-    },
-    props: {
-        quittance: Object
-    },
-    methods: {
-        openModal() {
-            this.modalOpen = !this.modalOpen;
-        },
-        getStatusClass: function(quittance){
-            if (quittance['statut']==='PENDING'){
-                return 'badge-warning'
-            }
-            if (quittance['statut']==='PAID'){
-                return 'badge-success'
-            }
-            return 'badge-danger'
-        }   
+  name: 'QuittanceListeItem',
+  components: {
+    'font-awesome-icon': FontAwesomeIcon
+  },
+  data: function () {
+    return {
+      contrat: null,
+      modalOpen: false
     }
+  },
+  props: {
+    quittance: Object
+  },
+  methods: {
+    openModal () {
+      this.modalOpen = !this.modalOpen
+    },
+    getStatusClass: function (quittance) {
+      if (quittance['statut'] === 'PENDING') {
+        return 'badge-warning'
+      }
+      if (quittance['statut'] === 'PAID') {
+        return 'badge-success'
+      }
+      return 'badge-danger'
+    }
+  }
 }
 </script>

@@ -188,7 +188,25 @@
             </div>
           </div>
 
-          <div style="display: flex; flex-direction: row">
+              <div class="row">
+
+            <b-button class="col mt-2 mb-2 ml-3 mr-3" variant="danger" @click="editingRealEstate = false">
+              Annuler
+            </b-button>
+            <b-button class="col mt-2 mb-2 ml-2 mr-3" variant="primary" @click="saveRealEstate">
+              <!-- <font-awesome-icon icon="save" class="mr-2" /> -->
+              {{ realEstate.id && realEstate.id > 0 ? "Enregistrer" : "Créer" }}
+              <span
+                v-if="loadingSaveRealEstate"
+                class="spinner-border spinner-border-sm"
+                role="status"
+                aria-hidden="true"
+              ></span>
+            </b-button>
+
+          </div>
+
+          <!-- <div style="display: flex; flex-direction: row">
             <a
               href="javascript:void(0);"
               class="btn-block btn btn-danger m-1"
@@ -207,7 +225,7 @@
                 realEstate.id && realEstate.id > 0 ? "Enregistrer" : "Créer"
               }}</span>
             </a>
-          </div>
+          </div> -->
         </form>
       </div>
     </div>
@@ -254,6 +272,7 @@ export default {
         phoneNumberLabel: "Numéro de téléphone",
         example: "Exemple :",
       },
+      loadingSaveRealEstate: false,
        phone: {
         country: "",
         dial_code: "",
@@ -290,6 +309,7 @@ export default {
     };
   },
   created: function () {
+    this.realEstate.num_telephone = this.getProfiles.phone_number.split(" ")[1]
     this.countries = mixin.methods.getAllCountry(this.onlyCountries);
   },
   computed: {
@@ -331,6 +351,9 @@ export default {
     },
 
     async saveRealEstate() {
+      
+            this.loadingSaveRealEstate = true;
+
       this.errors = {};
       this.errors.raisonSocialMsg = !this.realEstate.raison_sociale
         ? "Veuillez renseigner le nom de l'agence"
@@ -370,6 +393,8 @@ export default {
           .then((res) => this.onRealEstateActionSucess(res))
           .catch((err) => this.onRealEstateActionFailure(err));
       }
+                  this.loadingSaveRealEstate = false;
+
     },
   },
 };

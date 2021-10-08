@@ -5,7 +5,7 @@ export const REMOVE_ADMIN = 'REMOVE_ADMIN'
 export const PROFILES = 'PROFILES'
 
 /**
- * 
+ *
  * profil Setting
  */
 

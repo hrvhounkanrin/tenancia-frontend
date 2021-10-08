@@ -479,7 +479,7 @@ import {
 
 import { alert } from "@/components/shared/";
 import "./register-validation";
-
+import { LS_ROUTE } from '@/constants'
 library.add(
   faQuestionCircle,
   faArrowLeft,
@@ -538,9 +538,8 @@ export default {
     }),
     ...mapGetters("user", ["getProfiles"]),
   },
-  created: function () {
-    // const actveTab = this.$route.params.c_type
-    // this.selected_tab_name = actveTab
+  mounted: function(){
+
   },
   methods: {
     ...mapActions("auth", [
@@ -593,22 +592,17 @@ export default {
     },
 
     async handleLogin(e) {
-      this.submitted = true;
+      this.submitted = true
       await this.loginAccount(this.credential)
         .then((res) => {
-          this.myProfiles()
-            .then((userProfiles) => {
-              this.$router.push({ name: "Home" });
-            })
-            .catch((error) => {
-              console.log(
-                error,
-                "Une erreur est survenue lors de la récupération de vos profiles"
-              );
-            });
+           const lastRouteName = sessionStorage.getItem(LS_ROUTE)
+           console.log('lastRouteName:', lastRouteName)
+           if(lastRouteName && lastRouteName!=='Register')
+              this.$router.push({ name: lastRouteName})
+           else
+              this.$router.push({ name: "Home" })
         })
         .catch((error) => {
-          console.log("handleLogin", error);
           this.makeToast("Une erreur est survenue", "danger");
         });
     },

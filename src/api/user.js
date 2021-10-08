@@ -9,7 +9,7 @@ export default class User {
   $serveur = api(axios, config)
 
   async login (bodyParams) {
-    return await this.$serveur.postRequest(
+    return this.$serveur.postRequest(
       {
         body: bodyParams,
         link: 'accounts/login/'
@@ -18,7 +18,7 @@ export default class User {
   }
 
   async register (bodyParams) {
-    return await this.$serveur.postRequest(
+    return this.$serveur.postRequest(
       {
         body: bodyParams,
         link: 'accounts/users/'
@@ -27,7 +27,7 @@ export default class User {
   }
 
   async activeAccount (bodyParams) {
-    return await this.$serveur.getRequest(
+    return this.$serveur.getRequest(
       {
         body: { ...bodyParams },
         link: 'accounts/activate'
@@ -36,7 +36,7 @@ export default class User {
   }
 
   async getUsers (bodyParams) {
-    return await this.$serveur.getRequest(
+    return this.$serveur.getRequest(
       {
         body: bodyParams,
         link: 'auth/provider/users'
@@ -45,7 +45,7 @@ export default class User {
   }
 
   async exchangeToken (bodyParams) {
-    return await this.$serveur.postRequest(
+    return this.$serveur.postRequest(
       {
         body: bodyParams,
         link: 'account_action/googleauth'
@@ -54,7 +54,7 @@ export default class User {
   }
 
   async verifyMail (bodyParams) {
-    return await this.$serveur.postRequest(
+    return this.$serveur.postRequest(
       {
         body: bodyParams,
         link: 'accounts/activate'
@@ -63,16 +63,16 @@ export default class User {
   }
 
   async getProfiles (bodyParams) {
-    return await this.$serveur.getRequest(
+    return this.$serveur.getRequest(
       {
         body: bodyParams,
         link: 'profile_action/get_profile'
       }
     )
   }
-  
+
   async createProfile (bodyParams) {
-    return await this.$serveur.postRequest(
+    return this.$serveur.postRequest(
       {
         body: bodyParams,
         link: 'profile_action/create_profile'
@@ -81,12 +81,11 @@ export default class User {
   }
 
   async updateProfile (bodyParams) {
-    return await this.$serveur.postRequest(
+    return this.$serveur.postRequest(
       {
         body: bodyParams,
         link: 'profile_action/update_profile'
       }
     )
   }
-
 }

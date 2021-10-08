@@ -129,6 +129,9 @@
                 <b-button variant="primary" @click="saveAppartment">
                   <font-awesome-icon icon="save" class="mr-2" />
                   Enregistrer
+                          <span  v-if="loadingSaveRealEstatateDependency" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                         
+                  
                 </b-button>
               </div>
             </div>
@@ -254,17 +257,19 @@
                         >
 
                         <b-button
-                          :disabled="real_estate_dependency == ''"
+                          :disabled="loadingAddRealEstatateDependency || real_estate_dependency == ''|| real_estate_dependency == null"
                           class="m-1"
                           type="submit"
                           variant="primary"
-                          >Enregistrer</b-button
+                          >
+                          <span  v-if="loadingAddRealEstatateDependency" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                          Créer
+                          </b-button
                         >
+
                       </b-form>
                     </div>
-                    <div v-once class="typo__p d-flex" v-if="loadingAddRealEstatateDependency">
-                      <div class="spinner sm spinner-primary mt-3"></div>
-                    </div>
+
                   </b-modal>
                 </div>
               </div>
@@ -344,6 +349,7 @@ export default {
       filterValue: "",
       selectedDependance: [],
       loadingAddRealEstatateDependency:false,
+      loadingSaveRealEstatateDependency:false,
       appartement: {
         intitule: null,
         level: null,
@@ -440,11 +446,13 @@ export default {
     },
     async addRealEstatateDependency() {
       try {
-        this.add_real_estate_dependency = true;
+        
+        this.loadingAddRealEstatateDependency = true;
         await this.createNewDependency({
           libelle:this.real_estate_dependency,
           utilite:this.real_estate_dependency,
         }).then((res) => {
+          this.loadingAddRealEstatateDependency=false;
           this.add_real_estate_dependency = false;
           this.makeToast("Dépendance", "Dépendance ajouté avec succès", "success");
           this.real_estate_dependency = null;
@@ -481,7 +489,7 @@ export default {
     },
 
     saveAppartment: async function () {
-      this.loadingAddRealEstatateDependency = true;
+      this.loadingSaveRealEstatateDependency = true;
       this.appartement.immeuble_id = this.selectedImmeuble.id;
       console.log("this.selectedImmeuble:", this.selectedImmeuble);
       let structures = [];
@@ -500,6 +508,8 @@ export default {
           ? "properties/updateAppartement"
           : "properties/createAppartement";
       this.$store.dispatch(actionToTrigger, this.appartement).then(() => {
+              this.loadingSaveRealEstatateDependency = false;
+
         if (
           !this.api_errors.find((e) => e.key === "createAppartement") &&
           !this.api_errors.find((e) => e.key === "updateAppartement")

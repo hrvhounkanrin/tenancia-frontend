@@ -5,11 +5,10 @@ import api from '@/api/index'
 import config from '@/config/backend'
 const CancelToken = axios.CancelToken
 
-
 export default class Contrat {
   $serveur = api(axios, config)
   async getContrats (bodyParams) {
-    return await this.$serveur.postRequest(
+    return this.$serveur.postRequest(
       {
         body: bodyParams,
         link: 'contrat_action/get_lessor_contrat'
@@ -17,7 +16,7 @@ export default class Contrat {
     )
   }
   async getClientContrats (bodyParams) {
-    return await this.$serveur.getRequest(
+    return this.$serveur.getRequest(
       {
         body: bodyParams,
         link: 'contrat_action/get_tenant_contrat'
@@ -25,7 +24,7 @@ export default class Contrat {
     )
   }
   async createContrat (bodyParams) {
-    return await this.$serveur.postRequest(
+    return this.$serveur.postRequest(
       {
         body: bodyParams,
         link: 'contrat_action/create_contrat'
@@ -33,28 +32,28 @@ export default class Contrat {
     )
   }
   async updateContrat (bodyParams) {
-    return await this.$serveur.postRequest(
+    return this.$serveur.postRequest(
       {
         body: bodyParams,
         link: 'contrat_action/update_contrat'
       }
     )
   }
-  async agreeContrat(bodyParams){
-    return await this.$serveur.postRequest(
-        {
-            body: bodyParams,
-            link: 'contrat_action/contrat_agreement'
-        }
-      )
+  async agreeContrat (bodyParams) {
+    return this.$serveur.postRequest(
+      {
+        body: bodyParams,
+        link: 'contrat_action/contrat_agreement'
+      }
+    )
   }
 
- searchTenantsByEmail(bodyParams){
+  searchTenantsByEmail (bodyParams) {
     const source = CancelToken.source()
     const promise = this.$serveur.postRequest(
       {
-          body: bodyParams,
-          link: 'client_action/retrieve_client'
+        body: bodyParams,
+        link: 'client_action/retrieve_client'
       },
       {
         cancelToken: source.token
@@ -65,12 +64,12 @@ export default class Contrat {
     }
   }
 
-  getFreeAppartment(bodyParams){
+  getFreeAppartment (bodyParams) {
     const source = CancelToken.source()
     const promise = this.$serveur.getRequest(
       {
-          body: bodyParams,
-          link: 'logement_action/get_logement'
+        body: bodyParams,
+        link: 'logement_action/get_logement'
       },
       {
         cancelToken: source.token
@@ -80,5 +79,4 @@ export default class Contrat {
       promise, source
     }
   }
-  
- }
+}

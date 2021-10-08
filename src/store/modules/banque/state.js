@@ -1,3 +1,3 @@
 export default {
-  banque_list: [],
+  banque_list: []
 }

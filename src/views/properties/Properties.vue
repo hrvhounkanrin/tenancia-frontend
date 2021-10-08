@@ -187,7 +187,7 @@
             <div class="card-header--actions">
               <b-button variant="primary" @click="addImmeuble">
                 <font-awesome-icon icon="plus" class="mr-2" />
-                Ajouter Immeuble/Maison
+                Ajouter un immeuble / une maison
               </b-button>
             </div>
           </div>
@@ -224,11 +224,12 @@
           </div>
         </div>
       </div>
-      <div class="col-lg-12 col-md-6 col-sm-12 col-xl-6">
+      <div                     v-if="immeubles.length > 0"
+ class="col-lg-12 col-md-6 col-sm-12 col-xl-6">
         <div class="card card-box mb-5">
           <div class="card-header bg-light">
             <div class="card-header--title">
-              <b>Appartements & Chambres</b>
+              <b>Appartements & Chambres {{selectedImmeuble.ref_immeuble != null ?selectedImmeuble.ref_immeuble : '' }} </b>
               <small>Liste des appartements/chambres</small>
             </div>
             <div class="card-header--actions">
@@ -788,6 +789,7 @@ export default {
       this.$router.push({ name: "EditAppartment" })
     },
     saveImmeuble: async function () {
+
       this.errors = {}
       this.errors.paysMsg = !this.immeuble.pays
         ? "Veuillez renseigner le pays"
@@ -814,8 +816,8 @@ export default {
         await this.createImmeuble(this.immeuble)
       }
       this.$bvModal.hide("buildingForm")
-      this.$store.dispatch("properties/getImmeubles")
-      this.$forceUpdate()
+      /*this.$store.dispatch("properties/getImmeubles")
+      this.$forceUpdate()*/
     },
     forceRerender() {
       this.componentKey = this.componentKey + 1

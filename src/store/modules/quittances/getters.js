@@ -7,5 +7,5 @@ export default {
   },
   errorMessage: state => {
     return state.errorMessage
-  }, 
+  }
 }

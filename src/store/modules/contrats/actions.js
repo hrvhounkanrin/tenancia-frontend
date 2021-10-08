@@ -16,7 +16,7 @@ export default {
     return contrat.getContrats(data)
       .then(res => {
         if (res.status === 200) {
-          console.log('getContrats: ',res)
+          console.log('getContrats: ', res)
           let contrats = res.data.payload
           commit(CONTRAT_LIST, contrats)
           if (contrats.length > 0) {
@@ -35,7 +35,7 @@ export default {
     return contrat.getClientContrats(data)
       .then(res => {
         if (res.status === 200) {
-          console.log('getClientContrats: ',res)
+          console.log('getClientContrats: ', res)
           let contrats = res.data.payload
           commit(CLIENTCONTRAT, contrats)
         }
@@ -48,7 +48,7 @@ export default {
   async createContrat ({ commit }, data) {
     commit(ERROR_REMOVE, 'createContrat')
     let contrat = new Contrat()
-    return  contrat.createContrat(data)
+    return contrat.createContrat(data)
       .then(res => {
         if (res.status === 200) {
           let contrats = res.data.payload
@@ -152,6 +152,6 @@ export default {
     console.log('clientAccord action start ok', data)
     commit(ERROR_REMOVE, 'clientAccord')
     let contrat = new Contrat()
-    return  contrat.agreeContrat(data)
-  },
+    return contrat.agreeContrat(data)
+  }
 }

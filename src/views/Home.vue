@@ -17,8 +17,6 @@ export default {
   
   },
   created () {
-    this.$store.dispatch('properties/getImmeubles')
-    this.$store.dispatch('properties/getTypedependances')
   },
   mounted () {
 
