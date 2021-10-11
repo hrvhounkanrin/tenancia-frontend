@@ -1,6 +1,5 @@
-import { shallowMount, createLocalVue, mount } from '@vue/test-utils'
+import { shallowMount, createLocalVue } from '@vue/test-utils'
 import BootstrapVue from 'bootstrap-vue'
-// import VueRouter from 'vue-router'
 import Vuex from 'vuex'
 import Register from '../../src/views/register/index.vue'
 

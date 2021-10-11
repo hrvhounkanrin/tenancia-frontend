@@ -62,7 +62,7 @@ export default {
     VuePerfectScrollbar,
     'font-awesome-icon': FontAwesomeIcon
   },
-   computed: {
+  computed: {
     ...mapState({
       api_errors: (state) => state.contrats.errors,
       userProfiles: (state) => state.user.profilesList
@@ -77,109 +77,105 @@ export default {
     }
   },
   props: {
-    sidebarbg: String, 
+    sidebarbg: String
   },
   data () {
     return {
-      initalMenu:[
-         {
+      initalMenu: [
+        {
           header: true,
           title: 'TENANCIA',
-          authorizedProfiles: ['TENANT', 'LESSOR', 'REALESTATE'] 
+          authorizedProfiles: ['TENANT', 'LESSOR', 'REALESTATE']
+        },
+        {
+          title: 'Biens immobiliers',
+          href: '/my-properties',
+          icon: {
+            element: 'home-icon'
           },
-          {
-              title: 'Biens immobiliers',
-              href: '/my-properties',
-              icon: {
-                element: 'home-icon'
-              },
-              authorizedProfiles: ['LESSOR', 'REALESTATE'] 
+          authorizedProfiles: ['LESSOR', 'REALESTATE']
+        },
+        {
+          title: 'Portefeuille de contrats',
+          href: '/my-portfolio',
+          icon: {
+            element: 'folder-icon'
           },
-          {
-            title: 'Portefeuille de contrats',
-            href: '/my-portfolio',
-            icon: {
-              element: 'folder-icon'
-            },
-            authorizedProfiles: ['LESSOR', 'REALESTATE']
+          authorizedProfiles: ['LESSOR', 'REALESTATE']
+        },
+        {
+          title: 'Contrats de bail',
+          href: '/my-contracts',
+          icon: {
+            element: 'file-text-icon'
           },
-          {
-            title: 'Contrats de bail',
-            href: '/my-contracts',
-            icon: {
-              element: 'file-text-icon'
-            },
-            authorizedProfiles: ['TENANT']
+          authorizedProfiles: ['TENANT']
+        },
+        {
+          title: 'Quittances de bail',
+          href: '/tenant-quittances',
+          icon: {
+            element: 'clipboard-icon'
           },
-          {
-            title: 'Quittances de bail',
-            href: '/tenant-quittances',
-            icon: {
-              element: 'clipboard-icon'
-            },
-            authorizedProfiles: ['TENANT', 'LESSOR', 'REALESTATE']
-          },
-          {
-            title: 'Quittances bailleur',
-            href: '/lessor-quittances',
-            authorizedProfiles: ['LESSOR', 'REALESTATE'],
-            icon: {
-              element: 'list-icon'
-            }
-          },
-          {
-            title: 'Services plus',
-            icon: {
-              element: 'plus-icon'
-            },
-            authorizedProfiles: ['LESSOR', 'REALESTATE', 'TENANT'] ,
-            child: [
-                  {
-                      href: '#',
-                      title: 'Réparations locatives',
-                      authorizedProfiles: ['LESSOR', 'REALESTATE', 'TENANT'] ,
-                  },
-                  {
-                      href: '#',
-                      title: 'Déclarations fiscales',
-                      class: 'pr-2',
-                      authorizedProfiles: ['LESSOR', 'REALESTATE', 'TENANT'] ,
-                  
-                  },
-
-              ]
-          },
-          {
-            title: 'Paramètres',
-            authorizedProfiles: ['TENANT', 'LESSOR', 'REALESTATE'],
-            icon: {
-              element: 'settings-icon'
-            }
+          authorizedProfiles: ['TENANT', 'LESSOR', 'REALESTATE']
+        },
+        {
+          title: 'Quittances bailleur',
+          href: '/lessor-quittances',
+          authorizedProfiles: ['LESSOR', 'REALESTATE'],
+          icon: {
+            element: 'list-icon'
           }
+        },
+        {
+          title: 'Services plus',
+          icon: {
+            element: 'plus-icon'
+          },
+          authorizedProfiles: ['LESSOR', 'REALESTATE', 'TENANT'],
+          child: [
+            {
+              href: '#',
+              title: 'Réparations locatives',
+              authorizedProfiles: ['LESSOR', 'REALESTATE', 'TENANT']
+            },
+            {
+              href: '#',
+              title: 'Déclarations fiscales',
+              class: 'pr-2',
+              authorizedProfiles: ['LESSOR', 'REALESTATE', 'TENANT']
+
+            }
+
+          ]
+        },
+        {
+          title: 'Paramètres',
+          authorizedProfiles: ['TENANT', 'LESSOR', 'REALESTATE'],
+          icon: {
+            element: 'settings-icon'
+          }
+        }
       ],
       menu: [],
       collapsed: true
     }
   },
-  mounted() {
-      const that = this
-      if(this.userProfiles){
-          this.initalMenu.forEach((item)=>{
-              if(item.authorizedProfiles && item.authorizedProfiles.some(p=>that.userProfiles.includes(p))){
-                  that.menu.push(item)
-              }
-          })
-      }
+  mounted () {
+    const that = this
+    if (this.userProfiles) {
+      this.initalMenu.forEach((item) => {
+        if (item.authorizedProfiles && item.authorizedProfiles.some(p => that.userProfiles.includes(p))) {
+          that.menu.push(item)
+        }
+      })
+    }
   },
   methods: {
     toggleSidebar () {
       this.sidebarCollapsed = !this.sidebarCollapsed
-    },
-    checkUserMenu: async function(){
-      
-
     }
   }
-  
+
 }
 </script>

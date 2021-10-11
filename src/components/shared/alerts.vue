@@ -8,7 +8,7 @@
                 <strong class="d-block">{{title}}</strong> {{msg}}
             </span>
         </b-alert>
-       
+
         <b-alert v-if="dismissible" class="d-flex align-items-center pl-2 align-content-center mt-2"
                 :show="dismissCountDown"
                 :dismissible="dismissible"
@@ -21,7 +21,7 @@
             <span>
                 <strong class="d-block">{{title}}</strong> {{msg}}
             </span>
-        </b-alert> 
+        </b-alert>
 
     </div>
 </template>
@@ -50,31 +50,31 @@ export default {
   components: {
     'font-awesome-icon': FontAwesomeIcon
   },
-  data() {
-      return {
-          dismissCountDown: 0,
-          showDismissibleAlert: true
-      }
+  data () {
+    return {
+      dismissCountDown: 0,
+      showDismissibleAlert: true
+    }
   },
-  props: ['title', 'variant', 'icon', 'msg', 'icon','dismissSecs', 'dismissible'],
-  created() {
+  props: ['title', 'variant', 'icon', 'msg', 'dismissSecs', 'dismissible'],
+  created () {
     console.log('Alert created', this.dismissSecs)
-    this.dismissCountDown =  (!this.dismissible) ? 1 : this.dismissSecs
+    this.dismissCountDown = (!this.dismissible) ? 1 : this.dismissSecs
   },
   methods: {
-          countDownChanged(dismissCountDown) {
-              if(!this.dismissible){
-                  return
-              }
-              this.dismissCountDown = dismissCountDown
-          },
-          showAlert() {
-              if(!this.dismissible){
-                  return
-              }
-              this.dismissCountDown = this.dismissSecs
-          }
+    countDownChanged (dismissCountDown) {
+      if (!this.dismissible) {
+        return
       }
+      this.dismissCountDown = dismissCountDown
+    },
+    showAlert () {
+      if (!this.dismissible) {
+        return
+      }
+      this.dismissCountDown = this.dismissSecs
+    }
+  }
 
 }
 </script>
