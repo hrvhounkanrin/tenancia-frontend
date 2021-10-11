@@ -6,7 +6,7 @@
                             QUITTANCE N° {{quittance.reference}}
                             <span :class="getStatusClass(quittance)"  class="badge badge-pill ml-2">{{quittance.statut}}</span>
                         </span>
-                        
+
                     </div>
                     <div class="card-body">
                         <div class="row">
@@ -46,7 +46,7 @@
                             </div>
                         </div>
                         <div class="row">
-                           
+
                             <div class="col-md-6">
                                 <small>
                                     Nature
@@ -100,45 +100,45 @@
                                 </div>
                             </div>
                         </div>
-                       
+
                     </div>
                 </div>
                 <div class="card-footer d-block text-center">
                     <b-button variant="success" v-b-modal="'modal-bbb4'">
                         <font-awesome-icon icon="money-check-alt" class="mr-2" />
-                        PAYER 
+                        PAYER
                     </b-button>
                 </div>
     </div>
 </template>
 <script>
-import { library } from "@fortawesome/fontawesome-svg-core"
-import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome"
-import { fas } from "@fortawesome/free-solid-svg-icons"
+import { library } from '@fortawesome/fontawesome-svg-core'
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
+import { fas } from '@fortawesome/free-solid-svg-icons'
 library.add(fas)
 export default {
-    name: "QuittanceDetailItem",
-    components: {
-        "font-awesome-icon": FontAwesomeIcon,
-    },
-    data: function() {
-        return {
-            contrat: null
-        }
-    },
-    props: {
-        quittance: Object
-    },
-    methods: {
-        getStatusClass: function(quittance){
-            if (quittance['statut']==='PENDING'){
-                return 'badge-warning'
-            }
-            if (quittance['statut']==='PAID'){
-                return 'badge-success'
-            }
-            return 'badge-danger'
-        }
+  name: 'QuittanceDetailItem',
+  components: {
+    'font-awesome-icon': FontAwesomeIcon
+  },
+  data: function () {
+    return {
+      contrat: null
     }
+  },
+  props: {
+    quittance: Object
+  },
+  methods: {
+    getStatusClass: function (quittance) {
+      if (quittance['statut'] === 'PENDING') {
+        return 'badge-warning'
+      }
+      if (quittance['statut'] === 'PAID') {
+        return 'badge-success'
+      }
+      return 'badge-danger'
+    }
+  }
 }
 </script>
