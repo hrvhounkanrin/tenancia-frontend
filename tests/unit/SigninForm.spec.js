@@ -4,20 +4,39 @@ import Vuex from 'vuex'
 import SigninForm from '../../src/views/register/signin-form.vue'
 
 const localVue = createLocalVue()
-
 localVue.use(BootstrapVue)
-
+localVue.use(Vuex)
+const store = new Vuex.Store({
+  state: {
+    error: '',
+    errorOccured: false,
+    errorr: null,
+  },
+  mutations: {
+    setTestRecipe(state, value) {
+      state.testRecipe = value;
+    },
+  },
+  getters: {
+    recipe(state) {
+      return state.testRecipe;
+    },
+  },
+})
+const mockRouter = {
+  push: jest.fn()
+}
 describe('signin-form test suite', () => {
   let route
   let store
   beforeEach(() => {
-    localVue.use(Vuex)
+  
     route = { c_type: 'login' }
     store = new Vuex.Store({
       state: {
         credential: {
-          email: '',
-          password: ''
+          email: 'hrvhounkanrin@gmail.com',
+          password: 'fakepassword'
         },
         authenticated: false,
         status: {
@@ -41,7 +60,7 @@ describe('signin-form test suite', () => {
       $store: store
     }
   })
-  /*
+
   it('check if signin email input render', () => {
     const singninEmailInput = wrapper.find('#signin_email')
     expect(singninEmailInput.exists()).toBe(true)
@@ -55,5 +74,9 @@ describe('signin-form test suite', () => {
     const singninButton = wrapper.find('#btnSignin')
     expect(singninButton.exists()).toBe(true)
   })
-  */
+
+  it('simulate signin button click',  ()=>{
+    wrapper.find('#btnSignin').trigger('click')
+    expect(mockRouter.push).toHaveBeenCalledTimes(0)
+  })
 })

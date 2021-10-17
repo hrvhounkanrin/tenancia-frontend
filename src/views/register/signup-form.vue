@@ -23,7 +23,7 @@
 
             <b-row>
                 <b-col>
-                <div class="form-group">
+                <div class="form-group vprovider">
                     <ValidationProvider
                     rules="required"
                     name="last_name"
@@ -45,7 +45,7 @@
                 </div>
                 </b-col>
                 <b-col>
-                <div class="form-group">
+                <div class="form-group vprovider">
                     <ValidationProvider
                     rules="required"
                     name="first_name"
@@ -70,38 +70,25 @@
             <b-row>
                 <b-col>
 
-                <div class="form-group">
+                <div class="form-group vprovider">
                     <ValidationProvider
                     rules="required"
                     name="phone_number"
                     v-slot="{ errors }"
                     >
-                    <div class="tenancia-country-code">
-                        <vue-country-code
-                            @onSelect="onSelect"
-                            :preferredCountries="onlyCountries"
-                            >
-                        </vue-country-code>
-                    <input
-                        type="text"
-                        class="form-control"
-                        placeholder="Téléphone"
-                        id="phone_number"
+                    <vue-tel-input   id="phone_number"
                         v-model="user.phone_number"
                         name="phone_number"
-                        :class="{
-                        'is-invalid':
-                            submitted && errors.length > 0,
-                        }"
-                    />
-                    </div>
+                        class="form-control" 
+                        :onlyCountries="['BJ', 'TG', 'CI', 'NE']">
+                    </vue-tel-input>
                     </ValidationProvider>
                 </div>
                 </b-col>
             </b-row>
             <b-row>
                 <b-col>
-                <div class="form-group">
+                <div class="form-group vprovider">
                     <ValidationProvider
                     rules="required|email"
                     name="Email"
@@ -203,6 +190,7 @@
             <button
                 type="submit"
                 class="btn btn-primary btn-lg btn-block"
+                id="btnSignup"
             >
                 S'inscrire
             </button>

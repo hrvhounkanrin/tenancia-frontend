@@ -1,11 +1,12 @@
 import { shallowMount, createLocalVue } from '@vue/test-utils'
 import BootstrapVue from 'bootstrap-vue'
 import Vuex from 'vuex'
-import SignupForm from '../../src/views/register/signup-form.vue'
-
+import SignupForm from '@/views/register/signup-form.vue'
+import VueTelInput from 'vue-tel-input'
 const localVue = createLocalVue()
 
 localVue.use(BootstrapVue)
+localVue.use(VueTelInput)
 
 describe('signup-form test suite', () => {
   let route
@@ -19,7 +20,7 @@ describe('signup-form test suite', () => {
           email: '',
           password: ''
         },
-        authenticated: false,
+        authenticated: true,
         status: {
           loggingIn: true
         },
@@ -33,7 +34,7 @@ describe('signup-form test suite', () => {
     localVue,
     computed: {
       error: () => '',
-      errorOccured: () => false,
+      errorOccured: () => true,
       errorMsg: () => ''
     },
     mocks: {
@@ -41,7 +42,6 @@ describe('signup-form test suite', () => {
       $store: store
     }
   })
-  
 
   //signup form
   /*
@@ -61,9 +61,14 @@ describe('signup-form test suite', () => {
     const signupPassword = wrapper.find('#signupPassword')
     expect(signupPassword.exists()).toBe(true)
   })
+  
   it('check  if signup signupPassConfirmation render', () => {
     const signupPassConfirmation = wrapper.find('#signupPassConfirmation')
     expect(signupPassConfirmation.exists()).toBe(true)
+  }) */
+  it('check  if signup btn render', () => {
+    const signupPassConfirmation = wrapper.find('#btnSignup')
+    expect(signupPassConfirmation.exists()).toBe(true)
   }) 
-  */
+  
 })
