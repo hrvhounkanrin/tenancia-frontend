@@ -24,13 +24,14 @@ const loginAccount = async ({ commit }, userData) => {
     .login(userData)
     .then(res => {
       if (res.status == 200) {
+        console.log(res.data, "res data")
         let userData = res.data
         commit(USER, userData.user)
         commit(AUTH_TOKEN, userData.token)
         commit(TOKEN_EXPIRE_AT, userData.expire_in)
         commit(AUTHENTICATED, true)
         commit(LOCAL_LOGIN_SUCCESS)
-        commit('user/PROFILES', userData.profiles, { root: true })
+        commit('user/PROFILES', {...userData.user,...userData.profiles}, { root: true })
         sessionStorage.setItem(USER_KEY, JSON.stringify(userData.user))
       }
       return res
