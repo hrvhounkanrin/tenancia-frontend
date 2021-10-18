@@ -56,6 +56,16 @@
           }}</span>
         </div>
         <div class="d-flex align-items-left justify-content-start">
+          <b>
+            <span class="d-block">MODE DE RECOUVREMENT</span>
+          </b>
+        </div>
+        <div class="d-flex align-items-left justify-content-start">
+          <span class="text-black-50 d-block" id="locataire_profession">{{
+            getProfiles.real_estate.mode_paiement
+          }}</span>
+        </div>
+        <div class="d-flex align-items-left justify-content-start">
           <b><span class="d-block">ADRESSE</span></b>
         </div>
         <div class="d-flex align-items-left justify-content-start">
@@ -101,6 +111,26 @@
         <form>
           <div class="row">
             <div class="col-md-12 mb-12">
+              <b-img
+                v-if="logo_real_estate"
+                class="logo_real_estate"
+                rounded
+                center
+                alt="Rounded image"
+                :src="logo_real_estate"
+              ></b-img>
+              <b-form-group label="LOGO AGENCE" label-for="logo_company">
+                <b-form-file
+                  accept="image/*"
+                  browse-text="Choisir une image"
+                  placeholder=''
+                  id="logo_company"
+                  @change="getImageUrl"
+                  size="sm"
+                ></b-form-file>
+              </b-form-group>
+            </div>
+            <div class="col-md-12 mb-12">
               <b-form-group label="NOM AGENCE" label-for="raison_sociale">
                 <b-form-input
                   id="raison_sociale"
@@ -119,30 +149,33 @@
                   v-if="errors.phone_numberMsg"
                   >{{ errors.phone_numberMsg }}</span
                 >
-                <!-- <vue-phone-number-input
-                  id="phone_number"
-                  default-country-code="BJ"
-                  :translations="translations"
-                  :only-countries="onlyCountries"
+                <vue-tel-input
+                  id="ice_number"
                   v-model="realEstate.num_telephone"
-                /> -->
-                   <div class="tenancia-country-code">
-                  <vue-country-code
-                    @onSelect="onSelect"
-                    :preferredCountries="onlyCountries"
-                  >
-                  </vue-country-code>
-                  <input
-                    type="text"
-                    class="form-control"
-                    id="num_telephone"
-                    v-model="realEstate.num_telephone"
-                    name="num_telephone"
-                  />
-                </div>
+                  name="ice_number"
+                  class="form-control"
+                  mode="international"
+                  :autoFormat="true"
+                  :autoDefaultCountry="true"
+                  :onlyCountries="['BJ', 'TG', 'CI', 'NE']"
+                  v-on:country-changed="countryChanged"
+                >
+                </vue-tel-input>
               </b-form-group>
             </div>
-
+            <div class="col-md-12 mb-12">
+              <b-form-group
+                label="MODE DE RECOUVREMENT"
+                label-for="mode_paiement"
+              ></b-form-group>
+              <b-form-select
+                id="mode_paiement"
+                v-model="realEstate.mode_paiement"
+                text-field="label"
+                value-field="id"
+                :options="modePaiementList"
+              ></b-form-select>
+            </div>
             <div class="col-md-12 mb-12">
               <b-form-group label="ADRESSE" label-for="adresse">
                 <b-form-input
@@ -183,18 +216,23 @@
                   :format="customFormatter"
                   v-model="realEstate.date_delivrance"
                 ></datepicker>
-                <!--<b-form-input id="numero_ifu" v-model="realEstate.date_delivrance" trim></b-form-input> -->
               </b-form-group>
             </div>
           </div>
 
-              <div class="row">
-
-            <b-button class="col mt-2 mb-2 ml-3 mr-3" variant="danger" @click="editingRealEstate = false">
+          <div class="row">
+            <b-button
+              class="col mt-2 mb-2 ml-3 mr-3"
+              variant="danger"
+              @click="editingRealEstate = false"
+            >
               Annuler
             </b-button>
-            <b-button class="col mt-2 mb-2 ml-2 mr-3" variant="primary" @click="saveRealEstate">
-              <!-- <font-awesome-icon icon="save" class="mr-2" /> -->
+            <b-button
+              class="col mt-2 mb-2 ml-2 mr-3"
+              variant="primary"
+              @click="saveRealEstate"
+            >
               {{ realEstate.id && realEstate.id > 0 ? "Enregistrer" : "Créer" }}
               <span
                 v-if="loadingSaveRealEstate"
@@ -203,29 +241,7 @@
                 aria-hidden="true"
               ></span>
             </b-button>
-
           </div>
-
-          <!-- <div style="display: flex; flex-direction: row">
-            <a
-              href="javascript:void(0);"
-              class="btn-block btn btn-danger m-1"
-              title="Save Lessor"
-              @click="editingRealEstate = false"
-            >
-              <span>Annuler</span>
-            </a>
-            <a
-              href="javascript:void(0);"
-              class="btn-block btn btn-primary m-1"
-              title="Save Lessor"
-              @click="saveRealEstate"
-            >
-              <span>{{
-                realEstate.id && realEstate.id > 0 ? "Enregistrer" : "Créer"
-              }}</span>
-            </a>
-          </div> -->
         </form>
       </div>
     </div>
@@ -239,7 +255,8 @@ import { alert } from "@/components/shared/";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import Datepicker from "vuejs-datepicker";
 import { mixin } from "@/mixin/mixin";
-import moment from "moment"
+import moment from "moment";
+
 import {
   faArrowRight,
   faArrowUp,
@@ -258,6 +275,7 @@ export default {
   },
   data() {
     return {
+      logo_real_estate: null,
       testB: "",
       breadcrumb: [
         {
@@ -273,7 +291,7 @@ export default {
         example: "Exemple :",
       },
       loadingSaveRealEstate: false,
-       phone: {
+      phone: {
         country: "",
         dial_code: "",
       },
@@ -303,27 +321,35 @@ export default {
         num_telephone: null,
         adresse: null,
         numero_ifu: null,
+        mode_paiement: null,
         num_carte_professionnel: null,
+        logo: null,
         profile_type: "real_estate",
       },
     };
   },
   created: function () {
-    this.realEstate.num_telephone = this.getProfiles.phone_number.split(" ")[1]
+    this.realEstate.num_telephone = this.getProfiles.phone_number;
     this.countries = mixin.methods.getAllCountry(this.onlyCountries);
   },
   computed: {
     ...mapGetters("user", ["getProfiles"]),
-
-    ...mapGetters("banque", ["banquesList"]),
+    ...mapGetters("banque", ["banquesList", "modePaiementList"]),
     ...mapGetters("auth", ["user"]),
     ...mapGetters("general", ["iceRelation"]),
   },
   methods: {
     ...mapActions("user", ["createUserProfil", "updateUserProfil"]),
-    onSelect({ name, iso2, dialCode }) {
+
+    getImageUrl(e) {
+      var reader = new FileReader();
+      reader.readAsDataURL(e.target.files[0]);
+      reader.onload = () => {
+        this.logo_real_estate = reader.result;
+      };
+    },
+    countryChanged({ name, iso2, dialCode }) {
       this.phone.country = iso2;
-      this.phone.dial_code = dialCode;
     },
     formatDelivranceDate(dte) {
       return moment(dte).format("DD/MM/YYYY").toString();
@@ -334,9 +360,10 @@ export default {
     editRealEstate(e) {
       this.editingRealEstate = true;
       if (this.getProfiles && this.getProfiles.real_estate) {
+        this.logo_real_estate = this.getProfiles.real_estate.logo_real_estate;
         this.realEstate = {
           ...this.getProfiles.real_estate,
-          num_telephone: this.getProfiles.real_estate.num_telephone.split(' ')[1],
+          num_telephone: this.getProfiles.real_estate.num_telephone,
           profile_type: "real_estate",
         };
       }
@@ -351,8 +378,7 @@ export default {
     },
 
     async saveRealEstate() {
-      
-            this.loadingSaveRealEstate = true;
+      this.loadingSaveRealEstate = true;
 
       this.errors = {};
       this.errors.raisonSocialMsg = !this.realEstate.raison_sociale
@@ -380,7 +406,12 @@ export default {
           .format("YYYY-MM-DD")
           .toString();
         console.log(this.realEstate, "REAL");
-        await this.updateUserProfil({...this.realEstate,num_telephone:`${this.phone.dial_code} ${this.realEstate.num_telephone}`, country: this.phone.country})
+        await this.updateUserProfil({
+          ...this.realEstate,
+          logo_real_estate: this.logo_real_estate,
+          num_telephone: `${this.realEstate.num_telephone}`,
+          country: this.phone.country,
+        })
           .then((res) => this.onRealEstateActionSucess(res))
           .catch((err) => this.onRealEstateActionFailure(err));
       } else {
@@ -389,16 +420,23 @@ export default {
         )
           .format("YYYY-MM-DD")
           .toString();
-        await this.createUserProfil({...this.realEstate,num_telephone:`${this.phone.dial_code} ${this.realEstate.num_telephone}`, country: this.phone.country})
+        await this.createUserProfil({
+          ...this.realEstate,
+          logo_real_estate: this.logo_real_estate,
+          num_telephone: `${this.realEstate.num_telephone}`,
+          country: this.phone.country,
+        })
           .then((res) => this.onRealEstateActionSucess(res))
           .catch((err) => this.onRealEstateActionFailure(err));
       }
-                  this.loadingSaveRealEstate = false;
-
+      this.loadingSaveRealEstate = false;
     },
   },
 };
 </script>
 
-<style>
+<style lang="scss">
+.logo_real_estate {
+  width: 50%;
+}
 </style>

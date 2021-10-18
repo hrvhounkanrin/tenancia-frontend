@@ -47,6 +47,8 @@
     "vue-country-code": "^1.1.2",
     "vue-country-code-select": "^1.6.7",
     "vue-feather-icons": "^4.22.0",
+    "vue-file-agent": "^1.7.3",
+    "vue-filepond": "^6.0.3",
     "vue-full-calendar": "^2.7.0",
     "vue-google-login": "^2.0.5",
     "vue-google-oauth2": "^1.5.8",

@@ -125,26 +125,19 @@
                   >{{ errors.phone_numberMsg }}</span
                 >
                 <div class="tenancia-country-code">
-                  <vue-country-code
-                    @onSelect="onSelect"
-                    :preferredCountries="onlyCountries"
-                  >
-                  </vue-country-code>
-                  <input
-                    type="text"
-                    class="form-control"
+                  <vue-tel-input
                     id="ice_number"
                     v-model="tenant.phone_number"
                     name="ice_number"
-                  />
+                    class="form-control"
+                    mode="international"
+                    :autoFormat="true"
+                    :autoDefaultCountry="true"
+                    :onlyCountries="['BJ', 'TG', 'CI', 'NE']"
+                    v-on:country-changed="countryChanged"
+                  >
+                  </vue-tel-input>
                 </div>
-                <!-- <vue-phone-number-input
-                  id="phone_number"
-                  default-country-code="BJ"
-                  :translations="translations"
-                  :only-countries="onlyCountries"
-                  v-model="tenant.phone_number"
-                /> -->
               </b-form-group>
             </div>
             <div class="col-md-12 mb-12">
@@ -195,33 +188,34 @@
                   v-if="errors.ice_numberMsg"
                   >{{ errors.ice_numberMsg }}</span
                 >
-                <!-- <vue-phone-number-input
+                <vue-tel-input
                   id="ice_number"
-                  default-country-code="BJ"
-                  :translations="translations"
-                  :only-countries="onlyCountries"
                   v-model="tenant.ice_number"
-                /> -->
-                <div class="tenancia-country-code">
-                  <vue-country-code
-                    @onSelect="onSelectIce"
-                    :preferredCountries="onlyCountries"
-                  >
-                  </vue-country-code>
-                  <input
-                    type="text"
-                    class="form-control"
-                    id="ice_number"
-                    v-model="tenant.ice_number"
-                    name="ice_number"
-                  />
-                </div>
+                  name="ice_number"
+                  class="form-control"
+                  mode="international"
+                  :autoFormat="true"
+                  :autoDefaultCountry="true"
+                  :onlyCountries="['BJ', 'TG', 'CI', 'NE']"
+                  v-on:country-changed="iceCountryChanged"
+                >
+                </vue-tel-input>
               </b-form-group>
             </div>
             <div class="col-md-12 mb-12">
-              <b-form-group label="LIEN DE PARENTE ECU" label-for="ice_relation">
-                <span class="invalid-feedback d-block" v-if="errors.ice_relationMsg">{{ errors.ice_relationMsg }}</span>
-                <b-form-select  v-model="tenant.ice_relation" :options="iceRelation"></b-form-select>
+              <b-form-group
+                label="LIEN DE PARENTE ECU"
+                label-for="ice_relation"
+              >
+                <span
+                  class="invalid-feedback d-block"
+                  v-if="errors.ice_relationMsg"
+                  >{{ errors.ice_relationMsg }}</span
+                >
+                <b-form-select
+                  v-model="tenant.ice_relation"
+                  :options="iceRelation"
+                ></b-form-select>
               </b-form-group>
             </div>
             <div class="col-md-12 mb-12">
@@ -241,12 +235,19 @@
               <span class="d-block">ECU: En cas d'urgence</span>
             </div>
           </div>
-  <div class="row">
-
-            <b-button class="col mt-2 mb-2 ml-3 mr-3" variant="danger" @click="editingTenant = false">
+          <div class="row">
+            <b-button
+              class="col mt-2 mb-2 ml-3 mr-3"
+              variant="danger"
+              @click="editingTenant = false"
+            >
               Annuler
             </b-button>
-            <b-button class="col mt-2 mb-2 ml-2 mr-3" variant="primary" @click="saveTenant">
+            <b-button
+              class="col mt-2 mb-2 ml-2 mr-3"
+              variant="primary"
+              @click="saveTenant"
+            >
               <!-- <font-awesome-icon icon="save" class="mr-2" /> -->
               {{ tenant.id && tenant.id > 0 ? "Enregistrer" : "Créer" }}
               <span
@@ -256,7 +257,6 @@
                 aria-hidden="true"
               ></span>
             </b-button>
-
           </div>
           <!-- <div style="display: flex flex-direction: row">
             <a
@@ -285,11 +285,10 @@
 </template>
 
 <script>
-import { mapActions, mapGetters } from "vuex"
-import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome"
-import { alert } from "@/components/shared/"
-import Datepicker from "vuejs-datepicker"
-
+import { mapActions, mapGetters } from "vuex";
+import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
+import { alert } from "@/components/shared/";
+import Datepicker from "vuejs-datepicker";
 
 export default {
   name: "tenant-detail",
@@ -320,7 +319,7 @@ export default {
         country: "",
         dial_code: "",
       },
-      loadingSaveTenant:false,
+      loadingSaveTenant: false,
       tenant: {
         id: null,
         profession: null,
@@ -331,99 +330,98 @@ export default {
         numero_ifu: null,
         profile_type: "tenant",
       },
-    }
+    };
   },
   computed: {
     ...mapGetters("user", ["getProfiles"]),
     ...mapGetters("auth", ["user"]),
     ...mapGetters("general", ["iceRelation"]),
   },
-    created: function () {
-    this.tenant.phone_number = this.getProfiles.phone_number.split(" ")[1]
+
+  created: function () {
+    this.tenant.phone_number = this.getProfiles.phone_number;
   },
   methods: {
     ...mapActions("user", ["createUserProfil", "updateUserProfil"]),
 
     editTenant(e) {
-      this.editingTenant = true
+      this.editingTenant = true;
       if (this.getProfiles && this.getProfiles.tenant) {
-        this.tenant = { ...this.getProfiles.tenant, 
-                phone_number: this.getProfiles.tenant.phone_number.split(' ')[1],
-                ice_number: this.getProfiles.tenant.ice_number.split(' ')[1],
-profile_type: "tenant" }
+        this.tenant = {
+          ...this.getProfiles.tenant,
+          phone_number: this.getProfiles.tenant.phone_number,
+          ice_number: this.getProfiles.tenant.ice_number,
+          profile_type: "tenant",
+        };
       }
     },
-    onSelectIce({ name, iso2, dialCode }) {
-      this.ice_phone.country = iso2
-      this.ice_phone.dial_code = dialCode
+    iceCountryChanged({ name, iso2, dialCode }) {
+      this.ice_phone.country = iso2;
     },
-    onSelect({ name, iso2, dialCode }) {
-      this.phone.country = iso2
-      this.phone.dial_code = dialCode
+    countryChanged({ name, iso2, dialCode }) {
+      this.phone.country = iso2;
     },
     onTenantActionSucess(res) {
-      this.editingTenant = false
+      this.editingTenant = false;
     },
     onTenantActionFailure(err) {
-      this.errors.tenantMsg = err.response.data.message
-      this.editingTenant = true
+      this.errors.tenantMsg = err.response.data.message;
+      this.editingTenant = true;
     },
 
     async saveTenant() {
-      
-      this.loadingSaveTenant = true
-      this.errors = {}
+      this.loadingSaveTenant = true;
+      this.errors = {};
       this.errors.phone_numberMsg = !this.tenant.phone_number
         ? "Veuillez renseigner votre n° téléphone"
-        : null
+        : null;
       this.errors.professionMsg = !this.tenant.profession
         ? "Veuillez renseigner votre profession"
-        : null
+        : null;
       this.errors.ice_contactMsg = !this.tenant.ice_contact
         ? "Veuillez renseigner une personne à contacter ECU"
-        : null
+        : null;
       this.errors.ice_numberMsg = !this.tenant.ice_number
         ? "Veuillez renseigner le numéro de la personne à contacter ECU"
-        : null
+        : null;
       this.errors.ice_relationMsg = !this.tenant.ice_relation
         ? "Veuillez renseigner votre lien de parenté"
-        : null
+        : null;
       this.errors.numero_ifuMsg = !this.tenant.numero_ifu
         ? "Veuillez renseigner votre N° IFU"
-        : null
+        : null;
 
       if (!Object.values(this.errors).some((x) => x === null)) {
-        console.log(this.errors)
-        vm.editingTenant = true
-        return
+        console.log(this.errors);
+        vm.editingTenant = true;
+        return;
       }
 
       if (this.tenant.id && this.tenant.id > 0) {
-        const profileToUpdate = { 
+        const profileToUpdate = {
           ...this.tenant,
-          phone_number:`${this.phone.dial_code} ${this.tenant.phone_number}`, 
-          ice_number:`${this.ice_phone.dial_code} ${this.tenant.ice_number}`, 
-          profile_type: "tenant" 
-        }
+          phone_number: `${this.tenant.phone_number}`,
+          ice_number: `${this.tenant.ice_number}`,
+          profile_type: "tenant",
+        };
         await this.updateUserProfil(profileToUpdate)
           .then((res) => this.onTenantActionSucess(res))
-          .catch((err) => this.onTenantActionFailure(err))
-      } 
+          .catch((err) => this.onTenantActionFailure(err));
+      }
       const profileToCreate = {
         ...this.tenant,
-        phone_number:`${this.phone.dial_code} ${this.tenant.phone_number}`, 
-        ice_number:`${this.ice_phone.dial_code} ${this.tenant.ice_number}`,
-        profile_type: "tenant" 
-      }
+        phone_number: `${this.tenant.phone_number}`,
+        ice_number: `${this.tenant.ice_number}`,
+        profile_type: "tenant",
+      };
       await this.createUserProfil(profileToCreate)
         .then((res) => this.onTenantActionSucess(res))
-        .catch((err) => this.onTenantActionFailure(err))
-  
-      this.loadingSaveTenant = false
+        .catch((err) => this.onTenantActionFailure(err));
 
+      this.loadingSaveTenant = false;
     },
   },
-}
+};
 </script>
 
 <style>
