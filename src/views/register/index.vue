@@ -15,7 +15,7 @@
                         :style="{
                           backgroundImage:
                             'url(' +
-                            require('@/assets/img/hero-bg/cotonou.jpg') +
+                            require('@/assets/img/hero-bg/cotonou-3.png') +
                             ')',
                         }"
                       ></div>
@@ -28,12 +28,12 @@
                       ></div>
                       <div class="bg-composed-wrapper--content p-0">
                         <div class="text-white mt-3" style="text-align: center">
-                          <h1 class="display-4 my-3 font-weight-bold">
+                          <!--<h1 class="display-4 my-3 font-weight-bold">
                             Tenancia
                           </h1>
                           <p class="font-size-xxl mb-0 text-white-50 h2">
                             Votre outil de gestion locative
-                          </p>
+                          </p>-->
                           <div
                             class="
                               divider

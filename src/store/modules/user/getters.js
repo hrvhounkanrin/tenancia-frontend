@@ -1,7 +1,7 @@
 export default {
   getProfilesList: (state) => {
-    state.profilesList = JSON.parse(localStorage.getItem('profilesList'))
-    return state.profilesList
+    // state.profilesList = JSON.parse(localStorage.getItem('profilesList'))
+    return state.profileList
   },
   getProfiles: (state) => {
     state.profiles = JSON.parse(localStorage.getItem('profiles'))

@@ -62,6 +62,7 @@ export default {
   async createUserProfil ({ commit }, data) {
     let user = new User()
     let newProfile = await user.createProfile(data)
+    console.log('new profile', newProfile)
     commit(PROFILES, newProfile.data.payload)
   },
 

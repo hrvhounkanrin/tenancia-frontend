@@ -1,6 +1,6 @@
 <template>
     <div>
-       
+
         <alert
             v-if="errorOccured"
             variant="danger"
@@ -169,7 +169,7 @@ export default {
       credential: {
         email: '',
         password: ''
-      },
+      }
     }
   },
 
@@ -178,7 +178,7 @@ export default {
       error: (state) => state.alert.message,
       errorOccured: (state) => state.auth.status.errorOccured,
       errorMsg: (state) => state.auth.errors
-    }),
+    })
   },
   mounted: function () {
 
@@ -198,8 +198,8 @@ export default {
         position: 'top-right'
       })
     },
-    localSignin(){
-        this.$emit("local-signin", this.credential)
+    localSignin () {
+      this.$emit('local-signin', this.credential)
     }
   }
 }

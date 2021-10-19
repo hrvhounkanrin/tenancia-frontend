@@ -65,7 +65,8 @@ export default {
   computed: {
     ...mapState({
       api_errors: (state) => state.contrats.errors,
-      userProfiles: (state) => state.user.profilesList
+      userProfiles: (state) => state.user.profileList,
+      menu: (state) => state.user.userMenus
     }),
     sidebarCollapsed: {
       get () {
@@ -81,7 +82,7 @@ export default {
   },
   data () {
     return {
-      initalMenu: [
+      /*initalMenu: [
         {
           header: true,
           title: 'TENANCIA',
@@ -156,12 +157,13 @@ export default {
             element: 'settings-icon'
           }
         }
-      ],
-      menu: [],
+      ],*/
+      //menu: [],
       collapsed: true
     }
   },
   mounted () {
+    /*console.log('Sidebar userprofiles', this.userprofiles)
     const that = this
     if (this.userProfiles) {
       this.initalMenu.forEach((item) => {
@@ -169,7 +171,7 @@ export default {
           that.menu.push(item)
         }
       })
-    }
+    }*/
   },
   methods: {
     toggleSidebar () {

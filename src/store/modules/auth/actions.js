@@ -24,7 +24,6 @@ const loginAccount = async ({ commit }, userData) => {
     .login(userData)
     .then(res => {
       if (res.status == 200) {
-        console.log(res.data, "res data")
         let userData = res.data
         commit(USER, userData.user)
         commit(AUTH_TOKEN, userData.token)
@@ -106,6 +105,7 @@ const logout = ({ commit }) => {
   sessionStorage.removeItem(USER_KEY)
   sessionStorage.removeItem(TOKEN_EXPIRE_AT_KEY)
   localStorage.clear()
+  sessionStorage.clear()
 }
 const googleExchangeToken = async ({ dispatch, commit }, googleToken) => {
   try {

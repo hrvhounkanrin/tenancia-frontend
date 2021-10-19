@@ -1,6 +1,18 @@
 import {
-  PROFILES
+  PROFILES, USERMENUS
 } from './mutation-types'
+
+function computeUserMenus(initalMenu, profileList){
+  const userMenus = []
+  if (profileList.length>0) {
+    initalMenu.forEach((item) => {
+      if (item.authorizedProfiles && item.authorizedProfiles.some(p => profileList.includes(p))) {
+        userMenus.push(item)
+      }
+    })
+  }
+  return userMenus
+}
 
 export default {
   [PROFILES] (state, data) {
@@ -20,8 +32,21 @@ export default {
       profileList.push('REALESTATE')
     }
     localStorage.setItem('profiles', JSON.stringify(data))
-    localStorage.setItem('profilesList', JSON.stringify(profileList))
-    console.log('profilesList:', profileList)
+    state.profileList = profileList
     state.profiles = data
+    /*
+    const userMenus = []
+    if (profileList.length>0) {
+      state.initalMenu.forEach((item) => {
+        if (item.authorizedProfiles && item.authorizedProfiles.some(p => profileList.includes(p))) {
+          userMenus.push(item)
+        }
+      })
+    }*/
+    state.userMenus = computeUserMenus(state.initalMenu, profileList)
+  },
+  [USERMENUS](state, menus){
+    localStorage.setItem('usermenus', JSON.stringify(menus))
+    state.userMenus = menus
   }
 }
