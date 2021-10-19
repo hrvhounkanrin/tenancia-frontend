@@ -29,7 +29,7 @@
 </template>
 
 <script>
-import { mapActions, mapMutations, mapGetters } from "vuex";
+import { mapActions, mapGetters } from "vuex";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import { mixin } from "@/mixin/mixin";
 import moment from "moment";

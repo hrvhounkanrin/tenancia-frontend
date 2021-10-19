@@ -58,6 +58,12 @@ const router = new Router({
       meta: { auth: true, authorizedProfiles: ['LESSOR', 'REALESTATE'] }
     },
     {
+      path: '/mandats',
+      name: 'MyMandate',
+      component: Properties,
+      meta: { auth: true, authorizedProfiles: ['REALESTATE'] }
+    },
+    {
       path: '/my-portfolio',
       name: 'MyContracts',
       component: ContractList,

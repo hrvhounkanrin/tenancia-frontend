@@ -26,6 +26,14 @@ export default {
       authorizedProfiles: ['LESSOR', 'REALESTATE']
     },
     {
+      title: 'Portefeuille de mandats',
+      href: '/mandats',
+      icon: {
+        element: 'folder-icon'
+      },
+      authorizedProfiles: ['REALESTATE']
+    },
+    {
       title: 'Contrats de bail',
       href: '/my-contracts',
       icon: {

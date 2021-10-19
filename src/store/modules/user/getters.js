@@ -1,4 +1,9 @@
 export default {
+  getUserMenus: (state) =>{
+      const userMenus = (state.userMenus) ? state.userMenus : JSON.parse(localStorage.getItem('userMenus'))
+      console.log('getUserMenus: ', userMenus)
+      return userMenus
+  },
   getProfilesList: (state) => {
     // state.profilesList = JSON.parse(localStorage.getItem('profilesList'))
     return state.profileList

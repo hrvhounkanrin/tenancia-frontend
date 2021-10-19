@@ -12,7 +12,7 @@
         </div>
         <VuePerfectScrollbar class="app-sidebar--content">
             <div class="sidebar-navigation">
-                <sidebar-menu showOneChild :menu="menu"/>
+                <sidebar-menu showOneChild :menu="getUserMenus"/>
             </div>
         </VuePerfectScrollbar>
     </div>
@@ -21,7 +21,7 @@
 <script>
 
 import Vue from 'vue'
-import { mapState } from 'vuex'
+import { mapState, mapGetters } from 'vuex'
 import { SidebarMenu } from 'vue-sidebar-menu'
 import VuePerfectScrollbar from 'vue-perfect-scrollbar'
 import { SettingsIcon, PlusIcon, FileTextIcon, FolderIcon,
@@ -66,8 +66,8 @@ export default {
     ...mapState({
       api_errors: (state) => state.contrats.errors,
       userProfiles: (state) => state.user.profileList,
-      menu: (state) => state.user.userMenus
     }),
+    ...mapGetters("user", ["getUserMenus"]),
     sidebarCollapsed: {
       get () {
         return this.$store.state.shared.sidebarCollapsed
@@ -163,15 +163,6 @@ export default {
     }
   },
   mounted () {
-    /*console.log('Sidebar userprofiles', this.userprofiles)
-    const that = this
-    if (this.userProfiles) {
-      this.initalMenu.forEach((item) => {
-        if (item.authorizedProfiles && item.authorizedProfiles.some(p => that.userProfiles.includes(p))) {
-          that.menu.push(item)
-        }
-      })
-    }*/
   },
   methods: {
     toggleSidebar () {

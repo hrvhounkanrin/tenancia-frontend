@@ -34,16 +34,9 @@ export default {
     localStorage.setItem('profiles', JSON.stringify(data))
     state.profileList = profileList
     state.profiles = data
-    /*
-    const userMenus = []
-    if (profileList.length>0) {
-      state.initalMenu.forEach((item) => {
-        if (item.authorizedProfiles && item.authorizedProfiles.some(p => profileList.includes(p))) {
-          userMenus.push(item)
-        }
-      })
-    }*/
+
     state.userMenus = computeUserMenus(state.initalMenu, profileList)
+    localStorage.setItem('userMenus', state.userMenus)
   },
   [USERMENUS](state, menus){
     localStorage.setItem('usermenus', JSON.stringify(menus))
