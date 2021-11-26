@@ -2,7 +2,7 @@ import {
   ERROR_ADD, ERROR_REMOVE, CONTRAT_LIST, ADD_CONTRAT, UPDATE_CONTRAT,
   AGREE_CONTRAT, ACCESSOIRE_LIST, ADD_ACCESSOIRE, UPDATE_ACCESSOIRE,
   SELECTED_CONTRAT, TENANTS, SEARCHTENANTREQUEST, GETFREEAPPARTMENTREQUEST,
-  GETFREEAPPARTMENT, CLIENTCONTRAT, UPDATECLIENTCONTRAT
+  GETFREEAPPARTMENT, CLIENTCONTRAT, UPDATECLIENTCONTRAT, CONTRATTOUPDATE
 } from './mutation-types'
 
 export default {
@@ -35,6 +35,9 @@ export default {
     let index = state.contrats.findIndex(co => co.id === contrat.id)
     state.contrats.splice(index, 1, contrat)
   },
+  [CONTRATTOUPDATE] (state, contrat) {
+    state.contratToUpdate = contrat
+  },
   [SELECTED_CONTRAT] (state, contrat) {
     state.contrats.splice(index, 1, contrat)
   },
@@ -45,7 +48,7 @@ export default {
     state.typeAccessoireLoyer = accessoires
   },
   [ADD_ACCESSOIRE] (state, accessoire) {
-    state.typeAccessoireLoyer = state.typeAccessoireLoyer.push(accessoire)
+    state.typeAccessoireLoyer.push(accessoire)
   },
   [UPDATE_ACCESSOIRE] (state, accessoire) {
     let index = state.typeAccessoireLoyer.findIndex(acc => acc.id === accessoire.id)

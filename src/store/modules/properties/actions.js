@@ -36,8 +36,10 @@ export default {
     return await immeuble.createImmeuble(data)
       .then(res => {
         if (res.status === 200) {
-          let immeubles = res.data.payload
-          commit(ADD_IMMEUBLE, immeubles)
+          let immeuble = res.data.payload
+          commit(ADD_IMMEUBLE, immeuble)
+          //commit(SELECTED_IMMEUBLE, immeubles)
+          return immeuble
         }
       })
       .catch(errors => {

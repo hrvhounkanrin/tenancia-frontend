@@ -27,14 +27,12 @@
                 </span>
                 <span class="btn-wrapper--label">Modifier</span>
             </b-button>
-            <router-link :to="{name: 'EditContrat'}">
-              <b-button variant="primary" class="mr-2">
+              <b-button variant="primary" class="mr-2" @click="triggerAddContrat">
                   <span class="btn-wrapper--icon">
                       <font-awesome-icon icon="file-word"/>
                   </span>
                   Ajouter un contrat
               </b-button>
-            </router-link>
             <b-button variant="primary" class="mr-2" @click="$emit('init-cloner')">
                 <span class="btn-wrapper--icon">
                     <font-awesome-icon icon="clone"/>
@@ -88,6 +86,10 @@ export default {
             return 'badge-success'
         }
         return 'badge-danger'
+    },
+    triggerAddContrat: function(){
+        this.$store.commit('contrats/CONTRATTOUPDATE', null)
+        this.$router.push({name: 'EditContrat'})
     }
   }
 

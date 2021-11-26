@@ -16,7 +16,6 @@ function computeUserMenus(initalMenu, profileList){
 
 export default {
   [PROFILES] (state, data) {
-    console.log('PROFILES MUTATION: ', data)
     const profileList = []
     if (data.lessor) {
       localStorage.setItem('lessor', JSON.stringify(data.lessor))
@@ -27,16 +26,20 @@ export default {
       localStorage.setItem('tenant', JSON.stringify(data.tenant))
       profileList.push('TENANT')
     }
-    if (data.realEstate) {
+    if (data.real_estate) {
       localStorage.setItem('realEstate', JSON.stringify(data.realEstate))
       profileList.push('REALESTATE')
     }
-    localStorage.setItem('profiles', JSON.stringify(data))
     state.profileList = profileList
     state.profiles = data
 
     state.userMenus = computeUserMenus(state.initalMenu, profileList)
-    localStorage.setItem('userMenus', state.userMenus)
+    localStorage.removeItem('userMenus')
+    localStorage.removeItem('profileList')
+    localStorage.removeItem('profiles')
+    localStorage.setItem('profileList', JSON.stringify(profileList))
+    localStorage.setItem('profiles', JSON.stringify(data))
+    localStorage.setItem('userMenus', JSON.stringify(state.userMenus))
   },
   [USERMENUS](state, menus){
     localStorage.setItem('usermenus', JSON.stringify(menus))

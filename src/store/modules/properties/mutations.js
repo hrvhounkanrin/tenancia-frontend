@@ -8,7 +8,7 @@ export default {
     state.immeubles = immeubles
   },
   [ADD_IMMEUBLE] (state, immeuble) {
-    state.immeubles.push(immeuble)
+    state.immeubles.unshift(immeuble)
   },
   [UPDATE_IMMEUBLE] (state, immeuble) {
     let index = state.immeubles.findIndex(im => im.id === immeuble.id)

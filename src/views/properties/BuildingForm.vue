@@ -1,5 +1,5 @@
 <template>
-        <b-modal id="theForm" body-class="p-0" size="lg" centered>
+        <b-modal id="buildingForm" body-class="p-0" size="lg" centered>
             <div slot="modal-header">
                 <h3>Edition Immeuble</h3>
             </div>

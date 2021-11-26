@@ -16,8 +16,8 @@ import User from '@/api/user'
 import router from '@/router/router'
 import tokenDuration from './getters'
 /**
-   * @todo Changer la gestion des erreurs axios, revoir et harmoniser les retours d'erreurs du backend aussi
-  */
+* @todo Changer la gestion des erreurs axios, revoir et harmoniser les retours d'erreurs du backend aussi
+*/
 const loginAccount = async ({ commit }, userData) => {
   let user = new User()
   return await user
@@ -101,6 +101,9 @@ const logout = ({ commit }) => {
   commit(USER, null)
   commit(AUTH_TOKEN, null)
   commit(AUTHENTICATED, false)
+  localStorage.removeItem('userMenus')
+  localStorage.removeItem('profileList')
+  localStorage.removeItem('profiles')
   sessionStorage.removeItem(AUTH_TOKEN_KEY)
   sessionStorage.removeItem(USER_KEY)
   sessionStorage.removeItem(TOKEN_EXPIRE_AT_KEY)

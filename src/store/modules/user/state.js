@@ -47,7 +47,7 @@ export default {
       icon: {
         element: 'clipboard-icon'
       },
-      authorizedProfiles: ['TENANT', 'LESSOR', 'REALESTATE']
+      authorizedProfiles: ['TENANT']
     },
     {
       title: 'Quittances bailleur',

@@ -10,7 +10,7 @@
                     <div class="col-md-6 col-lg-12 col-xl-6">
                         <div class="d-flex align-items-left flex-column flex-sm-row">
                             <div>
-                                <div class="text-center display-4 d-20 rounded-circle mb-3 mb-sm-2">
+                                <div class="text-center text-first display-4 d-20 rounded-circle mb-3 mb-sm-2">
                                     <font-awesome-icon icon="calendar-alt" :class="faStyle"/>
                                 </div>
                             </div>
@@ -27,7 +27,7 @@
                     <div class="col-md-6 col-lg-12 col-xl-6">
                         <div class="d-flex align-items-left flex-column flex-sm-row">
                             <div>
-                                <div class="text-center display-4 d-20 rounded-circle mb-3 mb-sm-2">
+                                <div class="text-center text-first display-4 d-20 rounded-circle mb-3 mb-sm-2">
                                     <font-awesome-icon icon="calendar-alt" :class="faStyle"/>
                                 </div>
                             </div>
@@ -46,7 +46,7 @@
                     <div class="col-md-6 col-lg-12 col-xl-6">
                         <div class="d-flex align-items-left flex-column flex-sm-row">
                             <div>
-                                <div class="text-center display-4 d-20 rounded-circle mb-3 mb-sm-2">
+                                <div class="text-center text-first display-4 d-20 rounded-circle mb-3 mb-sm-2">
                                     <font-awesome-icon icon="clock" :class="faStyle"/>
                                 </div>
                             </div>
@@ -201,14 +201,14 @@
                                     </div>
                                      <ul class="list-unstyled card-columns">
                                         <li v-for="(typedependence, index) in contrat.appartement.structures" :key="index">
-                                            <font-awesome-icon icon="check-square" class="mr-2"/>
+                                            <font-awesome-icon icon="check-square" class="mr-2"  :class="faStyle"/>
                                             <span class="mr-1">{{'0'+typedependence.nbre}}</span>
                                             <span> {{ typedependence.libelle }}</span>
                                             <span> ({{ typedependence.superficie + ' m²'}})</span> 
                                            
                                         </li>
                                     </ul>
-                                    <p><font-awesome-icon icon="comments"/><span class="ml-2">{{contrat.appartement.autre_description}}...</span></p>
+                                    <p><font-awesome-icon icon="comments" :class="faStyle"/><span class="ml-2">{{contrat.appartement.autre_description}}...</span></p>
                                 </div>
                                 <div class="ml-auto card-hover-indicator align-self-center">
                                     <font-awesome-icon icon="chevron-right" class="font-size-xl"/>
@@ -229,11 +229,11 @@
                                         <span class="font-size-xl  mt-1">{{contrat.appartement.proprietaire}}</span>
                                     </div>
                                     <div class="mt-2">
-                                        <font-awesome-icon icon="phone-alt" class="mr-1"/>
+                                        <font-awesome-icon icon="phone-alt" class="mr-1"  :class="faStyle"/>
                                         <span class="pr-1">{{contrat.appartement.proprietaire_phone_number}}</span>
                                     </div>
                                         <div class="mt-2">
-                                        <font-awesome-icon icon="envelope" class="mr-1"/>
+                                        <font-awesome-icon icon="envelope" class="mr-1"  :class="faStyle"/>
                                         <span class="pr-1">{{contrat.appartement.proprietaire_mail}}</span>
                                     </div>
                                 </div>
@@ -299,7 +299,7 @@
                                 <div>
                                     <div class="font-weight-bold">
                                         <small class="text-black-50 d-block mb-1 text-uppercase">TOTAL A PAYER</small>
-                                        <font-awesome-icon icon="calculator" class="font-size-xl mr-2" />
+                                        <font-awesome-icon icon="calculator" class="font-size-xl mr-2"  :class="faStyle"/>
                                         <span class="font-size-xl  mt-1"> {{Number(totalBail).toLocaleString('fr-FR')}} FCFA</span>
                                     </div>
                                 </div>
@@ -311,11 +311,11 @@
             </div>
             <div class="card-footer d-block text-center">
                 <b-button variant="danger" class="mr-2" v-if="!contrat.client_accord">
-                    <font-awesome-icon icon="ban" class="mr-2" />
+                    <font-awesome-icon icon="ban" class="mr-2"/>
                     DECLINER
                 </b-button>
                 <b-button variant="success" v-if="!contrat.client_accord" @click="$emit('accepter-contrat')" >
-                    <font-awesome-icon icon="handshake" class="mr-2" />
+                    <font-awesome-icon icon="handshake" class="mr-2"/>
                     ACCEPTER
                 </b-button>
             </div>

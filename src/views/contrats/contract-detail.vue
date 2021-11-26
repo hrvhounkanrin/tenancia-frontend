@@ -290,7 +290,11 @@ export default {
   computed: {
       totalAPayer: function(){
         let montant_bail = parseFloat(this.contrat.montant_bail) 
-        return montant_bail + this.contrat.accessoires.reduce((accumulateur, item) => accumulateur + parseFloat(item.montant) , 0)
+        let montantAvance =  montant_bail * parseFloat(this.contrat.nb_avance)
+        let montantPrepaye =  montant_bail * parseFloat(this.contrat.nb_prepaye)
+        return montantAvance + montantPrepaye 
+            + this.contrat.accessoires.reduce(
+                (accumulateur, item) => accumulateur + parseFloat(item.montant) , 0)
       }
   },
   mounted: function(){

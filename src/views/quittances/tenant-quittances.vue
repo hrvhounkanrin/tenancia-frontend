@@ -4,28 +4,50 @@
       heading="Mes quittances"
       subheading="Liste de vos quittances(Vue locataire)"
     />
-    <div class="row">
+    <div class="card">
       <payment-card :montant="montantAPayer"></payment-card><payment-card-interface/>
       <div class="col-lg-12 col-md-12 col-sm-8 offset-sm-2 col-xl-8 offset-xl-2">
               <alert  variant="warning" v-for="err in api_errors" :msg="err.message" icon="bell" :dismissSecs="15" :dismissible="true" :title="'Oups..'" :key="err.key"></alert>
       </div>
     </div>
-    <div class="row">
-
-      <div class="col-xl-8 col-lg-8 col-md-8 col-sm-12">
-           <quittance-list-item v-for="quittance in quittances"
-           :key="quittance.reference"
-           :quittance="quittance"
-           @select-quittance="selectQuittance(quittance)"
-           @share-quittance="triggerShareQuittance(quittance)"
-           @payer-quittance="togglePaymentCard(quittance)"
-           ></quittance-list-item>
-      </div>
-      <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 ">
-          <div v-if="activeQuittance">
-                <quittance-detail-item :quittance="activeQuittance"></quittance-detail-item>
+    <div class="row" >
+          <div class="col-xl-8 col-lg-8 col-md-8 col-sm-12 align-middle">
+             <div class="card card-box mb-2">
+                <div class="card-body">
+                  <ul class="pagination justify-content-center mb-0">
+                        <li class="page-item" >
+                            <a class="page-link" href="javascript:void(0)" aria-label="Previous">
+                                <font-awesome-icon icon="chevron-left"/>
+                            </a>
+                        </li>
+                        <li  v-for="i in pageCount" :key="i" class="page-item" :class="[(activePage==i) ? 'active' : '']">
+                            <a class="page-link" href="javascript:void(0)" @click="setActivePage(i)">{{i}}</a>
+                        </li>
+                        <li class="page-item">
+                            <a class="page-link" href="javascript:void(0)" aria-label="Next">
+                                <font-awesome-icon icon="chevron-right"/>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+             </div>
           </div>
-      </div>
+    </div>
+    <div class="row">
+        <div class="col-xl-8 col-lg-8 col-md-8 col-sm-12">
+            <quittance-list-item v-for="quittance in filteredQuittances"
+            :key="quittance.reference"
+            :quittance="quittance"
+            @select-quittance="selectQuittance(quittance)"
+            @share-quittance="triggerShareQuittance(quittance)"
+            @payer-quittance="togglePaymentCard(quittance)"
+            ></quittance-list-item>
+        </div>
+        <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 ">
+            <div v-if="activeQuittance">
+                  <quittance-detail-item :quittance="activeQuittance"></quittance-detail-item>
+            </div>
+        </div>
     </div>
     <b-modal id="modal-share-quittance" :title="'Quittance n°'+sharedQuittance.reference">
       <div class="d-flex text-center pb-1">
@@ -62,7 +84,6 @@
 
       </div>
     </b-modal>
-
   </div>
 </template>
 
@@ -78,6 +99,7 @@ import QuittanceListeItem from './quittance-list-item.vue'
 import QuittanceDetailItem from './quittance-detail-item.vue'
 import PaymentCard from '@/components/shared/payment-card.vue'
 import PaymentCardInterface from '@/components/shared/payment-card-interface.vue'
+import { paginator, getPageCount } from '@/utils/index'
 
 library.add(fas)
 library.add(fab)
@@ -93,6 +115,10 @@ export default {
   },
   data: function () {
     return {
+      activePage: 1,
+      nbItemPerPage: 3,
+      filterQuery: '',
+      filteredQuittances: [],
       isShowPaymentCard: true,
       activeQuittance: null,
       sharedQuittance: {
@@ -111,7 +137,10 @@ export default {
     }),
     ...mapState({
       api_errors: (state) => state.contrats.errors
-    })
+    }),
+    pageCount: function(){
+        return getPageCount(this.quittances.length, this.nbItemPerPage)
+    }
   },
   mounted: function () {
     this.fetchData()
@@ -120,6 +149,11 @@ export default {
 
   },
   methods: {
+    setActivePage: function(numPage){
+        const paginationObject = paginator(this.quittances, numPage, this.nbItemPerPage)
+        this.filteredQuittances = paginationObject.data
+        this.activePage = numPage
+    },
     togglePaymentCard (montantAPayer) {
       console.log('togglePaymentCard ok: ', this.isShowPaymentCard)
       this.montantAPayer = montantAPayer
@@ -136,6 +170,7 @@ export default {
       }
       if (this.quittances.length > 0) {
         this.selectQuittance(this.quittances[0])
+        this.setActivePage(1)
       }
     },
     selectQuittance: function (quittance) {

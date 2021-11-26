@@ -1,13 +1,13 @@
 import {
   ERROR_ADD, ERROR_REMOVE, CONTRAT_LIST, ADD_CONTRAT, UPDATE_CONTRAT,
-  AGREE_CONTRAT, ACCESSOIRE_LIST, ADD_ACCESSOIRE, UPDATE_ACCESSOIRE,
-  SELECTED_CONTRAT, TENANTS, SEARCHTENANTREQUEST, GETFREEAPPARTMENTREQUEST,
-  CLIENTCONTRAT
+  ACCESSOIRE_LIST, UPDATE_ACCESSOIRE, ADD_ACCESSOIRE,
+  SELECTED_CONTRAT, SEARCHTENANTREQUEST, GETFREEAPPARTMENTREQUEST,
+  CLIENTCONTRAT, CONTRATTOUPDATE
 } from './mutation-types'
 import { searchTenantRequest, freeAppartmentRequest } from './getters'
 import Contrat from '@/api/contrat'
 import AcccessoireLoyer from '@/api/accessoireLoyer'
-
+// ADD_ACCESSOIRE, AGREE_CONTRAT, TENANTS
 export default {
 
   async getContrats ({ commit }, data) {
@@ -22,6 +22,23 @@ export default {
           if (contrats.length > 0) {
             commit(SELECTED_CONTRAT, contrats[0])
           }
+        }
+      })
+      .catch(errors => {
+        commit(ERROR_ADD, { key: 'getContrats', message: errors.message })
+        return errors
+      })
+  },
+  async getOneContrat ({ commit }, data) {
+    commit(ERROR_REMOVE, 'getOneContrat')
+    let contrat = new Contrat()
+    return contrat.getContrats(data)
+      .then(res => {
+        if (res.status === 200) {
+          console.log('getOneContrat: ', res)
+          let contrats = res.data.payload
+          commit(CONTRATTOUPDATE, contrats[0])
+          return contrats[0]
         }
       })
       .catch(errors => {
@@ -53,6 +70,7 @@ export default {
         if (res.status === 200) {
           let contrats = res.data.payload
           commit(ADD_CONTRAT, contrats)
+          commit(CONTRATTOUPDATE, null)
         }
       })
       .catch(errors => {
@@ -69,6 +87,7 @@ export default {
           let contrat = res.data.payload
           commit(UPDATE_CONTRAT, contrat)
           commit(ERROR_REMOVE, 'updateContrat')
+          commit(CONTRATTOUPDATE, null)
         }
       })
       .catch(errors => {
@@ -101,7 +120,7 @@ export default {
       .then(res => {
         if (res.status === 200) {
           let accessoire = res.data.payload
-          commit(ADD_APPARTEMENT, accessoire)
+          commit(ADD_ACCESSOIRE, accessoire)
         }
       })
       .catch(errors => {
@@ -125,12 +144,13 @@ export default {
   },
   async searchTenantsByEmail ({ commit }, data) {
     commit(ERROR_REMOVE, 'searchTenantsByEmail')
-    // console.log('searchTenantRequest:', searchTenantRequest)
+    console.log('searchTenantRequest:', this.getters["contrats/searchTenantRequest"])
     if (searchTenantRequest) searchTenantRequest.cancel()
     let contrat = new Contrat()
     try {
       const request = contrat.searchTenantsByEmail(data)
       commit(SEARCHTENANTREQUEST, request.source)
+      console.log('searchTenantRequest:', this.getters["contrats/searchTenantRequest"])
       return request.promise
     } catch (errors) {
       commit(ERROR_ADD, { key: 'searchTenantsByEmail', message: errors.message })

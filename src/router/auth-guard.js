@@ -7,13 +7,9 @@ export default (to, from, next) => {
   const isPublicPage = publicPages.includes(to.name)
 
   const profileLIst = store.getters['user/getProfilesList']
-  console.log('profileLIst: ', profileLIst)
-  // If not authenticated and not public page
   if (!authenticated && !isPublicPage) {
     return next({ name: 'Register' })
   }
-  console.log('to.name: ', to.name)
-  
   if (authenticated && profileLIst.length == 0 && to.name != 'MyProfiles') {
     return next({ name: 'MyProfiles' })
   }

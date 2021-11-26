@@ -8,7 +8,7 @@
         <div class="col-lg-12 col-md-12 col-sm-8 offset-sm-2 col-xl-8 offset-xl-2">
             <alert  variant="warning" v-for="err in api_errors" :msg="err.message" icon="bell" :dismissSecs="15" :dismissible="true" :title="'Oups..'" :key="err.key"></alert>
         </div>  
-        <div class="col-lg-12 col-md-12 col-sm-10 offset-sm-1 col-xl-10 offset-xl-1">
+        <div class="col-lg-12 col-md-12 col-sm-12">
             <div class="card card-box mb-5 ">
                 <div class="card-header pr-2">
                         <div class="card-header--title">
@@ -40,7 +40,7 @@
                                 </thead>
                                 
                                 <tbody class="list">
-                                <tr v-for="quittance in quittances" :key="quittance.reference">
+                                <tr v-for="quittance in filteredQuittances" :key="quittance.reference">
                                     <td class="company">
                                     <div class="align-box-row">
                                             <span class="d-block">
@@ -91,14 +91,14 @@
                         <div class="divider"></div>
                         <div class="p-3">
                             <ul class="pagination justify-content-center mb-0">
-                                <li class="page-item">
+                                <li class="page-item" >
                                     <a class="page-link" href="javascript:void(0)" aria-label="Previous">
                                         <font-awesome-icon icon="chevron-left"/>
                                     </a>
                                 </li>
-                                <li class="page-item active"><a class="page-link" href="javascript:void(0)">1</a></li>
-                                <li class="page-item"><a class="page-link" href="javascript:void(0)">2</a></li>
-                                <li class="page-item"><a class="page-link" href="javascript:void(0)">3</a></li>
+                                <li  v-for="i in pageCount" :key="i" class="page-item" :class="[(activePage==i) ? 'active' : '']">
+                                    <a class="page-link" href="javascript:void(0)" @click="setActivePage(i)">{{i}}</a>
+                                </li>
                                 <li class="page-item">
                                     <a class="page-link" href="javascript:void(0)" aria-label="Next">
                                         <font-awesome-icon icon="chevron-right"/>
@@ -123,6 +123,7 @@ import { fas } from "@fortawesome/free-solid-svg-icons"
 import vueSlider from "vue-slider-component"
 import paginate, { alert } from "@/components/shared/"
 import Hashids from 'hashids'
+import { paginator, getPageCount } from '@/utils/index'
 library.add(fas)
 
 export default {
@@ -135,9 +136,14 @@ export default {
   },
  data: function(){
       return {
+          activePage: 1,
+          nbItemPerPage: 10,
+          filterQuery: '',
+          filteredQuittances: [],
           activeContrat: null,
           faStyle: null,
           cardBorder: null,
+         
       }
   },
   props: {
@@ -150,18 +156,25 @@ export default {
     ...mapState({
       api_errors: (state) => state.contrats.errors
     }),
+    pageCount: function(){
+        return getPageCount(this.quittances.length, this.nbItemPerPage)
+    }
   },
-  mounted: function(){
+  created: function(){
+    
+  },
+  mounted: async function () {
       const contratId= this.$route.query.ref
       const hashids = new Hashids()
       console.log('contrat.id:', contratId, hashids.decode(contratId))
       if(contratId){
         const query = {'contrat_id': hashids.decode(contratId) }
-        this.$store.dispatch('quittances/getQuittanceByLessor', query)
+        await this.$store.dispatch('quittances/getQuittanceByLessor', query)
       }
       else{
-        this.$store.dispatch('quittances/getQuittanceByLessor')
+        await this.$store.dispatch('quittances/getQuittanceByLessor')
       }
+      this.setActivePage(this.activePage)
   },
   watch: { 
     contrat: function(newContrat, oldContrat) { 
@@ -172,6 +185,11 @@ export default {
   },
   methods: {
     ...mapActions('contrats', ['clientAccord',]),
+    setActivePage: function(numPage){
+        const paginationObject = paginator(this.quittances, numPage, this.nbItemPerPage)
+        this.filteredQuittances = paginationObject.data
+        this.activePage = numPage
+    },
     statutStyle: function(statut){
         if(statut=='PROPOSITION'){
             return {

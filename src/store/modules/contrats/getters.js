@@ -25,5 +25,8 @@ export default {
   },
   freeAppartmentRequest: state => {
     return state.freeAppartmentRequest
+  },
+  getContratToUpdate: state => {
+    return state.contratToUpdate
   }
 }

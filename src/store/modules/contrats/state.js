@@ -8,5 +8,6 @@ export default {
   errorOccured: false,
   searchTenantRequest: null,
   freeAppartmentRequest: null,
-  freeAppartment: []
+  freeAppartment: [],
+  contratToUpdate: null
 }

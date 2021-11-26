@@ -4,160 +4,22 @@
       heading="Mes biens"
       subheading="Ajoutez vos biens, mettez les en location et percevez vos loyer..."
     />
-    <div class="bg-vicious-stance pt-5 pl-5 pr-5 mb-5 rounded">
-      <div class="row">
-        <div class="col-xl-3 col-md-6 col-sm-12">
-          <a
-            href="javascript:void(0)"
-            class="
-              mb-5
-              card card-box card-box-border-bottom
-              border-success
-              card-box-hover-rise-alt
-            "
-          >
-            <div class="card-body">
-              <div class="align-box-row">
-                <div class="text-left">
-                  <div class="mt-1">
-                    <font-awesome-icon
-                      icon="user"
-                      class="font-size-xxl text-success"
-                    />
-                  </div>
-                  <div class="mt-3 line-height-sm">
-                    <span class="text-black-50">Maisons & Immeubles</span>
-                  </div>
-                </div>
-                <div class="ml-auto card-hover-indicator">
-                  <font-awesome-icon
-                    icon="chevron-right"
-                    class="font-size-xl"
-                  />
-                </div>
-              </div>
-            </div>
-          </a>
-        </div>
-        <div class="col-xl-3 col-md-6 col-sm-12">
-          <a
-            href="javascript:void(0)"
-            class="
-              mb-5
-              card card-box card-box-border-bottom
-              border-danger
-              card-box-hover-rise-alt
-            "
-          >
-            <div class="card-body">
-              <div class="align-box-row">
-                <div class="text-left">
-                  <div class="mt-1">
-                    <font-awesome-icon
-                      icon="lemon"
-                      class="font-size-xxl text-danger"
-                    />
-                  </div>
-                  <div class="mt-3 line-height-sm">
-                    <b class="font-size-lg text-black pr-1">23</b>
-                    <span class="text-black-50">Appartements</span>
-                  </div>
-                </div>
-                <div class="ml-auto card-hover-indicator">
-                  <font-awesome-icon
-                    icon="chevron-right"
-                    class="font-size-xl"
-                  />
-                </div>
-              </div>
-            </div>
-          </a>
-        </div>
-        <div class="col-xl-3 col-md-6 col-sm-12">
-          <a
-            href="javascript:void(0)"
-            class="
-              mb-5
-              card card-box card-box-border-bottom
-              border-warning
-              card-box-hover-rise-alt
-            "
-          >
-            <div class="card-body">
-              <div class="align-box-row">
-                <div class="text-left">
-                  <div class="mt-1">
-                    <font-awesome-icon
-                      icon="chart-bar"
-                      class="font-size-xxl text-warning"
-                    />
-                  </div>
-                  <div class="mt-3 line-height-sm">
-                    <b class="font-size-lg text-black pr-1">16</b>
-                    <span class="text-black-50">Contrats en cours</span>
-                  </div>
-                </div>
-                <div class="ml-auto card-hover-indicator">
-                  <font-awesome-icon
-                    icon="chevron-right"
-                    class="font-size-xl"
-                  />
-                </div>
-              </div>
-            </div>
-          </a>
-        </div>
-        <div class="col-xl-3 col-md-6 col-sm-12">
-          <a
-            href="javascript:void(0)"
-            class="
-              mb-5
-              card card-box card-box-border-bottom
-              border-info
-              card-box-hover-rise-alt
-            "
-          >
-            <div class="card-body">
-              <div class="align-box-row">
-                <div class="text-left">
-                  <div class="mt-1">
-                    <font-awesome-icon
-                      icon="newspaper"
-                      class="font-size-xxl text-info"
-                    />
-                  </div>
-                  <div class="mt-3 line-height-sm">
-                    <b class="font-size-lg text-black pr-1">635 0000 XOF</b>
-                    <span class="text-black-50">De loyer mensuel</span>
-                  </div>
-                </div>
-                <div class="ml-auto card-hover-indicator">
-                  <font-awesome-icon
-                    icon="chevron-right"
-                    class="font-size-xl"
-                  />
-                </div>
-              </div>
-            </div>
-          </a>
-        </div>
-      </div>
-    </div>
-    <div class="row mb-4">
+    <div class="pt-5 pl-5 pr-5 mb-5">
+       <div class="row mb-4">
       <div
         class="col-lg-12 col-md-12 col-sm-8 offset-sm-2 col-xl-8 offset-xl-2"
       >
         <div class="input-group">
-          <input
-            type="search"
-            class="form-control"
-            placeholder="Rechercher..."
-          />
-          <div class="input-group-append">
-            <b-button variant="primary" class="border-0">
-              <font-awesome-icon icon="search" />
-            </b-button>
-          </div>
+            <input
+              type="search"
+              class="form-control"
+              placeholder="Rechercher..."
+            />
+            <div class="input-group-append">
+              <b-button variant="primary" class="border-0">
+                <font-awesome-icon icon="search" />
+              </b-button>
+            </div>
         </div>
       </div>
       <div
@@ -175,12 +37,14 @@
         ></alert>
       </div>
     </div>
+    </div>
+
     <div class="row">
       <div class="col-lg-12 col-md-6 col-sm-12 col-xl-6">
         <div class="card card-box mb-5">
           <div class="card-header">
             <div class="card-header--title">
-              
+
               <b>Immeubles & Maisons</b>
               <small>Liste de vos immeubles & maisons</small>
             </div>
@@ -229,7 +93,7 @@
         <div class="card card-box mb-5">
           <div class="card-header bg-light">
             <div class="card-header--title">
-              <b>Appartements & Chambres {{selectedImmeuble.ref_immeuble != null ?selectedImmeuble.ref_immeuble : '' }} </b>
+              <b>Appartements & Chambres {{selectedImmeuble.intitule != null ?selectedImmeuble.intitule : '' }} </b>
               <small>Liste des appartements/chambres</small>
             </div>
             <div class="card-header--actions">
@@ -332,7 +196,7 @@
       </div>
       <div slot="modal-footer">
         <b-button
-          variant="warning" 
+          variant="warning"
           class="btn-link-dark mr-1"
           @click="$bvModal.hide('clonerAppartment')"
           >
@@ -343,7 +207,6 @@
       </div>
     </b-modal>
 
- 
     <b-modal id="modalImmeuble" body-class="p-0" size="lg" centered>
             <div slot="modal-header">
                 <h3>Edition Immeuble</h3>
@@ -408,20 +271,6 @@
                               trim
                               v-model="immeuble.intitule"
                             />
-                            <label for="adresse"
-                              >Adresse <span class="required">*</span></label
-                            >
-                            <input
-                              type="text"
-                              class="form-control"
-                              id="adresse"
-                              placeholder="Quartier & maison de préférence"
-                              trim
-                              v-model="immeuble.adresse"
-                            />
-                            <span class="invalid-feedback d-block" v-if="errors.adresseMsg">{{
-                              errors.adresseMsg
-                            }}</span>
 
                             <label for="pays">Pays <span class="required">*</span></label>
 
@@ -451,6 +300,18 @@
                             <span class="invalid-feedback d-block" v-if="errors.villeMsg">{{
                               errors.villeMsg
                             }}</span>
+                            <label for="adresse">Adresse <span class="required">*</span></label>
+                            <input
+                              type="text"
+                              class="form-control"
+                              id="adresse"
+                              placeholder="Quartier & maison de préférence"
+                              trim
+                              v-model="immeuble.adresse"
+                            />
+                            <span class="invalid-feedback d-block" v-if="errors.adresseMsg">{{
+                              errors.adresseMsg
+                            }}</span>
 
                             <!--  <label for="ville">Latitude</label>
                                                   <input type="text" class="form-control" id="lat" placeholder="Latitude" v-model="immeuble.latitude">
@@ -477,102 +338,32 @@
                 <b-button variant="first" class="ml-auto" @click="saveImmeuble">Enregistrer</b-button>
             </div>
     </b-modal>
-
-    <!--<b-modal id="clonerAppartment" title="Cloner appartement" centered>
-      <div class="w-100 mb-4">
-        <div class="d-flex flex-wrap justify-content-between mb-2">
-          <small class="line-height-xs text-uppercase text-muted"
-            ><h5 class="pt-1 pb-1">
-              <a href="javascript:void(0)" v-if="selectedImmeuble"
-                >#{{ selectedImmeuble.intitule }}</a
-              >
-            </h5></small
-          >
-        </div>
-        <div class="row">
-          <div class="col-md-12">
-            <ul class="list-unstyled card-columns" v-if="selectedAppartement">
-              <li v-for="dep in selectedAppartement.structures" :key="dep.id">
-                <font-awesome-icon icon="check-square" class="mr-2" />0{{
-                  dep.nbre
-                }}
-                {{ dep.typedependence.libelle }}
-              </li>
-            </ul>
-            <p>
-              <font-awesome-icon icon="comments" /><span class="ml-2"
-                >{{ selectedAppartement.autre_description }}...</span
-              >
-            </p>
-          </div>
-        </div>
-        <div class="divider mt-3 blue-divider mb-3"></div>
-        <div class="row">
-          <div class="col-md-12">
-            <div class="form-group">
-              <input
-                type="number"
-                class="form-control"
-                id="nbAppartmentToClone"
-                placeholder="Nombre à cloner"
-                min="1"
-                max="10"
-                v-model="nbAppartmentToClone"
-              />
-            </div>
-          </div>
-          <div class="col-md-12">
-            <div class="form-group">
-              <input
-                type="number"
-                class="form-control"
-                id="nbEtageDest"
-                placeholder="N° Etage"
-                min="0"
-                max="99"
-                v-model="nbEtageDest"
-              />
-            </div>
-          </div>
-        </div>
-      </div>
-      <div slot="modal-footer">
-        <b-button
-          variant="link"
-          class="btn-link-dark"
-          @click="$bvModal.hide('clonerAppartment')"
-          >Annuler</b-button
-        >
-        <b-button variant="primary" @click="clonerAppartment">Cloner</b-button>
-      </div>
-    </b-modal>-->
   </div>
 </template>
 
 <script>
-import { mapActions, mapGetters, mapState } from "vuex"
-import { library } from "@fortawesome/fontawesome-svg-core"
-import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome"
-import { fas } from "@fortawesome/free-solid-svg-icons"
+import { mapActions, mapGetters, mapState } from 'vuex'
+import { library } from '@fortawesome/fontawesome-svg-core'
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
+import { fas } from '@fortawesome/free-solid-svg-icons'
 // import VuePerfectScrollbar from 'vue-perfect-scrollbar'
-import vueSlider from "vue-slider-component"
-import paginate, { alert } from "@/components/shared/"
-import BuildingDetail from "./BuildingDetail.vue"
-import Appartment from "./Appartment.vue"
-import BuildingForm from "./BuildingForm.vue"
+import vueSlider from 'vue-slider-component'
+import paginate, { alert } from '@/components/shared/'
+import BuildingDetail from './BuildingDetail.vue'
+import Appartment from './Appartment.vue'
+import BuildingForm from './BuildingForm.vue'
+import { mixin } from '@/mixin/mixin'
 library.add(fas)
-import { mixin } from "@/mixin/mixin"
 
 export default {
   components: {
     // VuePerfectScrollbar,
     vueSlider,
-    "font-awesome-icon": FontAwesomeIcon,
-    "building-detail": BuildingDetail,
-    appartment: Appartment,
-    "t-pagination": paginate,
-    "bulding-form": BuildingForm,
-    alert: alert,
+    'font-awesome-icon': FontAwesomeIcon,
+    'building-detail': BuildingDetail,
+     appartment: Appartment,
+    't-pagination': paginate,
+    alert: alert
   },
   data: function () {
     return {
@@ -583,57 +374,56 @@ export default {
       perPage: 4,
       paginationLength: 3,
       selectedPage: 1,
-      //buildingApparts: [],
+      // buildingApparts: [],
       immeuble: {
         immeuble_id: null,
         title: null,
         reference: null,
         adresse: null,
-        jour_emission_facture: "1",
-        jour_valeur_facture: "5",
+        jour_emission_facture: '1',
+        jour_valeur_facture: '5',
         isActive: false,
         latitude: 0,
-        longitude: 0,
+        longitude: 0
       },
       properties: [],
-      onlyCountries: ["BJ", "TG", "CI", "NE", "NG", "CM", "BF", "ML", "FR"],
+      onlyCountries: ['BJ', 'TG', 'CI', 'NE', 'NG', 'CM', 'BF', 'ML', 'FR'],
       countries: [],
       center: null,
       paginatedAppartments: [],
       selectedAppartement: {},
       nbAppartmentToClone: null,
-      nbEtageDest: null,
+      nbEtageDest: null
     }
   },
   computed: {
-    ...mapGetters("user", [
-      "getProfiles",
-      "haveTenantProfile",
-      "haveLessorProfile",
-      "haveRealEstateProfile",
-      "tenantProfile",
-      "lessorProfile",
-      "realEstateProfile",
+    ...mapGetters('user', [
+      'getProfiles',
+      'haveTenantProfile',
+      'haveLessorProfile',
+      'haveRealEstateProfile',
+      'tenantProfile',
+      'lessorProfile',
+      'realEstateProfile'
     ]),
     ...mapGetters({
-      immeubles: ["properties/immeubles"],
-      buildingApparts: ["properties/currentAppartments"],
-      typedependances: "properties/immeubles",
+      immeubles: ['properties/immeubles'],
+      buildingApparts: ['properties/currentAppartments'],
+      typedependances: 'properties/immeubles'
     }),
     ...mapState({
       api_errors: (state) => state.properties.errors,
       errorOccured: (state) => state.properties.errorOccured,
-      selectedImmeuble: (state) => state.properties.selectedImmeuble,
-    }),
+      selectedImmeuble: (state) => state.properties.selectedImmeuble
+    })
   },
-  created() {
+  created () {
+    this.countries = mixin.methods.getAllCountry(this.onlyCountries)
     if (this.immeubles.length === 0) {
-      this.countries = mixin.methods.getAllCountry(this.onlyCountries)
-      this.$store.dispatch("properties/getImmeubles")
+      this.$store.dispatch('properties/getImmeubles')
     }
-    console.log("getProfiles", this.getProfiles.lessor)
   },
-  mounted() {
+  mounted () {
     this.locateMe()
     this.paginate(1)
   },
@@ -643,23 +433,20 @@ export default {
         return
       }
       this.paginate(1)
-      /*const index = this.immeubles.findIndex((im) => im.id === newImmeuble.id)
-      this.selectBuilding(newImmeuble, index)
-      this.$forceUpdate()*/
     },
     center: function (newCenter, oldCenter) {
-      this.$store.dispatch("properties/reverseGeocoding", newCenter)
-    },
+      this.$store.dispatch('properties/reverseGeocoding', newCenter)
+    }
   },
   methods: {
-    ...mapActions("properties", [
-      "createImmeuble",
-      "updateImmeuble",
-      "reverseGeocoding",
+    ...mapActions('properties', [
+      'createImmeuble',
+      'updateImmeuble',
+      'reverseGeocoding'
     ]),
-    async getLocation() {
+    async getLocation () {
       return new Promise((resolve, reject) => {
-        if (!("geolocation" in navigator)) {
+        if (!('geolocation' in navigator)) {
           reject(
             new Error(
               "La géolocalisation n'est pas disponible dans votre navigator."
@@ -676,22 +463,22 @@ export default {
         )
       })
     },
-    async locateMe() {
+    async locateMe () {
       this.gettingLocation = true
       try {
         this.gettingLocation = false
         const location = await this.getLocation()
         this.center = {
           lat: location.coords.latitude,
-          lng: location.coords.longitude,
+          lng: location.coords.longitude
         }
       } catch (e) {
         this.gettingLocation = false
         this.$toast.open({
           message: e.message,
-          type: "error",
+          type: 'error',
           duration: 3000,
-          pauseOnHover: true,
+          pauseOnHover: true
         })
       }
     },
@@ -724,7 +511,7 @@ export default {
         .slice(offset)
         .slice(0, this.perPage)
       this.selectedPage = pageNum
-      console.log("paginatedItems:", paginatedItems)
+      console.log('paginatedItems:', paginatedItems)
       this.paginatedAppartments = []
       this.paginatedAppartments =
         paginatedItems.length > 0 ? paginatedItems : []
@@ -739,7 +526,7 @@ export default {
     },
     getDependencies: function (appartment) {
       let dependencies = appartment.structures.map(
-        (dep) => "0" + dep.nbre + " " + dep.typedependence.libelle
+        (dep) => '0' + dep.nbre + ' ' + dep.typedependence.libelle
       )
       return dependencies
     },
@@ -750,9 +537,7 @@ export default {
       this.immeuble = item
       this.immeubles.forEach((el) => (el.isActive = false))
       this.immeubles[index].isActive = true
-      //this.buildingApparts = item.appartements
-      this.$store.commit("properties/SELECTED_IMMEUBLE", item)
-
+      this.$store.commit('properties/SELECTED_IMMEUBLE', item)
       this.paginate(1)
       this.$forceUpdate()
     },
@@ -767,9 +552,9 @@ export default {
         jour_emission_facture: item.jour_emission_facture,
         jour_valeur_facture: item.jour_valeur_facture,
         latitude: item.latitude,
-        longitude: item.longitude,
+        longitude: item.longitude
       }
-      this.$bvModal.show("modalImmeuble")
+      this.$bvModal.show('modalImmeuble')
     },
     addImmeuble: function () {
       this.immeuble = {
@@ -777,28 +562,27 @@ export default {
         title: null,
         reference: null,
         adresse: null,
-        jour_emission_facture: "1",
-        jour_valeur_facture: "5",
+        jour_emission_facture: '1',
+        jour_valeur_facture: '5',
         isActive: false,
         latitude: 0,
-        longitude: 0,
+        longitude: 0
       }
-      this.$bvModal.show("modalImmeuble")
+      this.$bvModal.show('modalImmeuble')
     },
     addAppartement: function () {
-      this.$router.push({ name: "EditAppartment" })
+      this.$router.push({ name: 'EditAppartment' })
     },
     saveImmeuble: async function () {
-
       this.errors = {}
       this.errors.paysMsg = !this.immeuble.pays
-        ? "Veuillez renseigner le pays"
+        ? 'Veuillez renseigner le pays'
         : null
       this.errors.villeMsg = !this.immeuble.ville
-        ? "Veuillez renseigner la ville"
+        ? 'Veuillez renseigner la ville'
         : null
       this.errors.adresseMsg = !this.immeuble.adresse
-        ? "Veuillez renseigner une adresse"
+        ? 'Veuillez renseigner une adresse'
         : null
 
       // return if any error property is not null
@@ -806,42 +590,49 @@ export default {
         this.$forceUpdate()
         return
       }
-      console.log("this.getProfiles.lessor: ", this.getProfiles)
-      if (!this.immeuble.intitule || this.immeuble.intitule.trim() === "")
-        delete this.immeuble.intitule
-      this.immeuble.proprietaire_id = this.getProfiles.lessor.id
-      if (this.immeuble.id && this.immeuble.id > 0) {
-        await this.updateImmeuble(this.immeuble)
+      console.log('this.getProfiles.lessor: ', this.getProfiles)
+      if (!this.immeuble.intitule || this.immeuble.intitule.trim() === '') { delete this.immeuble.intitule }
+
+      if (this.getProfiles.real_estate) {
+        this.immeuble.realestate_id = this.getProfiles.real_estate.id
       } else {
-        await this.createImmeuble(this.immeuble)
+        this.immeuble.proprietaire_id = this.getProfiles.lessor.id
       }
-      this.$bvModal.hide("buildingForm")
-      /*this.$store.dispatch("properties/getImmeubles")
-      this.$forceUpdate()*/
+
+      if (this.immeuble.id && this.immeuble.id > 0) {
+        this.immeuble = await this.updateImmeuble(this.immeuble)
+      } else {
+        this.immeuble = await this.createImmeuble(this.immeuble)
+        this.selectBuilding(this.immeuble, 0)
+        console.log('Saved Immeuble:', this.immeuble)
+      }
+      this.$bvModal.hide('modalImmeuble')
+      /* this.$store.dispatch("properties/getImmeubles")
+      this.$forceUpdate() */
     },
-    forceRerender() {
+    forceRerender () {
       this.componentKey = this.componentKey + 1
     },
     editAppartment: function (item) {
       this.$router.push({
-        name: "EditAppartment",
+        name: 'EditAppartment',
         params: {
           selectedImmeuble: this.selectedImmeuble,
-          editingAppartment: item,
-        },
+          editingAppartment: item
+        }
       })
     },
     initClonerAppartment: function (item) {
       this.selectedAppartement = item
-      this.$bvModal.show("clonerAppartment")
+      this.$bvModal.show('clonerAppartment')
     },
     clonerAppartment: function () {
-      if(this.nbAppartmentToClone===null || this.nbAppartmentToClone ===0) {
+      if (this.nbAppartmentToClone === null || this.nbAppartmentToClone === 0) {
         this.$toast.open({
           message: 'Vous devez indiquer un nombre à cloner.',
-          type: "error",
+          type: 'error',
           duration: 3000,
-          pauseOnHover: true,
+          pauseOnHover: true
         })
         return
       }
@@ -849,20 +640,20 @@ export default {
         nbre: this.nbAppartmentToClone,
         appartement_id: this.selectedAppartement.id,
         immeuble_id: this.selectedImmeuble.id,
-        level: this.nbEtageDest == null ? 0 : this.nbEtageDest,
+        level: this.nbEtageDest == null ? 0 : this.nbEtageDest
       }
-      this.$bvModal.hide("clonerAppartment")
+      this.$bvModal.hide('clonerAppartment')
       this.$store
-        .dispatch("properties/clonerAppartement", params)
+        .dispatch('properties/clonerAppartement', params)
         .then((res) => {
           if (res.status === 200) {
             let appartements = res.data
             console.log(
-              "clonerAppartement:",
+              'clonerAppartement:',
               appartements.payload.appartements
             )
             this.$store.commit(
-              "properties/ADD_APPARTEMENT",
+              'properties/ADD_APPARTEMENT',
               appartements.payload.appartements
             )
             this.paginatedAppartments = []
@@ -871,13 +662,13 @@ export default {
           }
         })
         .catch((errors) => {
-          console.log("Cloner app")
-          this.$store.commit("properties/ERROR_ADD", {
-            key: "clonerAppartement",
-            message: errors.message,
+          console.log('Cloner app')
+          this.$store.commit('properties/ERROR_ADD', {
+            key: 'clonerAppartement',
+            message: errors.message
           })
         })
-    },
-  },
+    }
+  }
 }
 </script>

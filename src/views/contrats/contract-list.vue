@@ -71,7 +71,7 @@
                                             {{co.date_effet}}
                                         </td>
                                         <td class="text-left">
-                                            {{co.montant_bail}} F CFA
+                                            {{Number(co.montant_bail).toLocaleString('fr-FR')}}F CFA
                                         </td>
                                         <td>
                                             {{co.prochaine_echeance}}
@@ -88,7 +88,7 @@
                                                         <font-awesome-icon icon="ellipsis-h"/>
                                                     </div>
                                                 </template>
-                                                <b-dropdown-item >Modifier</b-dropdown-item>
+                                                <b-dropdown-item ><a href="#" @click="triggerEditContrat(co)">Modifier</a></b-dropdown-item>
                                                 <b-dropdown-item>Voir quittances</b-dropdown-item>
                                                 <b-dropdown-divider></b-dropdown-divider>
                                                 <b-dropdown-item active>Résilier</b-dropdown-item>
@@ -138,6 +138,7 @@ import ContractDetail from './contract-detail.vue'
 import ContractDashboard from './contract-dashboard.vue'
 import SearchContrat from './search-contrat.vue'
 import utils from '@/utils/index'
+import Hashids from 'hashids'
 library.add(fas)
 export default {
   components: {
@@ -168,14 +169,6 @@ export default {
   },
   created () {
     this.$store.dispatch('contrats/getContrats')
-  },
-  mounted () {
-      
-  },
-  watch: {
-      immeubles: function(oldVal, newVal){
-          console.log('immeubles:', newVal)
-      }
   },
   methods: {
     ...mapActions('contrats', ['createContrat', 'searchTenantsByEmail', 'getFreeAppartment']),
@@ -212,11 +205,6 @@ export default {
                 border: 'borderAccepte'
             }
         }
-        console.log(statut)
-    /*ANNULE
-    
-    TERME = "TERME"
-    */
         return {
                 style: '', 
                 badge: '', 
@@ -225,13 +213,11 @@ export default {
             }
     },
     setActiveContrat: function(contrat){
-        console.log('setActiveContrat: ', contrat)
         this.mainTableStyle = 'col-lg-8 col-md-8 col-sm-12 col-xl-8'
         this.activeContrat = {...contrat}
         const styleObject = this.statutStyle(contrat.statut)
         this.faStyle = styleObject.faStyle
         this.cardBorder = styleObject.border
-        console.log('this.selectedContrat: ', this.activeContrat)
     },
     prepareQueryModel: function(queryModel){
         Object.keys(queryModel).forEach(k => (!queryModel[k] && queryModel[k] !== undefined) && delete queryModel[k])
@@ -283,11 +269,11 @@ export default {
         return queryModel
     },
     searchContract: function(queryModel){
-        
-        
-       
-        console.log('queryModel: ', queryModel)
         this.$store.dispatch('contrats/getContrats', this.prepareQueryModel(queryModel))
+    },
+    triggerEditContrat: function(contrat){
+        const hashids = new Hashids()
+        this.$router.push({ name: 'EditContrat', query: { ref: hashids.encode(contrat.id)} })
     }
   }
 }
