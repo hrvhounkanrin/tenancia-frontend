@@ -6,13 +6,20 @@
         <b-row>
           <b-col class="col-xl-3 col-md-3 col-sm-12">
             <div class="text-left">
-              <img
-                v-if="!avatar"
+              <b-img
+                v-if="
+                  userProfil.photo_url != null || userProfil.photo_url != ''
+                "
+                class="avatar"
+                :src="avatar"
+              />
+
+              <b-img
+                v-else
                 width="200"
                 class="rounded-circle"
                 src="@/assets/icons/avatar_1.png"
               />
-              <b-img v-else class="avatar" :src="avatar" />
             </div>
             <div class="p-3 text-left">
               <p>{{ userProfil.first_name }} {{ userProfil.last_name }}</p>
@@ -24,24 +31,37 @@
             <b-row>
               <b-col>
                 <b-form-group label="Nom:" label-for="user_lastname">
-                  <b-form-input v-model="userProfil.last_name" id="user_lastname"></b-form-input>
+                  <b-form-input
+                    v-model="userProfil.last_name"
+                    id="user_lastname"
+                  ></b-form-input>
                 </b-form-group>
               </b-col>
               <b-col>
                 <b-form-group label="Prénom(s):" label-for="user_firstname">
-                  <b-form-input v-model="userProfil.first_name" id="user_firstname"></b-form-input>
+                  <b-form-input
+                    v-model="userProfil.first_name"
+                    id="user_firstname"
+                  ></b-form-input>
                 </b-form-group>
               </b-col>
             </b-row>
             <b-row>
               <b-col>
                 <b-form-group label="Email:" label-for="user_eamail">
-                  <b-form-input v-model="userProfil.email" id="user_eamail"></b-form-input>
+                  <b-form-input
+                    readonly
+                    v-model="userProfil.email"
+                    id="user_eamail"
+                  ></b-form-input>
                 </b-form-group>
               </b-col>
               <b-col>
                 <b-form-group label="Téléphone:" label-for="user_phone_number">
-                  <b-form-input v-model="userProfil.phone_number" id="user_phone_number"></b-form-input>
+                  <b-form-input
+                    v-model="userProfil.phone_number"
+                    id="user_phone_number"
+                  ></b-form-input>
                 </b-form-group>
               </b-col>
             </b-row>
@@ -54,7 +74,7 @@
                     placeholder=""
                     id="avatar"
                     size="sm"
-                    @change="getImageUrl"
+                    @change="setUserAvatar"
                   ></b-form-file>
                 </b-form-group>
               </b-col>
@@ -89,18 +109,19 @@
                 Changer
               </b-button>
             </b-form-group>
-          
+
             <b-form-group
               v-else
               label="Changement Mot De Passe:"
               label-for="user_password"
             >
-              <b-form-group
-              v-if="changePass"
-            >
-                               <b-form-input placeholder="Ancien Mot De Passe:" id="user_oldPass"></b-form-input>
-
-            </b-form-group>
+              <b-form-group v-if="changePass">
+                <b-form-input
+                  v-model="changePassForm.old_password"
+                  placeholder="Ancien Mot De Passe:"
+                  id="user_oldPass"
+                ></b-form-input>
+              </b-form-group>
               <div>
                 <ValidationObserver>
                   <ValidationProvider
@@ -108,19 +129,15 @@
                     v-slot="{ errors }"
                     name="password"
                   >
-                  
                     <div class="form-group">
-                        
                       <input
                         type="password"
                         class="form-control"
-                        placeholder="Mot de passe"
-                        id="signupPassword"
-                        v-model="user.password"
+                        placeholder="Nouveau Mot de passe"
+                        id="changePassword"
+                        v-model="changePassForm.new_password1"
                         name="password"
-                        :class="{
-                          'is-invalid': submitted && errors.length > 0,
-                        }"
+                        
                       />
                       <span
                         v-if="errors.length > 0"
@@ -137,7 +154,7 @@
                   >
                     <div class="form-group">
                       <input
-                        v-model="user.confirm"
+                        v-model="changePassForm.new_password2"
                         class="form-control"
                         id="signupPassConfirmation"
                         placeholder="Confirmer mot de passe"
@@ -149,12 +166,20 @@
                 </ValidationObserver>
               </div>
             </b-form-group>
-             <b-row 
-              v-if="changePass">
-              <b-button class="col mt-2 mb-2 ml-3 mr-3" variant="danger" @click='changePass = false'>
+            <b-row v-if="changePass">
+              <b-button
+                class="col mt-2 mb-2 ml-3 mr-3"
+                variant="danger"
+                @click="changePass = false"
+              >
                 Annuler
               </b-button>
-              <b-button class="col mt-2 mb-2 ml-2 mr-3" variant="primary">
+              <b-button
+              id="changePass"
+                @click="onChangePass"
+                class="col mt-2 mb-2 ml-2 mr-3"
+                variant="primary"
+              >
                 Enregistrer
                 <span
                   v-if="loadingPass"
@@ -173,16 +198,33 @@
 <script>
 import { mapActions, mapGetters } from "vuex";
 
+import {
+  ValidationObserver,
+  ValidationProvider,
+  setInteractionMode
+} from 'vee-validate'
+
 export default {
+    components: {
+    ValidationObserver,
+    ValidationProvider
+  },
   data() {
     return {
       avatar: null,
       loadingSaveProfil: false,
       loadingPass: false,
       changePass: false,
+      changePassForm: {
+        old_password: null,
+        new_password1: null,
+        new_password2: null,
+      },
       userProfil: {
-          last_name:'',
-          first_name: '', phone_number: '', email: '',
+        last_name: "",
+        first_name: "",
+        phone_number: "",
+        email: "",
       },
     };
   },
@@ -190,10 +232,30 @@ export default {
     ...mapGetters("auth", ["user"]),
   },
   created() {
-      this.userProfil = {...this.user}
+    this.userProfil = { ...this.user };
+
+    console.log(this.userProfil.photo_url , "this.userProfil.photo_url ")
+    this.userProfil.photo_url != null || this.userProfil.photo_url != ""
+      ? (this.avatar = `http://tenancia.com/${this.userProfil.photo_url}`)
+      : (this.avatar = null);
+
   },
   methods: {
-    ...mapActions("user", ["updateUserProfil"]),
+    ...mapActions("auth", ["logout"]),
+    ...mapActions("user", [
+      "updateUserProfil",
+      "updateUserAvatar",
+      "changeUserPass",
+    ]),
+
+    async setUserAvatar(ev) {
+      const fd = new FormData();
+      fd.append("photo", ev.target.files[0]);
+      let res = await this.updateUserAvatar(fd);
+      if (res.success) {
+        this.getImageUrl(ev);
+      }
+    },
 
     getImageUrl(e) {
       var reader = new FileReader();
@@ -201,6 +263,14 @@ export default {
       reader.onload = () => {
         this.avatar = reader.result;
       };
+    },
+
+    async onChangePass() {
+      let res = await this.changeUserPass(this.changePassForm);
+      if (res.success) {
+        this.logout();
+        this.$router.push({ name: "Register" });
+      }
     },
   },
 };
