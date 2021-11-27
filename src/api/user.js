@@ -35,6 +35,24 @@ export default class User {
     )
   }
 
+  async setUserAvatar (bodyParams) {
+    return this.$serveur.postRequest(
+      {
+        body: bodyParams,
+        link: 'profile_action/define_profile'
+      }
+    )
+  }
+
+  async changeUserPass (bodyParams) {
+    return this.$serveur.postRequest(
+      {
+        body: bodyParams,
+        link: 'account_action/change_password'
+      }
+    )
+  }
+
   async getUsers (bodyParams) {
     return this.$serveur.getRequest(
       {

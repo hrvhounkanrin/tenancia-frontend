@@ -6,6 +6,12 @@
       :steps="breadcrumb"
     />
     <div class="row">
+      <div class="col-xl-12 col-md-12 col-sm-12">
+        <user-profil ></user-profil>
+      </div>
+      
+    </div>
+        <div class="row">
       <div class="col-xl-4 col-md-4 col-sm-12">
         <tenant-detail haveTenantProfile></tenant-detail>
       </div>
@@ -40,6 +46,7 @@ import {
   faTrashAlt,
   faQuestionCircle,
 } from "@fortawesome/free-solid-svg-icons";
+import UserProfil from './user-profil/user-profil.vue';
 
 library.add(
   faArrowRight,
@@ -51,7 +58,7 @@ library.add(
 
 export default {
   name: "Profiles",
-  components: {},
+  components: {UserProfil},
   data() {
     return {
       testB: "",
@@ -77,19 +84,7 @@ export default {
 
   created() {
     this.getBanques();
-
     this.countries = mixin.methods.getAllCountry(this.onlyCountries);
-
-    this.myProfiles()
-      .then((res) => {
-        // let profiles = res.data.payload;
-        // this.setProfiles(profiles);
-      })
-      .catch((err) => {
-        // this.signupError('Une erreur est survenue lors de la création de votre compte')
-        // this.$store.commit('AUTH/LOCAL_SIGNUP_FAILURE', 'Une erreur est survenue lors de la création de votre compte')
-        console.log("err", err.response);
-      });
   },
   computed: {
     ...mapGetters("banque", ["banquesList"]),
