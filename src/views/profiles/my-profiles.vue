@@ -6,10 +6,10 @@
       :steps="breadcrumb"
     />
     <div class="row">
-      <div class="col-xl-12 col-md-12 col-sm-12">
-        <user-profil ></user-profil>
+      <div class="col-xl-8 col-md-8 col-sm-12 offset-md-2 offset-xl-2">
+        <general-informations v-if="editGeneralInfo" @toogle-edit-general-info="toogleEditGeneralInfo"></general-informations>
+        <user-info-generales-detail v-if="!editGeneralInfo" @toogle-edit-general-info="toogleEditGeneralInfo"></user-info-generales-detail>
       </div>
-      
     </div>
         <div class="row">
       <div class="col-xl-4 col-md-4 col-sm-12">
@@ -46,8 +46,9 @@ import {
   faTrashAlt,
   faQuestionCircle,
 } from "@fortawesome/free-solid-svg-icons";
-import UserProfil from './user-profil/user-profil.vue';
-
+import GeneralInformations from './user-profil/general-informations.vue';
+import UserInfoGeneralesDetail from './user-profil/user-info-generales-detail.vue'
+import UserPassForm from './user-profil/user-pass-form.vue'
 library.add(
   faArrowRight,
   faArrowUp,
@@ -58,7 +59,11 @@ library.add(
 
 export default {
   name: "Profiles",
-  components: {UserProfil},
+  components: {
+    'user-info-generales-detail': UserInfoGeneralesDetail,
+    'user-passs-form': UserPassForm,
+    'general-informations':GeneralInformations
+  },
   data() {
     return {
       testB: "",
@@ -68,7 +73,7 @@ export default {
           link: "#",
         },
       ],
-
+      editGeneralInfo: false,
       onlyCountries: ["BJ", "TG", "CI", "NE", "NG", "CM", "BF", "ML", "FR"],
       countries: [],
       striped: false,
@@ -100,6 +105,10 @@ export default {
     async getBanques() {
       await this.getBanquesList();
     },
+    toogleEditGeneralInfo: function(value){
+        console.log('toogleEditGeneralInfo:', value)
+        this.editGeneralInfo=value
+    }
   },
 };
 </script>

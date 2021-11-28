@@ -13,7 +13,7 @@
                 </div>
                 <span class="text-black-50">
                         Tenancia Developer
-                    </span>
+                </span>
             </div>
             <span class="pl-3">
                 <font-awesome-icon icon="angle-down" class="opacity-5" />
@@ -35,11 +35,11 @@
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="javascript:void(0);">
-                                Mon compte de base
+                                Changement mot de passe
                             </a>
                         </li>
                         <li class="nav-item">
-                            <router-link :to="{ name: 'MyProfiles'}" class="nav-link">Mes profils</router-link>
+                            <router-link :to="{ name: 'MyProfiles'}" class="nav-link">Gestion des profils</router-link>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="javascript:void(0);" @click="deconnect">
