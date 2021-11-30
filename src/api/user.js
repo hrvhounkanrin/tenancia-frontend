@@ -35,11 +35,11 @@ export default class User {
     )
   }
 
-  async setUserAvatar (bodyParams) {
+  async updateUser (bodyParams) {
     return this.$serveur.postRequest(
       {
         body: bodyParams,
-        link: 'profile_action/define_profile'
+        link: 'profile_action/update_user'
       }
     )
   }

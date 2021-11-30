@@ -30,7 +30,7 @@ const loginAccount = async ({ commit }, userData) => {
         commit(TOKEN_EXPIRE_AT, userData.expire_in)
         commit(AUTHENTICATED, true)
         commit(LOCAL_LOGIN_SUCCESS)
-        commit('user/PROFILES', {...userData.user,...userData.profiles}, { root: true })
+        commit('user/PROFILES', { ...userData.user, ...userData.profiles }, { root: true })
         sessionStorage.setItem(USER_KEY, JSON.stringify(userData.user))
       }
       return res
@@ -40,6 +40,7 @@ const loginAccount = async ({ commit }, userData) => {
       return errors
     })
 }
+
 const refreshToken = async ({ commit }) => {
   console.log('Start refreshToken Ok: ', sessionStorage.getItem(AUTH_TOKEN_KEY))
   console.log('Start refreshToken  tokenDuration: ', tokenDuration)
@@ -144,4 +145,12 @@ const connectUser = ({ commit }, userData) => {
   }
 }
 
-export default { loginAccount, refreshToken, register, activedUserAccount, forgetPwd, verified, logout, googleExchangeToken }
+const updateUserData = async ({ commit }, userData) => {
+  let user = new User()
+  let putUserData = await user.updateUser(userData)
+  commit(USER, {...putUserData.data.payload, photo_url: putUserData.data.payload.photo})
+  sessionStorage.setItem(USER_KEY, JSON.stringify({...putUserData.data.payload, photo_url: putUserData.data.payload.photo}))
+  return putUserData.data
+}
+
+export default { loginAccount, refreshToken, register, activedUserAccount, forgetPwd, verified, logout, googleExchangeToken, updateUserData }

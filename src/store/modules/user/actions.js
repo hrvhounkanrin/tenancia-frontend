@@ -74,19 +74,8 @@ export default {
   async updateUserProfil({ commit }, data) {
     let user = new User()
     let newProfile = await user.updateProfile(data)
-    console.log('newProfile', newProfile)
     commit(PROFILES, newProfile.data.payload)
-  },
-
-  /**
- * Update user AVATAR
- * @returns {} Commit any profil.
- */
-
-  async updateUserAvatar({ commit }, avatar) {
-    let user = new User()
-    let newAvatar = await user.setUserAvatar(avatar)
-    return newAvatar.data
+    return newProfile.data
   },
 
 

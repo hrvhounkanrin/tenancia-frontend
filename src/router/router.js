@@ -4,6 +4,7 @@ import authGuard from './auth-guard'
 import Home from '../views/Home.vue'
 import Register from '@/views/register'
 import Profile from '@/views/profiles/my-profiles.vue'
+import UserPassForm from '@/views/profiles/user-profil/user-pass-form.vue'
 import Properties from '@/views/properties/Properties.vue'
 import AppartementForm from '@/views/properties/AppartmentForm.vue'
 import ContractList from '@/views/contrats/contract-list.vue'
@@ -49,6 +50,12 @@ const router = new Router({
       path: '/my-profiles',
       name: 'MyProfiles',
       component: Profile,
+      meta: { auth: true, authorizedProfiles: ['LESSOR', 'TENANT', 'REALESTATE'] }
+    },
+    {
+      path: '/change-password',
+      name: 'ChangePassword',
+      component: UserPassForm,
       meta: { auth: true, authorizedProfiles: ['LESSOR', 'TENANT', 'REALESTATE'] }
     },
     {
@@ -121,7 +128,7 @@ router.beforeEach(
 
 router.afterEach(
   (to, from) => {
-    if(to.name !== 'Register')
+    if(to.name !== 'Register' && to.name !== 'activation-mail-sent' && to.name !== 'activation-mail')
       sessionStorage.setItem(LS_ROUTE, to.name)
   }
 )

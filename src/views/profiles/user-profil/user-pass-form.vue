@@ -1,30 +1,18 @@
 <template >
   <div>
+        <PageTitle
+      heading="Changement Mot De Passe"
+      subheading=""
+    />
     <div class="card mb-5">
       <div class="card-body">
         <b-row>
           <b-col class="col-xl-12 col-md-12 col-sm-12">
-            <b-form-group
-              v-if="!changePass"
-              label="Mot De Passe:"
-              label-for="user_password"
-            >
-              <b-button
-                id="user_password"
-                class="col p-2"
-                variant="danger"
-                @click="changePass = true"
-              >
-                Changer
-              </b-button>
-            </b-form-group>
 
             <b-form-group
-              v-else
-              label="Changement Mot De Passe:"
               label-for="user_password"
             >
-              <b-form-group v-if="changePass">
+              <b-form-group >
                 <b-form-input
                   v-model="changePassForm.old_password"
                   placeholder="Ancien Mot De Passe:"
@@ -46,7 +34,6 @@
                         id="changePassword"
                         v-model="changePassForm.new_password1"
                         name="password"
-                        
                       />
                       <span
                         v-if="errors.length > 0"
@@ -75,16 +62,16 @@
                 </ValidationObserver>
               </div>
             </b-form-group>
-            <b-row v-if="changePass">
+            <b-row >
               <b-button
                 class="col mt-2 mb-2 ml-3 mr-3"
                 variant="danger"
-                @click="changePass = false"
+                @click="onReset"
               >
                 Annuler
               </b-button>
               <b-button
-              id="changePass"
+                id="changePass"
                 @click="onChangePass"
                 class="col mt-2 mb-2 ml-2 mr-3"
                 variant="primary"
@@ -106,19 +93,19 @@
 </template>
 <script>
 import { mapActions, mapGetters } from "vuex";
-            
-import defaultAvatar from "@/assets/icons/avatar_1.png"
+
+import defaultAvatar from "@/assets/icons/avatar_1.png";
 import {
   ValidationObserver,
   ValidationProvider,
-  setInteractionMode
-} from 'vee-validate'
+  setInteractionMode,
+} from "vee-validate";
 
 export default {
-    components: {
-    name: 'UserPassForm',
+  name: "UserPassForm",
+  components: {
     ValidationObserver,
-    ValidationProvider
+    ValidationProvider,
   },
   data() {
     return {
@@ -145,22 +132,43 @@ export default {
   },
   methods: {
     ...mapActions("auth", ["logout"]),
-    ...mapActions("user", [
-      "changeUserPass",
-    ]),
+    ...mapActions("user", ["changeUserPass"]),
+        makeToast(msg, variant) {
+      this.$toast.open({
+        message: msg,
+        type: variant,
+        duration: 3000,
+        dismissible: true,
+        queue: false,
+        position: "top-right",
+      });
+    },
     async onChangePass() {
+      this.loadingPass = true
       let res = await this.changeUserPass(this.changePassForm);
       if (res.success) {
+        this.makeToast("Mot de passe changer avec succès",'success')
         this.logout();
         this.$router.push({ name: "Register" });
+      } else {
+        this.makeToast("Echec lors du changement de votre mot de passe",'danger')
       }
+
+      this.loadingPass = false;
     },
+    onReset() {
+      this.changePassForm = {
+        old_password: null,
+        new_password1: null,
+        new_password2: null,
+      }
+    }
   },
 };
 </script>
 <style lang="scss">
 .avatar {
-  max-width: 100%; 
+  max-width: 100%;
   max-height: 75%;
 }
 </style>
