@@ -77,6 +77,22 @@ export default {
       commit(ERROR_ADD, { key: 'updateImmeuble', message: errors.message })
     }
   },
+  async getOneAppartement ({ commit }, data) {
+    commit(ERROR_REMOVE, 'getOneAppartement')
+    let appartement = new Appartement()
+    return appartement.getContrats(data)
+      .then(res => {
+        if (res.status === 200) {
+          let appartements = res.data.payload
+          // commit(CONTRATTOUPDATE, contrats[0])
+          return appartements[0]
+        }
+      })
+      .catch(errors => {
+        commit(ERROR_ADD, { key: 'getOneAppartement', message: errors.message })
+        return null
+      })
+  },
   async createAppartement ({ commit }, data) {
     commit(ERROR_REMOVE, 'createAppartement')
     let appartement = new Appartement()

@@ -21,7 +21,7 @@
             </div>
         </div>
         <div class="row d-flex flex-row-reverse">
-                <b-button variant="primary" class="mr-2" @click="$emit('edit-appartment')">
+                <b-button variant="primary" class="mr-2" @click="triggerEditAppartement">
                 <span class="btn-wrapper--icon">
                     <font-awesome-icon icon="edit"/>
                 </span>
@@ -48,6 +48,7 @@
 
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import utils from '@/utils/index'
+import Hashids from 'hashids'
 export default {
   name: 'Appartment',
   components: {
@@ -63,6 +64,7 @@ export default {
   },
   props: {
     index: Number,
+    id: Number,
     intitule: String,
     statut: String,
     autre_description: String,
@@ -90,6 +92,11 @@ export default {
     triggerAddContrat: function(){
         this.$store.commit('contrats/CONTRATTOUPDATE', null)
         this.$router.push({name: 'EditContrat'})
+    },
+    triggerEditAppartement: function(){
+        const hashids = new Hashids()
+        let encodedId = hashids.encode(this.id)
+        this.$router.push({name: 'EditContrat', query: { ref: encodedId} })
     }
   }
 

@@ -104,10 +104,51 @@ export const getPageCount = function (itemLength, nbItemPerPage) {
   )
   return nbPages
 }
+/**
+ * Check if ojects properties values match criteria in a recursive way
+ * @param {*} obj 
+ * @param {*} critere 
+ * @returns boolean
+ */
+export const iterateOverObject = function (obj, critere) {
+  let isMatch = false;
+  for(prop in obj) {
+   if(typeof(obj[prop]) == "object"){
+     isMatch = iterateObject(obj[prop], critere);
+     if(isMatch) return true;
+   } else {
+     
+     if(obj[prop].toLowerCase().startsWith(critere.toLowerCase())) {
+        return true;
+     }
+   }
+  }
+  return isMatch;
+}
+
+/**
+ * Filter a given objects array based on a value
+ * @param {*} originalArray 
+ * @param {*} criteria 
+ * @returns array
+ */
+export const filterArrayObject = function (originalArray, criteria){
+  let result = [];
+  originalArray.forEach(function(obj){
+      const isMatched = iterateObject(obj, criteria);
+      if(isMatched){
+          result.push(obj);
+      }
+  });
+  return result;
+}
+
 export default {
   toggleFullScreen,
   currencyToNumber,
   periodiciteToString,
   getQuittanceClass,
   getAppartmentStatutClass,
+  iterateOverObject,
+  filterArrayObject,
 }

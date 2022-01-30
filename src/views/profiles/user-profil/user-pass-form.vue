@@ -7,7 +7,7 @@
     <div class="card mb-5">
       <div class="card-body">
         <b-row>
-          <b-col class="col-xl-12 col-md-12 col-sm-12">
+          <b-col class="col-xl-6 col-md-3 col-sm-12 offset-md-3 offset-xl-3">
 
             <b-form-group
               label-for="user_password"

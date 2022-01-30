@@ -1,8 +1,8 @@
 <template>
   <div>
     <PageTitle
-      heading="Mes quittances"
-      subheading="Liste de vos quittances(Vue bailleur)"
+      heading="Mandats de gestion"
+      subheading="Liste des mandats de gestion"
     />
     <div class="row">
         <div class="col-lg-12 col-md-12 col-sm-8 offset-sm-2 col-xl-8 offset-xl-2">
@@ -12,13 +12,14 @@
             <div class="card card-box mb-5 ">
                 <div class="card-header pr-2">
                         <div class="card-header--title">
-                            <small>Mandats</small>
+                            <small>Mandats de gestion</small>
                             <b>Liste des mandats de gestion.</b>
                         </div>
-                        <div class="card-header--actions">
-                            <a href="javascript:void(0)" class="btn btn-sm text-primary btn-link" v-b-tooltip.hover title="Refresh">
-                                <font-awesome-icon spin icon="sync"/>
-                            </a>
+                       <div class="card-header--actions">
+                            <b-button variant="primary" @click="addImmeuble">
+                                <font-awesome-icon icon="plus" class="mr-2" />
+                                Ajouter mandat
+                            </b-button>
                         </div>
                 </div>
                 <div class="card-body p-0">
@@ -27,61 +28,77 @@
                             <table class="table table-striped table-hover mb-0">
                                 <thead class="thead-light">
                                 <tr>
-                                    <th scope="col">Appartement</th>
-                                    <th scope="col">Quittance</th>
-                                    <th scope="col">Nature</th>
-                                    <th scope="col">Montant</th>
-                                    <th scope="col">Début période</th>
-                                    <th scope="col">Fin période</th>
-                                    <th scope="col">Locataire</th>
-                                    <th scope="col">Date Règlement</th>
-                                    <th scope="col" class="text-center">Statut</th>
+                                    <th scope="col">Référence</th>
+                                    <th scope="col">Immeuble</th>
+                                    <th scope="col">Propriétaire</th>
+                                    <th scope="col">Date effet</th>
+                                    <th scope="col" class="text-right">Durée</th>
+                                    <th scope="col" class="text-right">Taux commission</th>
+                                    <th scope="col" class="text-right">Nb Appartement</th>
+                                    <th scope="col" class="text-right">CA Mensuel</th>
+                                    <th scope="col" class="text-center">Action</th>
                                 </tr>
                                 </thead>
                                 
                                 <tbody class="list">
-                                <tr v-for="quittance in filteredQuittances" :key="quittance.reference">
-                                    <td class="company">
-                                    <div class="align-box-row">
-                                            <span class="d-block">
-                                                {{quittance.appartement.intitule}} - {{quittance.appartement.immeuble_intitule}}
-                                                <small class="d-block text-black-50"><font-awesome-icon icon="map-marked" class="mr-1" />({{quittance.appartement.immeuble_address}})</small>
-                                            </span>
-                                        </div>
-                                    </td>
+                                <tr v-for="mandat in filteredMandats" :key="mandat.reference">
                                     <td>
-                                    {{quittance.reference}}
+                                    {{mandat.reference_mandat}}
                                     </td>
-                                    <td>
-                                    {{quittance.nature}}
-                                    </td>
-                                    <td class="text-rigth">
-                                        {{Number(quittance.montant).toLocaleString('fr-FR')}}
-                                    </td>
-                                    <td>{{quittance.debut_periode}}</td>
-                                    <td>{{quittance.fin_periode}}</td>
-                                    
-                                    <td class="owner">
+                                     <td class="owner">
                                         <div class="align-box-row">
                                             <div class="pl-2">
                                                 <span class="d-block">
-                                                    {{quittance.tenant.first_name + ' '+quittance.tenant.last_name}}
+                                                    {{ mandat.immeuble.intitule }}
                                                     <small class="d-block text-black-50">
-                                                        <font-awesome-icon :icon="['fas', 'phone-alt']"  /> {{quittance.tenant.phone_number}}
+                                                        <font-awesome-icon :icon="['fas', 'map-marker']"  /> {{mandat.immeuble.adresse}}
                                                     </small>
                                                     <small class="d-block text-black-50">
-                                                        <font-awesome-icon :icon="['fas', 'envelope']" /> {{quittance.tenant.email}}
+                                                        <font-awesome-icon :icon="['fas', 'city']" /> {{mandat.immeuble.ville}}
                                                     </small>
                                                 </span>
                                             </div>
                                         </div>
                                     </td>
-                                    <td></td>
-                                    <td class="status">
-                                        <div class="text-center">
-                                            <span :class="getStatusClass(quittance)"  class="badge badge-pill ">{{quittance.statut}}</span>
+                                    <td class="company">
+                                        <div class="align-box-row">
+                                            <span class="d-block">
+                                                <div class="pl-2">
+                                                    <small class="d-block">
+                                                        {{mandat.owner_name}}  {{mandat.owner_firstname}}
+                                                    </small>
+                                                    <small class="d-block text-black-50">
+                                                        <font-awesome-icon :icon="['fas', 'phone-alt']"  /> {{mandat.owner_phone_number}}
+                                                    </small>
+                                                </div>
+                                            </span>
                                         </div>
                                     </td>
+                                    
+                                    <td>
+                                    {{mandat.date_debut}}
+                                    </td>
+                                    <td class="text-right">
+                                        {{Number(mandat.duree).toLocaleString('fr-FR')}}
+                                    </td>
+                                    <td class="text-right">{{ mandat.taux_commission }}</td>
+                                    <td class="text-right">{{ mandat.nb_appartement}}</td>
+                                    
+                                   
+                                    <td class="text-right">60000</td>
+                                    <td class="text-center" width="5%">
+                                            <b-dropdown no-caret right variant="link p-0 btn-link-primary" class="text-primary">
+                                                <template slot="button-content">
+                                                    <div class="font-size-xl">
+                                                        <font-awesome-icon icon="ellipsis-h"/>
+                                                    </div>
+                                                </template>
+                                                <b-dropdown-item ><a href="#" @click="triggerEditContrat(co)">Modifier</a></b-dropdown-item>
+                                                <b-dropdown-item>Voir quittances</b-dropdown-item>
+                                                <b-dropdown-divider></b-dropdown-divider>
+                                                <b-dropdown-item active>Résilier</b-dropdown-item>
+                                            </b-dropdown>
+                                        </td>
                                 </tr>
                                 
                                 </tbody>
@@ -139,7 +156,7 @@ export default {
           activePage: 1,
           nbItemPerPage: 10,
           filterQuery: '',
-          filteredQuittances: [],
+          filteredMandats: [],
           activeContrat: null,
           faStyle: null,
           cardBorder: null,
@@ -151,43 +168,30 @@ export default {
   },
   computed: {
     ...mapGetters({
-      quittances: 'quittances/lessorQuittances',
+      mandats: 'mandats/mandats',
     }),
     ...mapState({
-      api_errors: (state) => state.contrats.errors
+      api_errors: (state) => state.mandats.errors
     }),
     pageCount: function(){
-        return getPageCount(this.quittances.length, this.nbItemPerPage)
+        return getPageCount(this.mandats.length, this.nbItemPerPage)
     }
   },
   created: function(){
     
   },
   mounted: async function () {
-      const contratId= this.$route.query.ref
-      const hashids = new Hashids()
-      console.log('contrat.id:', contratId, hashids.decode(contratId))
-      if(contratId){
-        const query = {'contrat_id': hashids.decode(contratId) }
-        await this.$store.dispatch('quittances/getQuittanceByLessor', query)
-      }
-      else{
-        await this.$store.dispatch('quittances/getQuittanceByLessor')
-      }
+     await this.$store.dispatch('mandats/getMandats')
       this.setActivePage(this.activePage)
   },
   watch: { 
-    contrat: function(newContrat, oldContrat) { 
-        this.convertPeriodicite(newContrat.periodicite)
-        console.log('faStyle:',this.cardBorder)
-        this.$forceUpdate()
-    }
+  
   },
   methods: {
     ...mapActions('contrats', ['clientAccord',]),
     setActivePage: function(numPage){
-        const paginationObject = paginator(this.quittances, numPage, this.nbItemPerPage)
-        this.filteredQuittances = paginationObject.data
+        const paginationObject = paginator(this.mandats, numPage, this.nbItemPerPage)
+        this.filteredMandats = paginationObject.data
         this.activePage = numPage
     },
     statutStyle: function(statut){
@@ -230,13 +234,13 @@ export default {
                 this.strPeriodicite = 'ANNUELLE'
             }
     },
-    getStatusClass: function(quittance){
-        if (quittance['statut']==='PENDING'){
+    getStatusClass: function(mandat){
+        /*if (quittance['statut']==='PENDING'){
             return 'badge-warning'
         }
         if (quittance['statut']==='PAID'){
             return 'badge-success'
-        }
+        }*/
         return 'badge-danger'
     }
   }

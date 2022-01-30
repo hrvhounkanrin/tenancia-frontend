@@ -426,7 +426,7 @@ export default {
     /**
      * Si appartement en édition, reconstruire le dom par rapport aux dépendances de l'appartement
      */
-    if (this.editingAppartment) {
+    /*if (this.editingAppartment) {
       this.appartement = this.editingAppartment;
       this.editingAppartment.structures.forEach((item) => {
         this.selectedDependance.push({
@@ -435,7 +435,8 @@ export default {
           superficie: item.superficie,
         });
       });
-    }
+    }*/
+    this.loadObjectIfEditing()
   },
   watch: {},
   methods: {
@@ -518,6 +519,28 @@ export default {
         }
       });
     },
+    loadObjectIfEditing: async function () {
+      if(!this.$route.query.ref){
+        return
+      }
+      const appartementId = this.$route.query.ref
+      const hashids = new Hashids()
+      let id = hashids.decode(appartementId)[0]
+
+      //this.$store.commit('contrats/CONTRATTOUPDATE', null)
+      let appartement = await this.$store.dispatch('contrats/getOneContrat', {id: id})
+      console.log('Appartement: ', appartement)
+
+     this.appartement = this.editingAppartment;
+      this.editingAppartment.structures.forEach((item) => {
+        this.selectedDependance.push({
+          ...item.typedependence,
+          nbre: item.nbre,
+          superficie: item.superficie,
+        });
+      })
+
+    }
   },
 };
 </script>

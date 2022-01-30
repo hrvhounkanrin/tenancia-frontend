@@ -1,0 +1,6 @@
+export const ERROR_ADD = 'ERROR_ADD'
+export const ERROR_REMOVE = 'ERROR_REMOVE'
+export const MANDAT_LIST = 'MANDAT_LIST'
+export const ADD_MANDAT = 'ADD_MANDAT'
+export const UPDATE_MANDAT = 'UPDATE_MANDAT'
+export const SELECTED_MANDAT = 'SELECTED_MANDAT'

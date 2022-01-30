@@ -12,7 +12,9 @@ import ContratForm from '@/views/contrats/contrat-form.vue'
 import TenantContrats from '@/views/contrats/tenant-contrats.vue'
 import LessorQuittances from '@/views/quittances/lessor-quittances.vue'
 import TenantQuittances from '@/views/quittances/tenant-quittances.vue'
+import Mandats from '@/views/mandats/mandats.vue'
 import { LS_ROUTE } from '@/constants'
+
 Vue.use(Router)
 
 const router = new Router({
@@ -65,9 +67,9 @@ const router = new Router({
       meta: { auth: true, authorizedProfiles: ['LESSOR', 'REALESTATE'] }
     },
     {
-      path: '/mandats',
+      path: '/lease-contracts',
       name: 'MyMandate',
-      component: Properties,
+      component: Mandats,
       meta: { auth: true, authorizedProfiles: ['REALESTATE'] }
     },
     {

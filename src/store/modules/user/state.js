@@ -27,7 +27,7 @@ export default {
     },
     {
       title: 'Portefeuille de mandats',
-      href: '/mandats',
+      href: '/lease-contracts',
       icon: {
         element: 'folder-icon'
       },

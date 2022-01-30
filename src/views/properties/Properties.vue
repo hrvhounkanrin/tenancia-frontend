@@ -4,67 +4,68 @@
       heading="Mes biens"
       subheading="Ajoutez vos biens, mettez les en location et percevez vos loyer..."
     />
-    <div class="pt-5 pl-5 pr-5 mb-5">
-       <div class="row mb-4">
-      <div
-        class="col-lg-12 col-md-12 col-sm-8 offset-sm-2 col-xl-8 offset-xl-2"
-      >
-        <div class="input-group">
-            <input
-              type="search"
-              class="form-control"
-              placeholder="Rechercher..."
-            />
-            <div class="input-group-append">
-              <b-button variant="primary" class="border-0">
-                <font-awesome-icon icon="search" />
-              </b-button>
-            </div>
-        </div>
-      </div>
-      <div
-        class="col-lg-12 col-md-12 col-sm-8 offset-sm-2 col-xl-8 offset-xl-2"
-      >
-        <alert
-          variant="warning"
-          v-for="err in api_errors"
-          :msg="err.message"
-          icon="bell"
-          :dismissSecs="15"
-          :dismissible="true"
-          :title="'Oups..'"
-          :key="err.key"
-        ></alert>
-      </div>
+    <!--<search-contrat :immeubles="immeubles" @search-contrat="searchContract"></search-contrat>-->
+    <div class="row" >
+          <div class="input-group mb-3 col-lg-6 col-md-6 col-sm-12 col-xl-6">
+              <input type="text" class="form-control" placeholder="Rechercher dans mes immeubles" aria-label="Recipient's username" aria-describedby="basic-addon2">
+              <div class="input-group-append">
+                <span class="input-group-text" id="basic-addon2">
+                  <font-awesome-icon icon="search"/>
+                </span>
+              </div>
+          </div>
+          <div class="input-group mb-3 col-lg-6 col-md-6 col-sm-12 col-xl-6">
+              <input type="text" class="form-control" placeholder="Rechercher dans mes appartements" aria-label="Recipient's username" aria-describedby="basic-addon2">
+              <div class="input-group-append">
+                <span class="input-group-text" id="basic-addon2">
+                  <font-awesome-icon icon="search"/>
+                </span>
+              </div>
+          </div>
+          
     </div>
-    </div>
-
     <div class="row">
       <div class="col-lg-12 col-md-6 col-sm-12 col-xl-6">
         <div class="card card-box mb-5">
           <div class="card-header">
             <div class="card-header--title">
 
-              <b>Immeubles & Maisons</b>
-              <small>Liste de vos immeubles & maisons</small>
+              <b>Mes immeubles ({{filteredImmeuble.length}}/{{immeubles.length}})</b>
             </div>
             <div class="card-header--actions">
               <b-button variant="primary" @click="addImmeuble">
                 <font-awesome-icon icon="plus" class="mr-2" />
-                Ajouter un immeuble / une maison
+                Ajouter immeuble
               </b-button>
             </div>
+        
+             
           </div>
           <div class="card-body p-0">
-            <div class="row">
-              <div class="col-lg-12 col-xl-12">
-                <div class="card card-box mb-5">
-                  <ul
-                    class="list-group list-group-flush"
-                    v-if="immeubles.length > 0"
-                  >
+            <div class="card-body">
+            <div class="row mt-2">
+                    
+                      <div class="col-6 col-md-2">
+                            <b class="font-size-xm">Rérérence</b>
+                      </div>
+                      <div class="col-6 col-md-5">
+                              <b class="font-size-xm">Noms / Adresse</b>
+                      </div>
+                      <div class="col-6 col-md-3 text-right">
+                              <b class="font-size-xm ">Jour facture</b>
+                      </div>
+                      <div class="col-6 col-md-2 text-right">
+                          <b class="font-size-xm">Actions</b>
+                      </div>
+                    </div>
+              </div>
+              <!-- -->
+            <ul
+                class="list-group list-group-flush"
+                v-if="immeubles.length > 0"
+              >
                     <building-detail
-                      v-for="(item, index) in immeubles"
+                      v-for="(item, index) in filteredImmeuble"
                       :immeuble_id="item.immeuble_id"
                       :title="item.intitule"
                       :reference="item.ref_immeuble"
@@ -82,24 +83,31 @@
                       @edit-immeuble="editImmeuble(item)"
                     ></building-detail>
                   </ul>
-                </div>
-              </div>
-            </div>
+          </div>
+          <div class="card-footer">
+               <t-pagination 
+                        
+                        :activePage="immeubleActivePage" 
+                        :data-length="immeubles.length" 
+                        :nb-item-per-page="nbImmeublePerPage" 
+                        @set-active-page="setImmeubleActivePage"
+                        >
+                    </t-pagination>
           </div>
         </div>
       </div>
-      <div                     v-if="immeubles.length > 0"
- class="col-lg-12 col-md-6 col-sm-12 col-xl-6">
+      <div v-if="immeubles.length > 0" class="col-lg-4 col-md-4 col-sm-12 col-xl-6">
         <div class="card card-box mb-5">
           <div class="card-header bg-light">
             <div class="card-header--title">
-              <b>Appartements & Chambres {{selectedImmeuble.intitule != null ?selectedImmeuble.intitule : '' }} </b>
-              <small>Liste des appartements/chambres</small>
+              <b>Appartements de: {{selectedImmeuble.intitule != null ?selectedImmeuble.intitule : '' }}
+                ({{paginatedAppartments.length}}/{{selectedImmeuble.appartements.length}})
+              </b>
             </div>
             <div class="card-header--actions">
               <b-button variant="primary" @click="addAppartement">
                 <font-awesome-icon icon="plus" class="mr-2" />
-                Ajouter Appartement/Chambre
+                Ajouter Appartement
               </b-button>
             </div>
           </div>
@@ -108,6 +116,7 @@
               <appartment
                 v-for="(item, index) in paginatedAppartments"
                 :dependances="getDependencies(item)"
+                :id="item.id"
                 :index="index"
                 :intitule="item.intitule"
                 :statut="item.statut"
@@ -119,18 +128,13 @@
               />
             </ul>
           </div>
-
-          <div class="divider mt-3"></div>
-          <div class="text-center py-4">
-            <!--paginate component -->
-            <t-pagination
-              :paginationLength="getPageCount()"
-              :perPage="perPage"
-              :selected="selectedPage"
-              @select-page="paginate"
-              @next-page="nextPage"
-              @previous-page="previousPage"
-            ></t-pagination>
+          <div class="card-footer">
+            <t-pagination 
+                
+                  :activePage="appartementActivePage" 
+                  :data-length="selectedImmeuble.appartements.length" 
+                  :nb-item-per-page="nbAppartmentPerPage" 
+                  @set-active-page="setAppartementActivePage"></t-pagination>
           </div>
         </div>
       </div>
@@ -352,6 +356,7 @@ import paginate, { alert } from '@/components/shared/'
 import BuildingDetail from './BuildingDetail.vue'
 import Appartment from './Appartment.vue'
 import BuildingForm from './BuildingForm.vue'
+import { paginator } from '@/utils/index'
 import { mixin } from '@/mixin/mixin'
 library.add(fas)
 
@@ -374,7 +379,11 @@ export default {
       perPage: 4,
       paginationLength: 3,
       selectedPage: 1,
-      // buildingApparts: [],
+      immeubleActivePage: 1,
+      appartementActivePage:1,
+      nbAppartmentPerPage: 2,
+      nbImmeublePerPage: 5,
+      filteredImmeuble: [],
       immeuble: {
         immeuble_id: null,
         title: null,
@@ -415,24 +424,24 @@ export default {
       api_errors: (state) => state.properties.errors,
       errorOccured: (state) => state.properties.errorOccured,
       selectedImmeuble: (state) => state.properties.selectedImmeuble
-    })
+    }),
+    isVisibleImmeublePaginator: (state) => state.properties.immeubles && state.properties.immeubles.length > 0,
+    isVisibleAppartementPaginator: (state) => state.properties.selectedImmeuble && state.properties.selectedImmeuble.appartements > 0
   },
   created () {
     this.countries = mixin.methods.getAllCountry(this.onlyCountries)
-    if (this.immeubles.length === 0) {
-      this.$store.dispatch('properties/getImmeubles')
-    }
   },
   mounted () {
     this.locateMe()
-    this.paginate(1)
+    this.getImmeubles()
+ 
   },
   watch: {
     selectedImmeuble: function (newImmeuble, oldImmeuble) {
       if (newImmeuble === undefined || this.immeubles.length === 0) {
         return
       }
-      this.paginate(1)
+      this.setAppartementActivePage(1)
     },
     center: function (newCenter, oldCenter) {
       this.$store.dispatch('properties/reverseGeocoding', newCenter)
@@ -492,53 +501,35 @@ export default {
         0
       )
     },
-    getPageCount: function () {
-      this.paginationLength = Math.round(
-        this.buildingApparts.length / this.perPage
-      )
-      return this.paginationLength
-    },
-    paginate: function (pageNum) {
-      if (
-        this.selectedImmeuble === undefined ||
-        this.selectedImmeuble === null
-      ) {
-        return
-      }
-      let page = pageNum
-      let offset = (page - 1) * this.perPage
-      let paginatedItems = this.selectedImmeuble.appartements
-        .slice(offset)
-        .slice(0, this.perPage)
-      this.selectedPage = pageNum
-      console.log('paginatedItems:', paginatedItems)
-      this.paginatedAppartments = []
-      this.paginatedAppartments =
-        paginatedItems.length > 0 ? paginatedItems : []
-    },
-    previousPage: function () {
-      if (this.selectedPage <= 1) return
-      this.paginate(this.selectedPage - 1)
-    },
-    nextPage: function () {
-      if (this.selectedPage >= this.paginationLength) return
-      this.paginate(this.selectedPage + 1)
-    },
     getDependencies: function (appartment) {
       let dependencies = appartment.structures.map(
-        (dep) => '0' + dep.nbre + ' ' + dep.typedependence.libelle
+        (dep) =>  `0 ${dep.nbre} ${dep.typedependence.libelle}` 
       )
       return dependencies
     },
+    setImmeubleActivePage: function(numPage){
+        const paginationObject = paginator(this.immeubles, numPage, this.nbImmeublePerPage)
+        this.filteredImmeuble = paginationObject.data
+        this.immeubleActivePage = numPage
+        this.selectBuilding(this.filteredImmeuble[0], 0)
+    },
+    setAppartementActivePage: function(numPage){
+        if(!this.selectedImmeuble || !this.selectedImmeuble.appartements){
+          return
+        }
+        const paginationObject = paginator(this.selectedImmeuble.appartements, numPage, this.nbAppartmentPerPage)
+        this.paginatedAppartments= paginationObject.data
+        this.appartementActivePage = numPage
+    },
     selectBuilding: function (item, index) {
-      if (this.immeubles.length === 0 || item === undefined) {
+      if (this.filteredImmeuble.length === 0 || item === undefined) {
         return
       }
       this.immeuble = item
-      this.immeubles.forEach((el) => (el.isActive = false))
-      this.immeubles[index].isActive = true
+      this.filteredImmeuble.forEach((el) => (el.isActive = false))
+      this.filteredImmeuble[index].isActive = true
       this.$store.commit('properties/SELECTED_IMMEUBLE', item)
-      this.paginate(1)
+      this.setAppartementActivePage(1)
       this.$forceUpdate()
     },
     editImmeuble: function (item) {
@@ -590,7 +581,6 @@ export default {
         this.$forceUpdate()
         return
       }
-      console.log('this.getProfiles.lessor: ', this.getProfiles)
       if (!this.immeuble.intitule || this.immeuble.intitule.trim() === '') { delete this.immeuble.intitule }
 
       if (this.getProfiles.real_estate) {
@@ -604,14 +594,8 @@ export default {
       } else {
         this.immeuble = await this.createImmeuble(this.immeuble)
         this.selectBuilding(this.immeuble, 0)
-        console.log('Saved Immeuble:', this.immeuble)
       }
       this.$bvModal.hide('modalImmeuble')
-      /* this.$store.dispatch("properties/getImmeubles")
-      this.$forceUpdate() */
-    },
-    forceRerender () {
-      this.componentKey = this.componentKey + 1
     },
     editAppartment: function (item) {
       this.$router.push({
@@ -648,26 +632,26 @@ export default {
         .then((res) => {
           if (res.status === 200) {
             let appartements = res.data
-            console.log(
-              'clonerAppartement:',
-              appartements.payload.appartements
-            )
             this.$store.commit(
               'properties/ADD_APPARTEMENT',
               appartements.payload.appartements
             )
             this.paginatedAppartments = []
             this.buildingApparts = this.selectedImmeuble.appartements
-            this.paginate(1)
+            this.setAppartementActivePage(1)
           }
         })
         .catch((errors) => {
-          console.log('Cloner app')
           this.$store.commit('properties/ERROR_ADD', {
             key: 'clonerAppartement',
             message: errors.message
           })
         })
+    },
+    getImmeubles: async function(){
+      await this.$store.dispatch('properties/getImmeubles')
+      this.setImmeubleActivePage(1)
+      //this.setAppartementActivePage(1)
     }
   }
 }
